@@ -3,18 +3,51 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Werewolf Board Game</title>
-    
-    <!-- เชื่อมต่อไฟล์ style.css ที่เราแยกไว้ -->
-    <link rel="stylesheet" href="style.css">
-    
-    <!-- โหลด Firebase SDK -->
+    <title>Werewolf Game</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #1a1a1a;
+            color: #ffffff;
+            text-align: center;
+            padding: 30px;
+        }
+        .card {
+            background-color: #333333;
+            padding: 25px;
+            border-radius: 12px;
+            max-width: 400px;
+            margin: auto;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.6);
+        }
+        input[type="text"] {
+            padding: 12px;
+            width: 80%;
+            margin-bottom: 20px;
+            border-radius: 6px;
+            border: none;
+            font-size: 16px;
+        }
+        button {
+            padding: 12px 24px;
+            background-color: #e74c3c;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        button:hover { background-color: #c0392b; }
+        .role-title { font-size: 24px; color: #f1c40f; margin-bottom: 15px; }
+    </style>
+
+    <!-- Firebase SDK Compat -->
     <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
 </head>
 <body>
-    <div id="game-container">
-        <!-- หน้า Lobby -->
+    <div class="card">
+        <!-- หน้า Lobby (กรอกชื่อ) -->
         <div id="lobby-screen">
             <h2>หมู่บ้านหมาป่า</h2>
             <p>กรุณาใส่ชื่อเพื่อเข้าร่วมวง</p>
@@ -23,13 +56,82 @@
             <button onclick="joinGame()">เข้าร่วมวง</button>
         </div>
         
-        <!-- ข้อความแจ้งเตือนสถานะ (ซ่อนไว้ก่อน) -->
-        <div id="status-message" style="display:none;">
-            ระบบ: รอผู้เล่นคนอื่น...
+        <!-- หน้าจอรอ (หลังกดเข้าร่วม) -->
+        <div id="waiting-screen" style="display:none;">
+            <h2>ยินดีต้อนรับ <span id="display-name"></span></h2>
+            <p style="color: #2ecc71; font-weight: bold;">เข้าร่วมวงสำเร็จ!</p>
+            <p>รอ Game Master (ESP32) กดเริ่มเกม...</p>
+        </div>
+
+        <!-- หน้าจอแสดงบทบาท (เมื่อ ESP32 กดเริ่มเกม) -->
+        <div id="role-screen" style="display:none;">
+            <div class="role-title">บทบาทของคุณคือ</div>
+            <h1 id="my-role" style="color: #e74c3c; text-transform: uppercase;">กำลังโหลด...</h1>
+            <p id="role-desc">ตั้งใจฟังคำสั่งจาก Game Master ให้ดีล่ะ!</p>
         </div>
     </div>
 
-    <!-- เชื่อมต่อไฟล์ app.js (ต้องวางไว้ก่อนปิด tag body เสมอ) -->
-    <script src="app.js"></script>
+    <script>
+        // Config ของ Firebase คุณ
+        const firebaseConfig = {
+            apiKey: "AIzaSyCwgLaNKEBORncza75PO4IrGxTrF8vKoQw",
+            authDomain: "werewolf-esp32-game.firebaseapp.com",
+            projectId: "werewolf-esp32-game",
+            storageBucket: "werewolf-esp32-game.firebasestorage.app",
+            messagingSenderId: "768089473466",
+            appId: "1:768089473466:web:b9196bc05fa83144c39d83",
+            databaseURL: "https://werewolf-esp32-game-default-rtdb.asia-southeast1.firebasedatabase.app"
+        };
+
+        firebase.initializeApp(firebaseConfig);
+        const db = firebase.database();
+
+        let myPlayerId = localStorage.getItem("werewolf_player_id") || "player_" + Date.now();
+        localStorage.setItem("werewolf_player_id", myPlayerId);
+
+        function joinGame() {
+            const nameInput = document.getElementById("player-name").value.trim();
+            if (nameInput === "") {
+                alert("กรุณาใส่ชื่อของคุณด้วยครับ!");
+                return;
+            }
+
+            db.ref("werewolf_game/players/" + myPlayerId).set({
+                name: nameInput,
+                role: "waiting",
+                isAlive: true
+            }).then(() => {
+                document.getElementById("lobby-screen").style.display = "none";
+                document.getElementById("waiting-screen").style.display = "block";
+                document.getElementById("display-name").innerText = nameInput;
+            });
+        }
+
+        // ดักฟังสถานะเกมจาก ESP32 ตลอดเวลา
+        db.ref("werewolf_game/system/gameState").on("value", (snapshot) => {
+            const state = snapshot.val();
+            if (state === "role_reveal") {
+                document.getElementById("waiting-screen").style.display = "none";
+                document.getElementById("role-screen").style.display = "block";
+                
+                // ดึงบทบาทของตัวเองมาแสดง
+                db.ref("werewolf_game/players/" + myPlayerId + "/role").once("value", (roleSnap) => {
+                    const role = roleSnap.val();
+                    const roleElement = document.getElementById("my-role");
+                    const descElement = document.getElementById("role-desc");
+
+                    if (role === "wolf") {
+                        roleElement.innerText = "🐺 หมาป่า (WOLF)";
+                        roleElement.style.color = "#e74c3c";
+                        descElement.innerText = "คุณคือหมาป่า! คอยหาจังหวะจัดการชาวบ้านในตอนกลางคืน";
+                    } else {
+                        roleElement.innerText = "🧑 ชาวบ้าน (VILLAGER)";
+                        roleElement.style.color = "#3498db";
+                        descElement.innerText = "คุณคือชาวบ้านผู้บริสุทธิ์ ช่วยกันจับผิดหมาป่าในตอนกลางวัน";
+                    }
+                });
+            }
+        });
+    </script>
 </body>
 </html>
