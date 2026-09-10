@@ -88,6 +88,8 @@
         let myPlayerId = localStorage.getItem("werewolf_player_id") || "player_" + Date.now();
         localStorage.setItem("werewolf_player_id", myPlayerId);
 
+        let hasJoined = false; // ตัวแปรเช็คว่ากดเข้าร่วมหรือยัง
+
         function joinGame() {
             const nameInput = document.getElementById("player-name").value.trim();
             if (nameInput === "") {
@@ -100,6 +102,7 @@
                 role: "waiting",
                 isAlive: true
             }).then(() => {
+                hasJoined = true; // ล็อกสถานะว่ากดเข้าแล้ว
                 document.getElementById("lobby-screen").style.display = "none";
                 document.getElementById("waiting-screen").style.display = "block";
                 document.getElementById("display-name").innerText = nameInput;
@@ -109,6 +112,10 @@
         // ดักฟังสถานะเกมจาก ESP32 ตลอดเวลา
         db.ref("werewolf_game/system/gameState").on("value", (snapshot) => {
             const state = snapshot.val();
+
+            // ถ้าผู้เล่นยังไม่ได้กด "เข้าร่วมวง" ให้ค้างอยู่ที่หน้าใส่ชื่อเสมอ
+            if (!hasJoined) return;
+
             if (state === "role_reveal") {
                 document.getElementById("lobby-screen").style.display = "none";
                 document.getElementById("waiting-screen").style.display = "none";
