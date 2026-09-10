@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Werewolf Board Game</title>
+    <link rel="stylesheet" href="style.css">
+    
+    <!-- นำเข้า Firebase SDK (ใช้เวอร์ชัน Compat เพื่อความง่ายใน HTML) -->
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
+</head>
+<body>
+    <div id="game-container">
+        <!-- หน้า Lobby -->
+        <div id="lobby-screen">
+            <h1>เข้าสู่หมู่บ้าน</h1>
+            <input type="text" id="player-name" placeholder="ใส่ชื่อของคุณ...">
+            <button onclick="joinGame()">เข้าร่วมวง</button>
+        </div>
+        
+        <!-- หน้าจออื่นๆ จะถูกซ่อน/แสดง ผ่าน JavaScript -->
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>
