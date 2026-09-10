@@ -22,7 +22,7 @@
         .game-container {
             background: rgba(16, 16, 26, 0.86);
             backdrop-filter: blur(25px);
-            border: 2px solid rgba(212, 175, 55, 0.35); /* ขอบทองคำสไตล์ RPG */
+            border: 2px solid rgba(212, 175, 55, 0.35);
             padding: 40px 28px;
             border-radius: 32px;
             width: min(100%, 480px);
@@ -81,9 +81,28 @@
             color: #dcdde1; box-shadow: none;
         }
         .btn-secondary:hover { background: rgba(255, 255, 255, 0.15); color: #fff; }
+        
+        /* แผงควบคุมเสียงเพลง */
+        .music-panel {
+            background: rgba(10, 10, 15, 0.85);
+            border: 1px solid rgba(212, 175, 55, 0.3);
+            border-radius: 16px; padding: 12px 16px; margin-top: 10px;
+            display: flex; flex-direction: column; gap: 8px;
+        }
+        .music-controls-row {
+            display: flex; gap: 8px; align-items: center; justify-content: space-between;
+        }
         .btn-music {
-            background: rgba(46, 213, 115, 0.15); border: 1px solid rgba(46, 213, 115, 0.35);
-            color: #2ed573; font-size: 14px; padding: 12px; margin-top: 5px;
+            flex: 1; background: rgba(46, 213, 115, 0.15); border: 1px solid rgba(46, 213, 115, 0.35);
+            color: #2ed573; font-size: 13px; padding: 10px; border-radius: 12px; font-weight: 700;
+            cursor: pointer; font-family: 'Prompt'; transition: 0.2s;
+        }
+        .btn-music:hover { background: rgba(46, 213, 115, 0.25); }
+        .volume-container {
+            display: flex; align-items: center; gap: 10px; font-size: 12px; color: #b2bec3;
+        }
+        .volume-slider {
+            flex: 1; accent-color: #ffd700; cursor: pointer;
         }
 
         /* การ์ดตัวละครอลังการ */
@@ -161,7 +180,18 @@
             <input type="text" id="player-name" placeholder="ระบุฉายานักรบของคุณ..." autocomplete="off">
             <button class="btn" onclick="joinGame()">🛡️ เข้าสู่ห้องรับรอง</button>
             <button class="btn btn-secondary" onclick="openManual()">📖 คัมภีร์คู่มือ & กฎเกม</button>
-            <button class="btn btn-music" id="music-toggle-btn" onclick="toggleBGM()">🎶 เปิดเพลงบรรยากาศแฟนตาซี RPG</button>
+            
+            <!-- แผงควบคุมเสียงเพลงประกอบ -->
+            <div class="music-panel">
+                <div class="music-controls-row">
+                    <button class="btn-music" id="music-toggle-btn" onclick="toggleBGM()">🎶 เปิดเพลงแฟนตาซี</button>
+                </div>
+                <div class="volume-container">
+                    <span>🔈 เบา</span>
+                    <input type="range" min="0" max="1" step="0.05" value="0.4" class="volume-slider" id="volume-slider" oninput="changeVolume(this.value)">
+                    <span>ดัง 🔊</span>
+                </div>
+            </div>
         </div>
         
         <!-- หน้าจอรอ -->
@@ -234,11 +264,14 @@
         let hasJoined = false;
         let myRole = "villager";
 
-        // ================= ระบบดนตรีบรรเลงแฟนตาซี RPG (Web Audio Melody Synthesizer) =================
-        const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-        let bgmLoop = null;
+        // ================= ระบบเพลงประกอบ RPG (เชื่อมโยงกับไฟล์ wolf-music.mp3 บน GitHub) =================
+        const bgmMusic = new Audio('wolf-music.mp3'); 
+        bgmMusic.loop = true;
+        bgmMusic.volume = 0.4; // ค่าเริ่มต้น 40%
+
         let isMusicPlaying = false;
 
+        const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
         function playSound(type) {
             if (audioCtx.state === 'suspended') audioCtx.resume();
             const osc = audioCtx.createOscillator();
@@ -252,56 +285,39 @@
                 gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.1);
                 osc.start(); osc.stop(audioCtx.currentTime + 0.1);
             } else if (type === 'alert') {
-                osc.frequency.setValueAtTime(261.63, audioCtx.currentTime); // โน้ต C4
-                osc.frequency.setValueAtTime(392.00, audioCtx.currentTime + 0.15); // โน้ต G4
+                osc.frequency.setValueAtTime(261.63, audioCtx.currentTime);
+                osc.frequency.setValueAtTime(392.00, audioCtx.currentTime + 0.15);
                 gain.gain.setValueAtTime(0.12, audioCtx.currentTime);
                 gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.35);
                 osc.start(); osc.stop(audioCtx.currentTime + 0.35);
             }
         }
 
-        // สร้างเมโลดี้ดนตรีบรรเลงแฟนตาซี (Ragnarok Town Vibe) ด้วย Web Audio API
         function toggleBGM() {
-            if (audioCtx.state === 'suspended') audioCtx.resume();
             const btn = document.getElementById("music-toggle-btn");
 
             if (!isMusicPlaying) {
-                isMusicPlaying = true;
-                btn.innerText = "🔇 ปิดเพลงบรรเลงแฟนตาซี";
-                btn.style.borderColor = "#ff4757";
-                btn.style.color = "#ff4757";
-
-                playFantasyMelody();
-                bgmLoop = setInterval(playFantasyMelody, 6400);
+                bgmMusic.play().then(() => {
+                    isMusicPlaying = true;
+                    btn.innerText = "🔇 ปิดเพลงแฟนตาซี";
+                    btn.style.borderColor = "#ff4757";
+                    btn.style.color = "#ff4757";
+                }).catch(err => {
+                    console.log("Autoplay blocked:", err);
+                    alert("กรุณากดปุ่มอีกครั้งเพื่อเปิดเพลง");
+                });
             } else {
+                bgmMusic.pause();
                 isMusicPlaying = false;
-                btn.innerText = "🎶 เปิดเพลงบรรยากาศแฟนตาซี RPG";
+                btn.innerText = "🎶 เปิดเพลงแฟนตาซี";
                 btn.style.borderColor = "rgba(46, 213, 115, 0.35)";
                 btn.style.color = "#2ed573";
-                if (bgmLoop) clearInterval(bgmLoop);
             }
         }
 
-        function playFantasyMelody() {
-            if (!isMusicPlaying) return;
-            // คอร์ดเพลงแฟนตาซีไพเราะ (Cmaj7 -> Am -> F -> G)
-            const notes = [261.63, 329.63, 392.00, 523.25, 440.00, 349.23, 392.00];
-            notes.forEach((freq, index) => {
-                setTimeout(() => {
-                    if (!isMusicPlaying) return;
-                    const osc = audioCtx.createOscillator();
-                    const gain = audioCtx.createGain();
-                    osc.type = 'triangle'; // เสียงนุ่มนวลคล้ายพิณโบราณ
-                    osc.frequency.setValueAtTime(freq, audioCtx.currentTime);
-
-                    gain.gain.setValueAtTime(0.001, audioCtx.currentTime);
-                    gain.gain.linearRampToValueAtTime(0.06, audioCtx.currentTime + 0.2);
-                    gain.gain.exponentialRampToValueAtTime(0.0001, audioCtx.currentTime + 0.9);
-
-                    osc.connect(gain); gain.connect(audioCtx.destination);
-                    osc.start(); osc.stop(audioCtx.currentTime + 1.0);
-                }, index * 800);
-            });
+        // ฟังก์ชันปรับระดับเสียง (เบา-ดัง) ตาม Slider
+        function changeVolume(val) {
+            bgmMusic.volume = parseFloat(val);
         }
 
         function openManual() { playSound('click'); document.getElementById("manual-modal").style.display = "flex"; }
@@ -322,7 +338,6 @@
             });
         }
 
-        // ดักฟังสถานะเกมหลัก
         db.ref("werewolf_game/system/gameState").on("value", (snapshot) => {
             const state = snapshot.val();
             if (!hasJoined) return;
