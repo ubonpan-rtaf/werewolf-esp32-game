@@ -3,101 +3,157 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>WEREWOLF ONLINE - Ultimate Edition</title>
+    <title>WEREWOLF LEGENDS - Epic Edition</title>
     <link href="https://fonts.googleapis.com/css2?family=Prompt:wght@300;400;600;700;900&display=swap" rel="stylesheet">
     <style>
         * { box-sizing: border-box; margin: 0; padding: 0; }
         body {
             font-family: 'Prompt', sans-serif;
-            background: radial-gradient(circle at center, #1b1b2f 0%, #08080c 100%);
+            /* ภาพพื้นหลังป่ารัตติกาลดาร์กแฟนตาซี พร้อมฟิลเตอร์มืดสนิทเพื่อความคมชัดของ UI */
+            background: linear-gradient(rgba(5, 5, 10, 0.88), rgba(10, 10, 20, 0.95)), 
+                        url('https://images.unsplash.com/photo-1518709268805-4e9042af9f23?q=80&w=1920&auto=format&fit=crop') no-repeat center center fixed;
+            background-size: cover;
             color: #f1f2f6;
             min-height: 100vh;
             display: flex;
             justify-content: center;
             align-items: center;
             padding: 20px;
+            overflow-x: hidden;
         }
         .game-container {
-            background: rgba(25, 25, 38, 0.85);
-            backdrop-filter: blur(25px);
-            border: 1px solid rgba(255, 255, 255, 0.12);
+            background: rgba(18, 18, 28, 0.82);
+            backdrop-filter: blur(30px);
+            -webkit-backdrop-filter: blur(30px);
+            border: 1px solid rgba(255, 215, 0, 0.2); /* ขอบทองเรืองแสงบางๆ สไตล์เกม RPG */
             padding: 40px 28px;
-            border-radius: 28px;
+            border-radius: 32px;
             width: min(100%, 480px);
-            box-shadow: 0 30px 60px rgba(0, 0, 0, 0.8);
+            box-shadow: 0 35px 70px rgba(0, 0, 0, 0.9), inset 0 1px 0 rgba(255, 255, 255, 0.15);
             text-align: center;
+            animation: epicZoom 0.6s cubic-bezier(0.16, 1, 0.3, 1);
         }
-        .logo-icon { font-size: 50px; margin-bottom: 10px; animation: float 3s ease-in-out infinite; }
-        @keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-8px); } }
-        h2 { font-size: 28px; font-weight: 800; margin-bottom: 8px; color: #ff6b81; }
-        p { font-size: 15px; color: #a4b0be; margin-bottom: 24px; line-height: 1.6; }
+        @keyframes epicZoom {
+            from { opacity: 0; transform: scale(0.92) translateY(20px); }
+            to { opacity: 1; transform: scale(1) translateY(0); }
+        }
+        .logo-emblem {
+            width: 90px; height: 90px; margin: 0 auto 15px auto;
+            background: radial-gradient(circle, rgba(255,71,87,0.3) 0%, rgba(0,0,0,0.8) 80%);
+            border: 2px solid #ff4757; border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 45px; box-shadow: 0 0 30px rgba(255, 71, 87, 0.5);
+            animation: pulseGlow 3s infinite ease-in-out;
+        }
+        @keyframes pulseGlow {
+            0%, 100% { box-shadow: 0 0 20px rgba(255, 71, 87, 0.4); transform: scale(1); }
+            50% { box-shadow: 0 0 40px rgba(255, 71, 87, 0.8); transform: scale(1.05); }
+        }
+        h2 {
+            font-size: 28px; font-weight: 900; margin-bottom: 6px;
+            background: linear-gradient(135deg, #ff9f43 0%, #ff4757 100%);
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+            text-transform: uppercase; letter-spacing: 1px;
+        }
+        p { font-size: 14.5px; color: #a4b0be; margin-bottom: 24px; line-height: 1.6; }
+        
         input[type="text"] {
             width: 100%; padding: 16px 20px;
-            background: rgba(12, 12, 16, 0.85);
-            border: 2px solid rgba(255, 255, 255, 0.1);
+            background: rgba(10, 10, 15, 0.9);
+            border: 2px solid rgba(255, 255, 255, 0.12);
             border-radius: 16px; color: #fff; font-size: 17px;
             font-family: 'Prompt', sans-serif; outline: none; margin-bottom: 16px;
+            transition: 0.3s;
         }
-        input[type="text"]:focus { border-color: #ff4757; box-shadow: 0 0 25px rgba(255, 71, 87, 0.4); }
+        input[type="text"]:focus {
+            border-color: #ff9f43;
+            box-shadow: 0 0 25px rgba(255, 159, 67, 0.4);
+        }
         .btn {
-            width: 100%; padding: 15px;
+            width: 100%; padding: 16px;
             background: linear-gradient(135deg, #ff4757 0%, #ff6b81 100%);
             color: white; border: none; border-radius: 16px;
             font-size: 17px; font-weight: 700; font-family: 'Prompt', sans-serif;
             cursor: pointer; box-shadow: 0 8px 25px rgba(255, 71, 87, 0.45); transition: 0.3s;
-            margin-bottom: 12px;
+            margin-bottom: 12px; text-transform: uppercase; letter-spacing: 0.5px;
         }
-        .btn:hover { transform: translateY(-2px); opacity: 0.95; }
+        .btn:hover { transform: translateY(-2px); opacity: 0.95; box-shadow: 0 12px 30px rgba(255, 71, 87, 0.65); }
         .btn-secondary {
             background: rgba(255, 255, 255, 0.08);
             border: 1px solid rgba(255, 255, 255, 0.15);
-            box-shadow: none;
+            box-shadow: none; color: #dcdde1;
         }
-        .btn-secondary:hover { background: rgba(255, 255, 255, 0.15); }
-        
-        /* Modal คู่มือการเล่น */
+        .btn-secondary:hover { background: rgba(255, 255, 255, 0.15); color: #fff; }
+        .btn-audio {
+            background: rgba(46, 213, 115, 0.15); border: 1px solid rgba(46, 213, 115, 0.3);
+            color: #2ed573; margin-top: 10px; font-size: 14px; padding: 12px;
+        }
+
+        /* การ์ดตัวละครอลังการเกรด RPG */
+        .role-card-epic {
+            background: linear-gradient(135deg, rgba(20, 20, 30, 0.95) 0%, rgba(10, 10, 15, 0.98) 100%);
+            border-radius: 24px; padding: 35px 20px;
+            border: 2px solid rgba(255, 255, 255, 0.15);
+            box-shadow: inset 0 0 50px rgba(0,0,0,0.8), 0 15px 35px rgba(0,0,0,0.6);
+            position: relative; overflow: hidden;
+        }
+        .role-card-epic::before {
+            content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 4px;
+            background: linear-gradient(90deg, transparent, #ff4757, transparent);
+        }
+        .role-badge-title {
+            font-size: 12px; color: #ffa502; font-weight: 700; text-transform: uppercase;
+            letter-spacing: 3px; margin-bottom: 12px; display: inline-block;
+            padding: 4px 12px; background: rgba(255, 165, 2, 0.1); border-radius: 20px;
+            border: 1px solid rgba(255, 165, 2, 0.2);
+        }
+        .role-avatar-lg {
+            font-size: 70px; margin: 15px 0;
+            filter: drop-shadow(0 0 20px rgba(255,255,255,0.3));
+            animation: floatAvatar 3s ease-in-out infinite;
+        }
+        @keyframes floatAvatar { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-6px); } }
+        .role-name-epic {
+            font-size: 38px; font-weight: 900; margin-bottom: 12px;
+            text-transform: uppercase; letter-spacing: 1px;
+        }
+        .role-desc-epic {
+            font-size: 14.5px; color: #dfe4ea; line-height: 1.7; padding: 0 10px;
+        }
+
+        /* Modal คู่มือ */
         .modal {
-            display: none; position: fixed; z-index: 100;
-            left: 0; top: 0; width: 100%; height: 100%;
-            background: rgba(0, 0, 0, 0.8); backdrop-filter: blur(8px);
+            display: none; position: fixed; z-index: 100; left: 0; top: 0; width: 100%; height: 100%;
+            background: rgba(0, 0, 0, 0.85); backdrop-filter: blur(10px);
             justify-content: center; align-items: center; padding: 20px;
         }
         .modal-content {
-            background: rgba(20, 20, 30, 0.95);
-            border: 1px solid rgba(255, 255, 255, 0.15);
-            padding: 30px 24px; border-radius: 24px;
-            width: min(100%, 420px); max-height: 85vh; overflow-y: auto;
-            text-align: left; box-shadow: 0 20px 40px rgba(0,0,0,0.9);
+            background: rgba(15, 15, 25, 0.96); border: 1px solid rgba(255, 255, 255, 0.18);
+            padding: 30px 24px; border-radius: 28px; width: min(100%, 440px); max-height: 85vh;
+            overflow-y: auto; text-align: left; box-shadow: 0 25px 50px rgba(0,0,0,0.9);
         }
-        .modal-content h3 { color: #ff6b81; margin-bottom: 15px; font-size: 20px; text-align: center; }
-        .modal-content h4 { color: #ffa502; margin: 15px 0 6px 0; font-size: 15px; }
+        .modal-content h3 { color: #ff9f43; margin-bottom: 15px; font-size: 22px; text-align: center; text-transform: uppercase; }
+        .modal-content h4 { color: #ff6b81; margin: 16px 0 6px 0; font-size: 15px; }
         .modal-content p, .modal-content li { font-size: 13.5px; color: #dcdde1; line-height: 1.6; margin-bottom: 8px; }
         .modal-content ul { padding-left: 20px; }
         .close-btn {
-            background: #ff4757; color: white; border: none; padding: 10px;
-            width: 100%; border-radius: 12px; font-weight: 700; margin-top: 20px;
-            cursor: pointer; font-family: 'Prompt';
+            background: linear-gradient(135deg, #ff4757, #ff6b81); color: white; border: none; padding: 14px;
+            width: 100%; border-radius: 16px; font-weight: 700; margin-top: 20px;
+            cursor: pointer; font-family: 'Prompt'; text-transform: uppercase;
         }
 
+        .target-btn {
+            display: block; width: 100%; padding: 14px; margin: 10px 0;
+            background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.12);
+            color: white; border-radius: 14px; cursor: pointer; font-family: 'Prompt'; font-size: 15px;
+            transition: 0.2s;
+        }
+        .target-btn:hover { background: rgba(255,71,87,0.25); border-color: #ff4757; transform: scale(1.02); }
         .status-badge {
-            display: inline-block; padding: 8px 20px;
-            background: rgba(46, 213, 115, 0.15); color: #2ed573;
-            border-radius: 20px; font-size: 15px; font-weight: 600; margin-bottom: 20px;
+            display: inline-block; padding: 8px 20px; background: rgba(46, 213, 115, 0.15);
+            color: #2ed573; border-radius: 20px; font-size: 15px; font-weight: 600; margin-bottom: 20px;
             border: 1px solid rgba(46, 213, 115, 0.3);
         }
-        .role-card {
-            background: rgba(12, 12, 16, 0.95);
-            border-radius: 22px; padding: 30px 20px;
-            border: 1px solid rgba(255, 255, 255, 0.12);
-        }
-        .role-title { font-size: 13px; color: #ffa502; font-weight: 700; text-transform: uppercase; letter-spacing: 2px; margin-bottom: 10px; }
-        .role-name { font-size: 34px; font-weight: 900; margin-bottom: 14px; }
-        .target-btn {
-            display: block; width: 100%; padding: 12px; margin: 8px 0;
-            background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.15);
-            color: white; border-radius: 12px; cursor: pointer; font-family: 'Prompt';
-        }
-        .target-btn:hover { background: rgba(255,71,87,0.3); border-color: #ff4757; }
     </style>
 
     <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
@@ -107,62 +163,64 @@
     <div class="game-container">
         <!-- หน้า Lobby -->
         <div id="lobby-screen">
-            <div class="logo-icon">🐺</div>
-            <h2>หมู่บ้านหมาป่า</h2>
-            <p>กรอกชื่อหรือฉายาของคุณเพื่อเข้าร่วมสมรภูมิ</p>
-            <input type="text" id="player-name" placeholder="ชื่อของคุณ..." autocomplete="off">
-            <button class="btn" onclick="joinGame()">เข้าร่วมวงสนทนา</button>
+            <div class="logo-emblem">🐺</div>
+            <h2>Werewolf Legends</h2>
+            <p>สมรภูมิลับหักเหลี่ยมคม พกพาความอลังการระดับเกมออนไลน์</p>
+            <input type="text" id="player-name" placeholder="ระบุฉายาของคุณ..." autocomplete="off">
+            <button class="btn" onclick="joinGame()">⚔️ เข้าสู่สมรภูมิ</button>
             <button class="btn btn-secondary" onclick="openManual()">📖 คู่มือการเล่น & กฎกติกา</button>
+            <button class="btn btn-audio" id="bgm-toggle-btn" onclick="toggleBGM()">🎵 เปิดเพลงบรรยากาศดาร์กแฟนตาซี</button>
         </div>
         
         <!-- หน้าจอรอ -->
         <div id="waiting-screen" style="display:none;">
-            <div class="logo-icon">⏳</div>
-            <h2>เตรียมพร้อมรับคำสั่ง</h2>
-            <div class="status-badge">ผู้เล่น: <span id="display-name" style="color:#fff;"></span></div>
-            <p style="margin-top: 15px;">เข้าสู่ห้องสำเร็จแล้ว!<br>กำลังรอ Game Master (ESP32) ออกคำสั่งเริ่มเกม...</p>
+            <div class="logo-emblem">⏳</div>
+            <h2>เตรียมพร้อมรบ</h2>
+            <div class="status-badge">นักรบ: <span id="display-name" style="color:#fff;"></span></div>
+            <p style="margin-top: 15px;">ลงทะเบียนสำเร็จ!<br>กำลังรอ Game Master (ESP32) ออกคำสั่งเปิดฉาก...</p>
             <button class="btn btn-secondary" style="margin-top: 15px;" onclick="openManual()">📖 เปิดดูคู่มือการเล่น</button>
         </div>
 
-        <!-- หน้าจอแสดงบทบาท & เฟสเกม -->
+        <!-- หน้าจอแสดงบทบาทอลังการ -->
         <div id="game-screen" style="display:none;">
-            <div class="role-card" id="role-card-bg">
-                <div class="role-title" id="phase-indicator">สถานะ: เตรียมตัว</div>
-                <div class="role-name" id="my-role">กำลังโหลด...</div>
-                <p id="role-desc" style="color: #dfe4ea; font-size: 15px; line-height: 1.6;"></p>
+            <div class="role-card-epic" id="role-card-bg">
+                <div class="role-badge-title" id="phase-indicator">สถานะ: เตรียมพร้อม</div>
+                <div class="role-avatar-lg" id="role-avatar">🛡️</div>
+                <div class="role-name-epic" id="my-role">กำลังโหลด...</div>
+                <p class="role-desc-epic" id="role-desc">ชะตากรรมของหมู่บ้านอยู่ในมือคุณ...</p>
                 <div id="action-area" style="margin-top: 20px;"></div>
             </div>
-            <button class="btn btn-secondary" style="margin-top: 15px;" onclick="openManual()">📖 ดูคู่มือเพิ่มเติม</button>
+            <button class="btn btn-secondary" style="margin-top: 15px;" onclick="openManual()">📖 เปิดคู่มือดูบทบาท</button>
         </div>
     </div>
 
     <!-- Modal คู่มือการเล่น -->
     <div id="manual-modal" class="modal">
         <div class="modal-content">
-            <h3>📖 คู่มือการเล่น Werewolf</h3>
+            <h3>📖 คัมภีร์ศักดิ์สิทธิ์: Werewolf Legends</h3>
             
-            <h4>🎯 เป้าหมายของเกม</h4>
-            <p>ต่อสู้หักเหลี่ยมระหว่าง <b>"ชาวบ้านผู้บริสุทธิ์"</b> และ <b>"หมาป่าจอมเจ้าเล่ห์"</b> ฝ่ายไหนทำภารกิจสำเร็จก่อนจะเป็นผู้ชนะ!</p>
+            <h4>🎯 เป้าหมายหลัก</h4>
+            <p>สงครามจิตวิทยาขั้นสุดยอดระหว่าง <b>"สมาคมชาวบ้าน"</b> และ <b>"ฝูงหมาป่าโลหิต"</b> ฝ่ายใดทำลายล้างอีกฝ่ายได้หมดจะเป็นผู้ชนะ!</p>
 
-            <h4>👥 บทบาทในเกม</h4>
+            <h4>👥 คลาสตัวละครในตำนาน</h4>
             <ul>
-                <li>🐺 <b>หมาป่า (Wolf):</b> แฝงตัวเนียนไปกับชาวบ้าน คอยตื่นมาล่าเหยื่อในยามค่ำคืน</li>
-                <li>🧑 <b>ชาวบ้าน (Villager):</b> ผู้บริสุทธิ์ที่ต้องใช้หลักฐาน การสังเกต และการพูดคุยเพื่อจับผิดหมาป่า</li>
+                <li>🐺 <b>Crimson Wolf (หมาป่า):</b> นักล่าเงาผู้กระหายเลือด แฝงตัวเนียนในคราบชาวบ้าน แล้วออกขย้ำเหยื่อในยามวิกาล</li>
+                <li>🛡️ <b>Guardian Villager (ชาวบ้าน):</b> ผู้บริสุทธิ์ที่มีพลังแห่งการสามัคคี ใช้สัญชาตญาณกระชากหน้ากากฆาตกร</li>
             </ul>
 
-            <h4>⏳ ลำดับขั้นตอนการดำเนินเกม</h4>
+            <h4>⏳ วัฏจักรของสงคราม (Game Phase)</h4>
             <ul>
-                <li><b>1. แจกบทบาท (Role Reveal):</b> ระบบสุ่มและแสดงบทบาทลับเฉพาะของคุณผ่านหน้าจอมือถือ</li>
-                <li><b>2. เฟสกลางคืน (Night Phase):</b> หมู่บ้านหลับใหล หมาป่าเลือกเป้าหมายที่จะกำจัดอย่างลับๆ</li>
-                <li><b>3. เฟสกลางวัน (Day Phase):</b> Game Master ประกาศผล อภิปรายและจับพิรุธร่วมกัน</li>
-                <li><b>4. เฟสโหวต (Voting Phase):</b> ร่วมกันลงคะแนนเสียงโหวตขับไล่ผู้ต้องสงสัยออกจากหมู่บ้าน</li>
+                <li><b>1. Phase แจกบทบาท:</b> เปิดเผยคลาสลับเฉพาะตัวของคุณ</li>
+                <li><b>2. Phase ราตรีกาล (Night):</b> หมู่บ้านนิทรา หมาป่าออกล่าเหยื่อ</li>
+                <li><b>3. Phase รุ่งอรุณ (Day):</b> แสงตะวันสาดส่อง ประกาศผลผู้เสียชีวิต อภิปรายและจับพิรุธ</li>
+                <li><b>4. Phase พิพากษา (Vote):</b> โหวตประหารผู้ต้องสงสัยออกจากหมู่บ้าน</li>
             </ul>
 
-            <h4>🏆 เงื่อนไขการชนะ</h4>
-            <p>• <b>ชาวบ้านชนะ:</b> กำจัดหมาป่าทั้งหมดในหมู่บ้านได้สำเร็จ<br>
-            • <b>หมาป่าชนะ:</b> จำนวนหมาป่าเท่ากับหรือมากกว่าจำนวนชาวบ้านที่เหลืออยู่</p>
+            <h4>🏆 เงื่อนไขแห่งชัยชนะ</h4>
+            <p>• <b>ชาวบ้านชนะ:</b> กำจัดหมาป่าทั้งหมดลงได้<br>
+            • <b>หมาป่าชนะ:</b> จำนวนหมาป่าเทียบเท่าหรือมากกว่าชาวบ้าน</p>
 
-            <button class="close-btn" onclick="closeManual()">เข้าใจแล้ว, ปิดคู่มือ</button>
+            <button class="close-btn" onclick="closeManual()">รับทราบ, ปิดคัมภีร์</button>
         </div>
     </div>
 
@@ -185,7 +243,11 @@
         let hasJoined = false;
         let myRole = "villager";
 
+        // ================= ระบบดาร์กแอมเบียนต์ซาวด์ & เอฟเฟกต์ (Web Audio API) =================
         const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+        let bgmInterval = null;
+        let isBgmPlaying = false;
+
         function playSound(type) {
             if (audioCtx.state === 'suspended') audioCtx.resume();
             const osc = audioCtx.createOscillator();
@@ -193,33 +255,66 @@
             osc.connect(gain); gain.connect(audioCtx.destination);
             
             if (type === 'click') {
-                osc.frequency.setValueAtTime(400, audioCtx.currentTime);
-                osc.frequency.exponentialRampToValueAtTime(800, audioCtx.currentTime + 0.1);
+                osc.frequency.setValueAtTime(300, audioCtx.currentTime);
+                osc.frequency.exponentialRampToValueAtTime(700, audioCtx.currentTime + 0.1);
                 gain.gain.setValueAtTime(0.1, audioCtx.currentTime);
                 gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.1);
                 osc.start(); osc.stop(audioCtx.currentTime + 0.1);
             } else if (type === 'alert') {
-                osc.frequency.setValueAtTime(200, audioCtx.currentTime);
-                osc.frequency.setValueAtTime(500, audioCtx.currentTime + 0.15);
-                gain.gain.setValueAtTime(0.2, audioCtx.currentTime);
-                gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.3);
-                osc.start(); osc.stop(audioCtx.currentTime + 0.3);
+                osc.frequency.setValueAtTime(150, audioCtx.currentTime);
+                osc.frequency.setValueAtTime(450, audioCtx.currentTime + 0.2);
+                gain.gain.setValueAtTime(0.15, audioCtx.currentTime);
+                gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.4);
+                osc.start(); osc.stop(audioCtx.currentTime + 0.4);
             }
         }
 
-        function openManual() {
-            playSound('click');
-            document.getElementById("manual-modal").style.display = "flex";
+        // ระบบสร้างเสียงบรรยากาศดาร์กแอมเบียนต์ (Dark Fantasy Drone) อัตโนมัติแบบโปรแกรมมิ่ง
+        function toggleBGM() {
+            if (audioCtx.state === 'suspended') audioCtx.resume();
+            const btn = document.getElementById("bgm-toggle-btn");
+
+            if (!isBgmPlaying) {
+                isBgmPlaying = true;
+                btn.innerText = "🔇 ปิดเพลงบรรยากาศ";
+                btn.style.borderColor = "#ff4757";
+                btn.style.color = "#ff4757";
+
+                // เล่นเสียงดาร์กแอมเบียนต์วนลูปทุกๆ 8 วินาที
+                playDarkDrone();
+                bgmInterval = setInterval(playDarkDrone, 8000);
+            } else {
+                isBgmPlaying = false;
+                btn.innerText = "🎵 เปิดเพลงบรรยากาศดาร์กแฟนตาซี";
+                btn.style.borderColor = "rgba(46, 213, 115, 0.3)";
+                btn.style.color = "#2ed573";
+                if (bgmInterval) clearInterval(bgmInterval);
+            }
         }
-        function closeManual() {
-            playSound('click');
-            document.getElementById("manual-modal").style.display = "none";
+
+        function playDarkDrone() {
+            if (!isBgmPlaying) return;
+            const osc = audioCtx.createOscillator();
+            const gain = audioCtx.createGain();
+            osc.type = 'sawtooth';
+            osc.frequency.setValueAtTime(65.41, audioCtx.currentTime); // โน้ต C2 ต่ำลึกลับ
+            osc.frequency.exponentialRampToValueAtTime(98.00, audioCtx.currentTime + 4.0); // ไล่เสียงขึ้น
+
+            gain.gain.setValueAtTime(0.01, audioCtx.currentTime);
+            gain.gain.linearRampToValueAtTime(0.04, audioCtx.currentTime + 3.0);
+            gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 7.8);
+
+            osc.connect(gain); gain.connect(audioCtx.destination);
+            osc.start(); osc.stop(audioCtx.currentTime + 8.0);
         }
+
+        function openManual() { playSound('click'); document.getElementById("manual-modal").style.display = "flex"; }
+        function closeManual() { playSound('click'); document.getElementById("manual-modal").style.display = "none"; }
 
         function joinGame() {
             playSound('click');
             const nameInput = document.getElementById("player-name").value.trim();
-            if (nameInput === "") { alert("กรุณาใส่ชื่อของคุณก่อนครับ!"); return; }
+            if (nameInput === "") { alert("โปรดระบุฉายาก่อนเข้าสมรภูมิ!"); return; }
 
             db.ref("werewolf_game/players/" + myPlayerId).set({
                 name: nameInput, role: "waiting", isAlive: true
@@ -241,9 +336,11 @@
             document.getElementById("game-screen").style.display = "block";
 
             const phaseIndicator = document.getElementById("phase-indicator");
+            const avatarElement = document.getElementById("role-avatar");
             const roleElement = document.getElementById("my-role");
             const descElement = document.getElementById("role-desc");
             const actionArea = document.getElementById("action-area");
+            const cardBg = document.getElementById("role-card-bg");
             actionArea.innerHTML = "";
 
             db.ref("werewolf_game/players/" + myPlayerId).once("value", (pSnap) => {
@@ -252,46 +349,56 @@
                     const isAlive = pSnap.val().isAlive !== false;
 
                     if (!isAlive) {
-                        phaseIndicator.innerText = "สถานะ: ถูกกำจัดแล้ว";
-                        roleElement.innerHTML = "👻 วิญญาณผู้ล่วงลับ";
+                        phaseIndicator.innerText = "สถานะ: สิ้นชีพ";
+                        avatarElement.innerText = "👻";
+                        roleElement.innerHTML = "วิญญาณผู้ล่วงลับ";
                         roleElement.style.color = "#a4b0be";
-                        descElement.innerText = "คุณเสียชีวิตแล้ว ทำได้เพียงชมนิทานรอบวงในฐานะผู้ชม";
+                        descElement.innerText = "ท่านได้จากโลกนี้ไปแล้ว ทำได้เพียงเฝ้ามองสงครามจากแดนสนธยา";
+                        cardBg.style.borderColor = "rgba(164, 176, 190, 0.3)";
                         return;
                     }
 
                     if (state === "role_reveal") {
-                        phaseIndicator.innerText = "เฟส: แจกบทบาท";
+                        phaseIndicator.innerText = "คลาสของคุณในสงครามนี้";
                         if (myRole === "wolf") {
-                            roleElement.innerHTML = "🐺 หมาป่า";
+                            avatarElement.innerText = "🐺";
+                            roleElement.innerHTML = "Crimson Wolf";
                             roleElement.style.color = "#ff4757";
-                            descElement.innerText = "คุณคือหมาป่า ซ่อนตัวให้เนียน แล้วเตรียมล่าเหยื่อในยามค่ำคืน";
+                            descElement.innerText = "ท่านคือหมาป่าโลหิต ซ่อนเขี้ยวเล็บภายใต้หน้ากากชาวบ้าน แล้วรอเวลาขย้ำในยามวิกาล";
+                            cardBg.style.borderColor = "rgba(255, 71, 87, 0.5)";
                         } else {
-                            roleElement.innerHTML = "🧑 ชาวบ้าน";
+                            avatarElement.innerText = "🛡️";
+                            roleElement.innerHTML = "Guardian Villager";
                             roleElement.style.color = "#2ed573";
-                            descElement.innerText = "คุณคือชาวบ้านผู้บริสุทธิ์ ร่วมมือกับเพื่อนเพื่อหาตัวหมาป่า";
+                            descElement.innerText = "ท่านคือชาวบ้านผู้พิทักษ์ ผสานพลังสามัคคีเพื่อกระชากหน้ากากฆาตกรตัวจริง";
+                            cardBg.style.borderColor = "rgba(46, 213, 115, 0.5)";
                         }
                     } else if (state === "night_phase") {
-                        phaseIndicator.innerText = "🌙 เฟสกลางคืน (NIGHT)";
+                        phaseIndicator.innerText = "🌙 ราตรีกาลอันมืดมิด";
                         if (myRole === "wolf") {
-                            roleElement.innerHTML = "🐺 เวลาล่าของหมาป่า";
+                            avatarElement.innerText = "🩸";
+                            roleElement.innerHTML = "เวลาออกล่า";
                             roleElement.style.color = "#ff4757";
-                            descElement.innerText = "เลือกเหยื่อที่คุณต้องการกำจัดคืนนี้:";
+                            descElement.innerText = "เลือกเป้าหมายที่ท่านต้องการสังหารในคืนนี้:";
                             loadTargets(actionArea);
                         } else {
-                            roleElement.innerHTML = "💤 หมู่บ้านหลับใหล";
+                            avatarElement.innerText = "💤";
+                            roleElement.innerHTML = "หมู่บ้านนิทรา";
                             roleElement.style.color = "#3498db";
-                            descElement.innerText = "ทุกคนกำลังนอนหลับ โปรดรอความเงียบงันยามวิกาล...";
+                            descElement.innerText = "ความมืดเข้าปกคลุม ทุกชีวิตกำลังหลับใหล โปรดรอรุ่งอรุณ...";
                         }
                     } else if (state === "day_phase") {
-                        phaseIndicator.innerText = "☀️ เฟสกลางวัน (DAY)";
-                        roleElement.innerHTML = "🗣️ ช่วงอภิปราย";
-                        roleElement.style.color = "#ffa502";
-                        descElement.innerText = "ตื่นรับแสงตะวัน! ร่วมกันพูดคุยและจับพิรุธคนที่น่าสงสัยในวง";
+                        phaseIndicator.innerText = "☀️ แสงตะวันรุ่งอรุณ";
+                        avatarElement.innerText = "🗣️";
+                        roleElement.innerHTML = "ช่วงอภิปรายพิพากษา";
+                        roleElement.style.color = "#ff9f43";
+                        descElement.innerText = "ร่วมกันวิเคราะห์หลักฐาน จับพิรุธ และหาตัวหมาป่าที่ซ่อนอยู่ร่วมกัน!";
                     } else if (state === "voting_phase") {
-                        phaseIndicator.innerText = "⚖️ เฟสโหวตประหาร";
-                        roleElement.innerHTML = "🗳️ ลงคะแนนเสียง";
+                        phaseIndicator.innerText = "⚖️ การตัดสินแห่งหมู่บ้าน";
+                        avatarElement.innerText = "🗳️";
+                        roleElement.innerHTML = "ลงคะแนนเสียง";
                         roleElement.style.color = "#e74c3c";
-                        descElement.innerText = "โหวตเลือกผู้ต้องสงสัยเพื่อขับไล่ออกจากหมู่บ้าน:";
+                        descElement.innerText = "โหวตขับไล่ผู้ต้องสงสัยที่ท่านคิดว่าเป็นหมาป่า:";
                         loadTargets(actionArea, "vote");
                     }
                 }
@@ -306,10 +413,10 @@
                     if (pId !== myPlayerId && pData.isAlive) {
                         const btn = document.createElement("button");
                         btn.className = "target-btn";
-                        btn.innerText = (mode === "kill" ? "🎯 ล่าเหยื่อ: " : "⚖️ โหวตประหาร: ") + pData.name;
+                        btn.innerText = (mode === "kill" ? "🎯 เลือกสังหาร: " : "⚖️ โหวตประหาร: ") + pData.name;
                         btn.onclick = () => {
                             playSound('click');
-                            alert("คุณเลือก " + pData.name + " เรียบร้อยแล้ว!");
+                            alert("บันทึกเป้าหมาย " + pData.name + " เรียบร้อย!");
                         };
                         container.appendChild(btn);
                     }
@@ -319,4 +426,3 @@
     </script>
 </body>
 </html>
-
