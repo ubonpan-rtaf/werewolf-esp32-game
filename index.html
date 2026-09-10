@@ -3,9 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Werewolf Game - Master Control</title>
-    <!-- โหลดฟอนต์ Prompt -->
-    <link href="https://fonts.googleapis.com/css2?family=Prompt:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <title>WEREWOLF ONLINE - Official Game Client</title>
+    <!-- Google Fonts: Prompt -->
+    <link href="https://fonts.googleapis.com/css2?family=Prompt:wght@300;400;600;700;900&display=swap" rel="stylesheet">
     <style>
         * {
             box-sizing: border-box;
@@ -14,42 +14,53 @@
         }
         body {
             font-family: 'Prompt', sans-serif;
-            background: radial-gradient(circle at center, #1e1e2f 0%, #0b0b0f 100%);
+            background: radial-gradient(circle at center, #1b1b2f 0%, #08080c 100%);
             color: #f1f2f6;
             min-height: 100vh;
             display: flex;
             justify-content: center;
             align-items: center;
-            padding: 16px;
+            padding: 20px;
+            overflow-x: hidden;
         }
         .game-container {
-            background: rgba(30, 30, 45, 0.7);
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
-            border: 1px solid rgba(255, 255, 255, 0.12);
-            padding: 40px 28px;
-            border-radius: 24px;
-            /* ปรับขนาดให้ยืดหยุ่นอัตโนมัติ: มือถือเต็มตา, คอมพิวเตอร์กว้างกำลังดี */
-            width: min(100%, 460px);
-            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.7);
+            background: rgba(25, 25, 38, 0.75);
+            backdrop-filter: blur(25px);
+            -webkit-backdrop-filter: blur(25px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 45px 30px;
+            border-radius: 28px;
+            width: min(100%, 480px);
+            box-shadow: 0 30px 60px rgba(0, 0, 0, 0.8), inset 0 1px 0 rgba(255, 255, 255, 0.1);
             text-align: center;
-            animation: fadeIn 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+            animation: slideUp 0.6s cubic-bezier(0.16, 1, 0.3, 1);
         }
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(15px) scale(0.97); }
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateY(30px) scale(0.95); }
             to { opacity: 1; transform: translateY(0) scale(1); }
         }
-        h2 {
-            font-size: clamp(24px, 5vw, 30px);
-            font-weight: 700;
+        .logo-icon {
+            font-size: 50px;
             margin-bottom: 10px;
-            color: #ff6b81;
+            animation: float 3s ease-in-out infinite;
+        }
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-8px); }
+        }
+        h2 {
+            font-size: clamp(26px, 5vw, 32px);
+            font-weight: 800;
+            margin-bottom: 8px;
+            background: linear-gradient(135deg, #ff6b81 0%, #ff4757 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
             letter-spacing: 0.5px;
         }
         p {
             font-size: clamp(14px, 3vw, 16px);
             color: #a4b0be;
-            margin-bottom: 28px;
+            margin-bottom: 30px;
             line-height: 1.6;
         }
         .input-group {
@@ -58,19 +69,19 @@
         input[type="text"] {
             width: 100%;
             padding: 16px 20px;
-            background: rgba(15, 15, 20, 0.8);
-            border: 2px solid rgba(255, 255, 255, 0.12);
+            background: rgba(12, 12, 16, 0.85);
+            border: 2px solid rgba(255, 255, 255, 0.1);
             border-radius: 16px;
             color: #fff;
-            font-size: 16px;
+            font-size: 17px;
             font-family: 'Prompt', sans-serif;
             outline: none;
             transition: all 0.3s ease;
         }
         input[type="text"]:focus {
             border-color: #ff4757;
-            box-shadow: 0 0 20px rgba(255, 71, 87, 0.35);
-            background: rgba(15, 15, 20, 0.95);
+            box-shadow: 0 0 25px rgba(255, 71, 87, 0.4);
+            background: rgba(12, 12, 16, 0.95);
         }
         .btn {
             width: 100%;
@@ -80,30 +91,30 @@
             border: none;
             border-radius: 16px;
             font-size: 18px;
-            font-weight: 600;
+            font-weight: 700;
             font-family: 'Prompt', sans-serif;
             cursor: pointer;
             transition: all 0.3s ease;
-            box-shadow: 0 6px 25px rgba(255, 71, 87, 0.4);
+            box-shadow: 0 8px 25px rgba(255, 71, 87, 0.45);
         }
         .btn:hover {
             opacity: 0.95;
-            transform: translateY(-2px);
-            box-shadow: 0 8px 30px rgba(255, 71, 87, 0.6);
+            transform: translateY(-3px);
+            box-shadow: 0 12px 35px rgba(255, 71, 87, 0.65);
         }
         .btn:active {
             transform: scale(0.98);
         }
         .status-badge {
             display: inline-block;
-            padding: 8px 18px;
+            padding: 8px 20px;
             background: rgba(46, 213, 115, 0.15);
             color: #2ed573;
             border-radius: 20px;
             font-size: 15px;
             font-weight: 600;
-            margin-bottom: 16px;
-            border: 1px solid rgba(46, 213, 115, 0.25);
+            margin-bottom: 20px;
+            border: 1px solid rgba(46, 213, 115, 0.3);
         }
         .pulse {
             animation: pulse 1.8s infinite ease-in-out;
@@ -114,26 +125,32 @@
             100% { opacity: 1; }
         }
         .role-card {
-            background: rgba(15, 15, 20, 0.9);
-            border-radius: 20px;
-            padding: 32px 24px;
+            background: rgba(12, 12, 16, 0.95);
+            border-radius: 22px;
+            padding: 35px 25px;
             margin-top: 10px;
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            box-shadow: inset 0 0 30px rgba(0,0,0,0.6);
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            box-shadow: inset 0 0 40px rgba(0,0,0,0.7);
+            animation: zoomIn 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        @keyframes zoomIn {
+            from { opacity: 0; transform: scale(0.9); }
+            to { opacity: 1; transform: scale(1); }
         }
         .role-title {
-            font-size: 14px;
+            font-size: 13px;
             color: #ffa502;
-            font-weight: 600;
+            font-weight: 700;
             text-transform: uppercase;
-            letter-spacing: 2px;
-            margin-bottom: 10px;
+            letter-spacing: 2.5px;
+            margin-bottom: 12px;
         }
         .role-name {
-            font-size: clamp(32px, 7vw, 42px);
-            font-weight: 700;
-            margin-bottom: 14px;
+            font-size: clamp(34px, 8vw, 44px);
+            font-weight: 900;
+            margin-bottom: 16px;
             letter-spacing: 0.5px;
+            text-shadow: 0 0 20px rgba(255,255,255,0.2);
         }
         .role-desc {
             font-size: clamp(14px, 3.5vw, 16px);
@@ -150,27 +167,29 @@
     <div class="game-container">
         <!-- Lobby Screen -->
         <div id="lobby-screen">
-            <h2>🐺 หมู่บ้านหมาป่า</h2>
-            <p>กรุณากรอกชื่อของคุณเพื่อเข้าร่วมวงสนทนา</p>
+            <div class="logo-icon">🐺</div>
+            <h2>หมู่บ้านหมาป่า</h2>
+            <p>กรอกชื่อหรือฉายาของคุณเพื่อเตรียมตัวเข้าสู่สมรภูมิเกมลับสมอง</p>
             <div class="input-group">
-                <input type="text" id="player-name" placeholder="ชื่อเล่น หรือ ฉายา..." autocomplete="off">
+                <input type="text" id="player-name" placeholder="ชื่อของคุณ..." autocomplete="off">
             </div>
-            <button class="btn" onclick="joinGame()">เข้าร่วมวง</button>
+            <button class="btn" onclick="joinGame()">เข้าร่วมวงสนทนา</button>
         </div>
         
         <!-- Waiting Screen -->
         <div id="waiting-screen" style="display:none;">
-            <h2>ยินดีต้อนรับ</h2>
+            <div class="logo-icon">⏳</div>
+            <h2>เตรียมพร้อมรับคำสั่ง</h2>
             <div class="status-badge">ผู้เล่น: <span id="display-name" style="color:#fff;"></span></div>
-            <p class="pulse" style="margin-top: 12px;">⏳ เข้าร่วมสำเร็จแล้ว<br>กำลังรอ Game Master กดเริ่มเกม...</p>
+            <p class="pulse" style="margin-top: 15px;">เข้าสู่ห้องสำเร็จแล้ว!<br>กำลังรอ Game Master (ESP32) ออกคำสั่งเริ่มเกม...</p>
         </div>
 
         <!-- Role Screen -->
         <div id="role-screen" style="display:none;">
             <div class="role-card" id="role-card-bg">
-                <div class="role-title">บทบาทของคุณในรอบนี้</div>
+                <div class="role-title">บทบาทลับเฉพาะของคุณ</div>
                 <div class="role-name" id="my-role">กำลังโหลด...</div>
-                <p class="role-desc" id="role-desc">ตั้งใจฟังคำสั่งจาก Game Master ให้ดีล่ะ!</p>
+                <p class="role-desc" id="role-desc">ตั้งใจฟังคำสั่งจาก Game Master ให้ดี ชัยชนะอยู่ในมือคุณ!</p>
             </div>
         </div>
     </div>
@@ -197,7 +216,7 @@
         function joinGame() {
             const nameInput = document.getElementById("player-name").value.trim();
             if (nameInput === "") {
-                alert("กรุณาใส่ชื่อของคุณด้วยครับ!");
+                alert("กรุณาใส่ชื่อของคุณก่อนเข้าร่วมครับ!");
                 return;
             }
 
@@ -231,12 +250,12 @@
                     if (role === "wolf") {
                         roleElement.innerHTML = "🐺 หมาป่า";
                         roleElement.style.color = "#ff4757";
-                        descElement.innerText = "คุณคือหมาป่า! คอยหาจังหวะจัดการชาวบ้านในยามค่ำคืนอย่างแนบเนียน";
+                        descElement.innerText = "คุณคือหมาป่า! ซ่อนตัวเนียนไปกับชาวบ้าน แล้วออกล่าเหยื่อในยามวิกาลอย่างเงียบเชียบ";
                         cardBg.style.borderColor = "rgba(255, 71, 87, 0.4)";
                     } else {
                         roleElement.innerHTML = "🧑 ชาวบ้าน";
                         roleElement.style.color = "#2ed573";
-                        descElement.innerText = "คุณคือชาวบ้านผู้บริสุทธิ์ ร่วมมือกับทุกคนเพื่อหาตัวหมาป่าให้เจอ";
+                        descElement.innerText = "คุณคือชาวบ้านผู้บริสุทธิ์ ใช้สัญชาตญาณและหลักฐานร่วมมือกับเพื่อนเพื่อกระชากหน้ากากหมาป่าให้ได้";
                         cardBg.style.borderColor = "rgba(46, 213, 115, 0.4)";
                     }
                 });
@@ -245,4 +264,3 @@
     </script>
 </body>
 </html>
-
