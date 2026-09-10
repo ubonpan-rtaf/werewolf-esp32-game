@@ -4,9 +4,11 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Werewolf Board Game</title>
+    
+    <!-- เชื่อมต่อไฟล์ style.css ที่เราแยกไว้ -->
     <link rel="stylesheet" href="style.css">
     
-    <!-- นำเข้า Firebase SDK (ใช้เวอร์ชัน Compat เพื่อความง่ายใน HTML) -->
+    <!-- โหลด Firebase SDK -->
     <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
 </head>
@@ -14,14 +16,20 @@
     <div id="game-container">
         <!-- หน้า Lobby -->
         <div id="lobby-screen">
-            <h1>เข้าสู่หมู่บ้าน</h1>
-            <input type="text" id="player-name" placeholder="ใส่ชื่อของคุณ...">
+            <h2>หมู่บ้านหมาป่า</h2>
+            <p>กรุณาใส่ชื่อเพื่อเข้าร่วมวง</p>
+            <input type="text" id="player-name" placeholder="ชื่อของคุณ...">
+            <br>
             <button onclick="joinGame()">เข้าร่วมวง</button>
         </div>
         
-        <!-- หน้าจออื่นๆ จะถูกซ่อน/แสดง ผ่าน JavaScript -->
+        <!-- ข้อความแจ้งเตือนสถานะ (ซ่อนไว้ก่อน) -->
+        <div id="status-message" style="display:none;">
+            ระบบ: รอผู้เล่นคนอื่น...
+        </div>
     </div>
 
+    <!-- เชื่อมต่อไฟล์ app.js (ต้องวางไว้ก่อนปิด tag body เสมอ) -->
     <script src="app.js"></script>
 </body>
 </html>
