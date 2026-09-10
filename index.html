@@ -110,12 +110,10 @@
         db.ref("werewolf_game/system/gameState").on("value", (snapshot) => {
             const state = snapshot.val();
             if (state === "role_reveal") {
-                // ซ่อนหน้าจอกรอกชื่อและหน้าจอรอให้หมด
                 document.getElementById("lobby-screen").style.display = "none";
                 document.getElementById("waiting-screen").style.display = "none";
                 document.getElementById("role-screen").style.display = "block";
                 
-                // ดึงบทบาทของตัวเองมาแสดง
                 db.ref("werewolf_game/players/" + myPlayerId + "/role").once("value", (roleSnap) => {
                     const role = roleSnap.val();
                     const roleElement = document.getElementById("my-role");
@@ -136,34 +134,4 @@
     </script>
 </body>
 </html>
-            });
-        }
 
-        // ดักฟังสถานะเกมจาก ESP32 ตลอดเวลา
-        db.ref("werewolf_game/system/gameState").on("value", (snapshot) => {
-            const state = snapshot.val();
-            if (state === "role_reveal") {
-                document.getElementById("waiting-screen").style.display = "none";
-                document.getElementById("role-screen").style.display = "block";
-                
-                // ดึงบทบาทของตัวเองมาแสดง
-                db.ref("werewolf_game/players/" + myPlayerId + "/role").once("value", (roleSnap) => {
-                    const role = roleSnap.val();
-                    const roleElement = document.getElementById("my-role");
-                    const descElement = document.getElementById("role-desc");
-
-                    if (role === "wolf") {
-                        roleElement.innerText = "🐺 หมาป่า (WOLF)";
-                        roleElement.style.color = "#e74c3c";
-                        descElement.innerText = "คุณคือหมาป่า! คอยหาจังหวะจัดการชาวบ้านในตอนกลางคืน";
-                    } else {
-                        roleElement.innerText = "🧑 ชาวบ้าน (VILLAGER)";
-                        roleElement.style.color = "#3498db";
-                        descElement.innerText = "คุณคือชาวบ้านผู้บริสุทธิ์ ช่วยกันจับผิดหมาป่าในตอนกลางวัน";
-                    }
-                });
-            }
-        });
-    </script>
-</body>
-</html>
