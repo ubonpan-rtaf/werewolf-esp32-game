@@ -100,7 +100,7 @@
     <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
 </head>
 <!-- ================= จบส่วนที่ 1 ================= -->
-<!-- ================= ส่วนที่ 2: โครงสร้างเนื้อหา HTML ================= -->
+<!-- ================= ส่วนที่ 2: โครงสร้างเนื้อหา HTML (อัปเดตคู่มือแบบละเอียดที่สุด) ================= -->
 <body>
 
     <!-- พื้นที่แสดงแจ้งเตือน (Toast) -->
@@ -151,37 +151,54 @@
                 
                 <!-- พื้นที่แสดงผลลัพธ์ (ใครตาย, ใครโดนโหวตออก) -->
                 <div id="vote-result-area"></div>
+
+                <!-- 🔥 ปุ่มเปิดคู่มือในหน้าเล่นเกม (อ่านได้ตลอดเวลา) -->
+                <button class="btn btn-secondary" onclick="openManual()" style="margin-top: 20px; font-size: 14px; padding: 12px; width: 100%; border-radius: 12px;">📖 ทบทวนคัมภีร์กฎกติกา</button>
             </div>
         </div>
     </div>
 
-    <!-- Modal คัมภีร์คู่มือ -->
+   <!-- Modal คัมภีร์คู่มือ (ฉบับอัปเกรดสกิลแฝง) -->
     <div id="manual-modal" class="modal">
-        <div class="modal-content">
-            <h3 style="color:#ffd700; text-align:center; font-size:22px; margin-bottom: 20px;">📖 คัมภีร์ศักดิ์สิทธิ์</h3>
+        <div class="modal-content" style="max-height: 88vh; padding: 35px 25px;">
+            <h3 style="color:#ffd700; text-align:center; font-size:24px; margin-bottom: 25px; text-transform: uppercase; text-shadow: 0 0 10px rgba(255,215,0,0.4);">📖 คัมภีร์สภาสนธยา & สกิลแฝง</h3>
             
-            <h4 style="color:#ff8c00; font-size: 16px;">🛠️ สกิลใหม่: เค้นความจริง (Interrogate)</h4>
+            <h4 style="color:#ff8c00; font-size: 16px; border-bottom: 1px solid rgba(255,140,0,0.3); padding-bottom: 5px;">🎯 เป้าหมายของสงคราม</h4>
             <p style="font-size:13.5px; color:#dcdde1; line-height:1.6; margin-bottom: 15px;">
-                กดใช้ในตอนกลางวันเพื่อสงครามจิตวิทยา! คนที่คุณกดเลือกจะได้รับการแจ้งเตือนว่าถูกจับผิด 
-                <b>พิเศษ:</b> หากคนถูกแกล้งไม่ใช่หมาป่า และไม่ถูกโหวตประหารในรอบนั้น จะได้รับ <span style="color:#2ed573; font-weight:bold;">ความน่าเชื่อถือ (Trust) +5%</span> 
+                - <b>ฝ่ายแสงสว่าง (ชาวบ้าน/ผู้หยั่งรู้/อัศวิน/นักปรุงยา):</b> ร่วมมือกันสืบสวนและโหวตประหารหมาป่า<br>
+                - <b>ฝ่ายเงามืด (หมาป่า):</b> แฝงตัว โกหก และลอบสังหารผู้บริสุทธิ์ในยามวิกาล
             </p>
 
-            <h4 style="color:#ff8c00; font-size: 16px;">👥 คลาสตัวละคร</h4>
+            <h4 style="color:#ff8c00; font-size: 16px; border-bottom: 1px solid rgba(255,140,0,0.3); padding-bottom: 5px;">🎭 คลาสตัวละคร และ สกิลแฝง (Passive Skills)</h4>
             <ul style="font-size:13.5px; color:#dcdde1; line-height:1.7; padding-left:20px; margin-bottom: 15px;">
-                <li>🐺 <b>Crimson Lycan:</b> หมาป่าโลหิต เลือกขย้ำเหยื่อในยามวิกาล</li>
-                <li>🔮 <b>Cyber Oracle:</b> ผู้หยั่งรู้ ส่องดูคลาสที่แท้จริงของผู้อื่นตอนกลางคืน</li>
-                <li>🛡️ <b>Aegis Guardian:</b> อัศวินโล่ (อัปเดตเร็วๆนี้) ปกป้องเพื่อนไม่ให้ถูกฆ่า</li>
-                <li>🧑 <b>Citizen:</b> ผู้เบิกทาง ใช้หลักฐานและเสียงโหวตตามล่าหาตัวคนร้าย</li>
+                <li>
+                    <span style="color:#ff4757; font-weight:bold;">🐺 Crimson Lycan (หมาป่าโลหิต):</span> ล่าเหยื่อตอนกลางคืน<br>
+                    ✨ <i>สกิลแฝง [Blood Frenzy]:</i> หากเหยื่อที่ฆ่ามีแต้ม Trust สูงสุด จะได้เบาะแสเงาของผู้หยั่งรู้ในคืนถัดไป
+                </li>
+                <li style="margin-top: 8px;">
+                    <span style="color:#9b59b6; font-weight:bold;">🔮 Cyber Oracle (ผู้หยั่งรู้):</span> ส่องความจริงตอนกลางคืน<br>
+                    ✨ <i>สกิลแฝງ [Quantum Vision]:</i> มีโอกาสส่องเห็นร่องรอยเป้าหมายที่หมาป่าแอบไปซุ่มในคืนก่อนหน้า
+                </li>
+                <li style="margin-top: 8px;">
+                    <span style="color:#3498db; font-weight:bold;">🛡️ Aegis Guardian (อัศวินโล่พลังงาน):</span> ปกป้องเพื่อนรัก<br>
+                    ✨ <i>สกิลแฝง [Retaliation Shield]:</i> หากบล็อกการโจมตีของหมาป่าสำเร็จ จะได้คำใบ้เงาตัวตนของหมาป่า
+                </li>
+                <li style="margin-top: 8px;">
+                    <span style="color:#e67e22; font-weight:bold;">🧪 Shadow Alchemist (นักเล่นแร่แปรธาตุ):</span> ปรุงยาและสลับขั้ว<br>
+                    ✨ <i>สกิลแฝง [Deadly Legacy]:</i> หากถูกโหวตประหาร จะสามารถพ่นพิษลากคนที่โหวตตัวเองสูงสุดลงหลุมไปด้วย 1 คน
+                </li>
+                <li style="margin-top: 8px;">
+                    <span style="color:#2ed573; font-weight:bold;">🧑 Citizen (ผู้เบิกทาง):</span> พลังแห่งมวลชน<br>
+                    ✨ <i>สกิลแฝง [Hidden Potential]:</i> แต้ม Trust เติบโตเร็ว และเพิ่มน้ำหนักเสียงโหวตในช่วงท้ายเกม
+                </li>
             </ul>
 
-            <h4 style="color:#ff8c00; font-size: 16px;">🕹️ ลำดับเฟส (ESP32 Game Master)</h4>
-            <p style="font-size:13px; color:#aaa; line-height:1.6;">
-                <b>K1:</b> สุ่มบทบาท <br>
-                <b>K2:</b> เลื่อนเฟส (แจกบทบาท ➔ กลางคืน ➔ กลางวัน ➔ โหวต ➔ ประกาศผล ➔ สรุปชนะ)<br>
-                <b>K3:</b> ล้างบอร์ด รีเซ็ตเกม<br>
-                <b>K4:</b> เสก AI Bot เข้าห้อง
+            <h4 style="color:#ff8c00; font-size: 16px; border-bottom: 1px solid rgba(255,140,0,0.3); padding-bottom: 5px;">💡 ระบบพิเศษ: Trust Score & การเค้นความจริง</h4>
+            <p style="font-size:13.5px; color:#dcdde1; line-height:1.6; margin-bottom: 15px;">
+                ตอนกลางวันสามารถกด <b>"เค้นความจริง"</b> ใส่เพื่อนได้ หากเป้าหมายไม่ใช่หมาป่าและรอดชีวิต จะได้ <span style="color:#2ed573; font-weight:bold;">Trust +5%</span> แต่ถ้าโดนหมาป่ากัด หลอดจะรีเซ็ตเป็น 0 ทันที!
             </p>
-            <button class="close-btn" onclick="closeManual()">รับทราบข้อตกลงสภา</button>
+
+            <button class="close-btn" onclick="closeManual()" style="box-shadow: 0 10px 20px rgba(212, 175, 55, 0.3);">ปิดคัมภีร์ กลับสู่สมรภูมิ</button>
         </div>
     </div>
 <!-- ================= จบส่วนที่ 2 ================= -->
