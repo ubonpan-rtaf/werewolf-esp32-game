@@ -185,7 +185,7 @@
         </div>
     </div>
 <!-- ================= จบส่วนที่ 2 ================= -->
-<!-- ================= ส่วนที่ 3: ระบบ JavaScript ================= -->
+<!-- ================= ส่วนที่ 3: ระบบ JavaScript (อัปเกรดตรรกะประมวลผล) ================= -->
     <script>
         // ================= 1. ระบบ Custom Toast Notification =================
         function showToast(message, type = 'normal') {
@@ -200,12 +200,8 @@
 
             toast.innerHTML = `<span style="font-size:18px;">${icon}</span> <div>${message}</div>`;
             container.appendChild(toast);
-
-            playSound('alert'); // เสียงเตือนเบาๆ
-
-            setTimeout(() => {
-                if (container.contains(toast)) container.removeChild(toast);
-            }, 4000);
+            playSound('alert');
+            setTimeout(() => { if (container.contains(toast)) container.removeChild(toast); }, 4000);
         }
 
         // ================= 2. เชื่อมต่อ Firebase =================
@@ -225,7 +221,7 @@
         localStorage.setItem("werewolf_player_id", myPlayerId);
         let hasJoined = false; let myRole = "villager"; let myTrust = 0; let wasInterrogated = false;
 
-        // ================= 3. ระบบจัดการเสียง (Smart Audio & Ducking) =================
+        // ================= 3. ระบบจัดการเสียง (Smart Audio) =================
         const bgmMusic = new Audio('wolf-music.mp3'); 
         bgmMusic.loop = true; bgmMusic.volume = 0.4;
         let isMusicPlaying = false; let currentVol = 0.4; let currentNpcAudio = null;
@@ -237,29 +233,22 @@
             'voting_phase': new Audio('npc-vote.mp3'),
             'result_phase': new Audio('npc-result.mp3')
         };
-        
-        // เสียงฉากจบ
         const winWolfAudio = new Audio('https://actions.google.com/sounds/v1/horror/monster_snarl.ogg');
         const winVillagerAudio = new Audio('https://actions.google.com/sounds/v1/crowds/crowd_cheer.ogg');
 
         const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-        
         function playSound(type) {
             if (audioCtx.state === 'suspended') audioCtx.resume();
             const osc = audioCtx.createOscillator(); const gain = audioCtx.createGain();
             osc.connect(gain); gain.connect(audioCtx.destination);
             
             if (type === 'click') {
-                osc.frequency.setValueAtTime(440, audioCtx.currentTime);
-                osc.frequency.exponentialRampToValueAtTime(880, audioCtx.currentTime + 0.1);
-                gain.gain.setValueAtTime(0.05, audioCtx.currentTime);
-                gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.1);
+                osc.frequency.setValueAtTime(440, audioCtx.currentTime); osc.frequency.exponentialRampToValueAtTime(880, audioCtx.currentTime + 0.1);
+                gain.gain.setValueAtTime(0.05, audioCtx.currentTime); gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.1);
                 osc.start(); osc.stop(audioCtx.currentTime + 0.1);
             } else if (type === 'alert') {
-                osc.frequency.setValueAtTime(261.63, audioCtx.currentTime);
-                osc.frequency.setValueAtTime(392.00, audioCtx.currentTime + 0.15);
-                gain.gain.setValueAtTime(0.1, audioCtx.currentTime);
-                gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.35);
+                osc.frequency.setValueAtTime(261.63, audioCtx.currentTime); osc.frequency.setValueAtTime(392.00, audioCtx.currentTime + 0.15);
+                gain.gain.setValueAtTime(0.1, audioCtx.currentTime); gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.35);
                 osc.start(); osc.stop(audioCtx.currentTime + 0.35);
             }
         }
@@ -269,44 +258,35 @@
         function playNpcVoice(phase) {
             if (currentNpcAudio) { currentNpcAudio.pause(); currentNpcAudio.currentTime = 0; }
             if(npcVoices[phase]) {
-                if(isMusicPlaying) bgmMusic.volume = 0.05; // Audio Ducking ลดเสียงเพลง
+                if(isMusicPlaying) bgmMusic.volume = 0.05;
                 currentNpcAudio = npcVoices[phase];
-                currentNpcAudio.play().catch(e => console.log("NPC Voice Blocked by Browser"));
+                currentNpcAudio.play().catch(e => console.log("AutoPlay block"));
                 currentNpcAudio.onended = () => { if(isMusicPlaying) bgmMusic.volume = currentVol; };
-            } else {
-                if(isMusicPlaying) bgmMusic.volume = currentVol;
-            }
+            } else { if(isMusicPlaying) bgmMusic.volume = currentVol; }
         }
 
         function toggleBGM() {
             const btn = document.getElementById("music-toggle-btn");
-            if (!isMusicPlaying) {
-                bgmMusic.play(); isMusicPlaying = true;
-                btn.innerText = "🔇 ปิดเพลงบรรยากาศ"; btn.style.color = "#ff4757";
-            } else {
-                bgmMusic.pause(); isMusicPlaying = false;
-                btn.innerText = "🎶 เปิดเพลงบรรยากาศ"; btn.style.color = "#2ed573";
-            }
+            if (!isMusicPlaying) { bgmMusic.play(); isMusicPlaying = true; btn.innerText = "🔇 ปิดเพลงบรรยากาศ"; btn.style.color = "#ff4757"; } 
+            else { bgmMusic.pause(); isMusicPlaying = false; btn.innerText = "🎶 เปิดเพลงบรรยากาศ"; btn.style.color = "#2ed573"; }
         }
 
         function openManual() { playSound('click'); document.getElementById("manual-modal").style.display = "flex"; }
         function closeManual() { playSound('click'); document.getElementById("manual-modal").style.display = "none"; }
 
-        // ================= 4. ระบบการเล่นเกมหลัก =================
+        // ================= 4. ระบบเกม =================
         function joinGame() {
             playSound('click');
             const nameInput = document.getElementById("player-name").value.trim();
             if (nameInput === "") return showToast("โปรดระบุฉายานักรบของคุณก่อน!", "error");
             
             db.ref("werewolf_game/players/" + myPlayerId).set({ name: nameInput, role: "waiting", isAlive: true, trust: 0 }).then(() => {
-                hasJoined = true; 
-                document.getElementById("lobby-screen").style.display = "none";
-                document.getElementById("game-screen").style.display = "block";
-                showToast("ยินดีต้อนรับเข้าสู่สมรภูมิรบ!", "normal");
+                hasJoined = true; document.getElementById("lobby-screen").style.display = "none";
+                document.getElementById("game-screen").style.display = "block"; showToast("ยินดีต้อนรับเข้าสู่สมรภูมิรบ!", "normal");
             });
         }
 
-        // ฟังการแจ้งเตือนถูกจับผิด (Prank Alert)
+        // แจ้งเตือนเมื่อโดนป่วน (Prank)
         db.ref("werewolf_game/pranks/" + myPlayerId).on("value", snap => {
             if (snap.exists() && snap.val() !== "") {
                 showToast(`คุณถูก <b>[${snap.val()}]</b> เพ่งเล็งและเค้นความจริง!`, "warning");
@@ -315,38 +295,27 @@
             }
         });
 
-        // ฟังคำสั่ง Reset จาก ESP32
+        // รีเซ็ตเกมจาก ESP32
         db.ref("werewolf_game/players/" + myPlayerId).on("value", (snap) => {
-           if (!snap.exists() && hasJoined) {
-               alert("สภาได้ล้างกระดานแล้ว... เริ่มต้นสงครามรอบใหม่!");
-               window.location.reload(); 
-           }
+           if (!snap.exists() && hasJoined) { alert("สภาได้ล้างกระดานแล้ว... กลับสู่ล้อบบี้!"); window.location.reload(); }
         });
 
         let lastState = ""; let playersData = {};
 
-        // ลูปหลักตามสถานะจาก ESP32
         db.ref("werewolf_game/system/gameState").on("value", (snapshot) => {
             const state = snapshot.val();
             if (!hasJoined) return;
 
             if(state !== lastState) {
                 playNpcVoice(state); lastState = state;
-                if(state === "voting_phase") db.ref("werewolf_game/votes").remove(); // ล้างโหวตเก่า
             }
 
-            const phaseIndicator = document.getElementById("phase-indicator");
-            const roleImg = document.getElementById("role-image");
-            const roleElement = document.getElementById("my-role");
-            const npcText = document.getElementById("npc-text");
-            const actionArea = document.getElementById("action-area");
-            const voteResultArea = document.getElementById("vote-result-area");
-            const mainContainer = document.getElementById("main-container");
-            const trustContainer = document.getElementById("trust-container");
-            const trustBar = document.getElementById("trust-bar");
-            const trustVal = document.getElementById("trust-val");
-            const portraitBorder = document.getElementById("portrait-border");
-            const cardBg = document.getElementById("role-card-bg");
+            const phaseIndicator = document.getElementById("phase-indicator"); const roleImg = document.getElementById("role-image");
+            const roleElement = document.getElementById("my-role"); const npcText = document.getElementById("npc-text");
+            const actionArea = document.getElementById("action-area"); const voteResultArea = document.getElementById("vote-result-area");
+            const mainContainer = document.getElementById("main-container"); const trustContainer = document.getElementById("trust-container");
+            const trustBar = document.getElementById("trust-bar"); const trustVal = document.getElementById("trust-val");
+            const portraitBorder = document.getElementById("portrait-border"); const cardBg = document.getElementById("role-card-bg");
             
             actionArea.innerHTML = ""; voteResultArea.innerHTML = "";
 
@@ -357,77 +326,53 @@
 
                 myRole = me.role || "villager"; myTrust = me.trust || 0;
                 
-                // ถ้ายืนยันว่าตายแล้ว (Ghost Mode)
                 if (!me.isAlive) {
-                    phaseIndicator.innerText = "สถานะ: สิ้นชีพในสงคราม"; 
-                    roleImg.src = "img-ghost.jpg"; roleElement.innerHTML = "วิญญาณผู้ล่วงลับ";
+                    phaseIndicator.innerText = "สถานะ: สิ้นชีพในสงคราม"; roleImg.src = "img-ghost.jpg"; roleElement.innerHTML = "วิญญาณผู้ล่วงลับ";
                     roleElement.style.color = "#a4b0be"; trustContainer.style.display = "none";
                     portraitBorder.style.background = "#333"; cardBg.style.borderColor = "rgba(164, 176, 190, 0.3)";
-                    npcText.innerText = "ร่างของเจ้าสูญสลายไปแล้ว... ทำได้เพียงเป็นพยานเฝ้ามองความล่มสลายของดินแดนนี้";
-                    return; // ไม่ต้องรันปุ่มให้กด
+                    npcText.innerText = "ร่างของเจ้าสูญสลายไปแล้ว... ทำได้เพียงเฝ้ามองความล่มสลายของดินแดนนี้";
+                    return; 
                 }
 
-                // ถ้ายังมีชีวิต อัปเดต UI 
-                trustContainer.style.display = "block";
-                trustBar.style.width = myTrust + "%"; trustVal.innerText = myTrust;
+                trustContainer.style.display = "block"; trustBar.style.width = myTrust + "%"; trustVal.innerText = myTrust;
 
-                if (myRole === "wolf") { 
-                    roleImg.src = "img-wolf.jpg"; roleElement.innerHTML = "Crimson Lycan"; 
-                    roleElement.style.color = "#ff4757"; portraitBorder.style.background = "linear-gradient(135deg, #ff4757, #8e0000)";
-                    cardBg.style.borderColor = "rgba(255, 71, 87, 0.5)";
-                } else if (myRole === "seer") { 
-                    roleImg.src = "img-seer.jpg"; roleElement.innerHTML = "Cyber Oracle"; 
-                    roleElement.style.color = "#9b59b6"; portraitBorder.style.background = "linear-gradient(135deg, #9b59b6, #4b0082)";
-                    cardBg.style.borderColor = "rgba(155, 89, 182, 0.5)";
-                } else { 
-                    roleImg.src = "img-villager.jpg"; roleElement.innerHTML = "Citizen"; 
-                    roleElement.style.color = "#2ed573"; portraitBorder.style.background = "linear-gradient(135deg, #2ed573, #006400)";
-                    cardBg.style.borderColor = "rgba(46, 213, 115, 0.5)";
-                }
+                if (myRole === "wolf") { roleImg.src = "img-wolf.jpg"; roleElement.innerHTML = "Crimson Lycan"; roleElement.style.color = "#ff4757"; portraitBorder.style.background = "linear-gradient(135deg, #ff4757, #8e0000)"; cardBg.style.borderColor = "rgba(255, 71, 87, 0.5)"; } 
+                else if (myRole === "seer") { roleImg.src = "img-seer.jpg"; roleElement.innerHTML = "Cyber Oracle"; roleElement.style.color = "#9b59b6"; portraitBorder.style.background = "linear-gradient(135deg, #9b59b6, #4b0082)"; cardBg.style.borderColor = "rgba(155, 89, 182, 0.5)"; } 
+                else { roleImg.src = "img-villager.jpg"; roleElement.innerHTML = "Citizen"; roleElement.style.color = "#2ed573"; portraitBorder.style.background = "linear-gradient(135deg, #2ed573, #006400)"; cardBg.style.borderColor = "rgba(46, 213, 115, 0.5)"; }
 
-                // สวิตช์เนื้อหาตาม Phase
+                // ================== ลอจิกการเล่นแต่ละเฟส ==================
                 if (state === "role_reveal") {
-                    phaseIndicator.innerText = "คลาสประจำตัว";
-                    npcText.innerText = myRole === "wolf" ? "ซ่อนความลับไว้ให้ลึกที่สุด เตรียมขย้ำในยามวิกาล..." : "จงหาความจริงที่ซ่อนอยู่ในเงามืดก่อนที่ทุกอย่างจะสายเกินไป!";
-                } 
-                else if (state === "night_phase") {
+                    phaseIndicator.innerText = "คลาสประจำตัว"; npcText.innerText = myRole === "wolf" ? "ซ่อนความลับไว้ให้ลึกที่สุด เตรียมขย้ำในยามวิกาล..." : "จงหาความจริงที่ซ่อนอยู่ในเงามืดก่อนที่ทุกอย่างจะสายเกินไป!";
+                } else if (state === "night_phase") {
                     phaseIndicator.innerText = "🌙 ราตรีกาลแห่งเงามืด";
                     if (myRole === "wolf") { npcText.innerText = "เลือกเหยื่อสังเวยของเจ้าในคืนนี้..."; loadTargets(actionArea, "kill", playersData, me.name); } 
                     else if (myRole === "seer") { npcText.innerText = "เพ่งจิตมองทะลุหน้ากากของผู้ที่เจ้าสงสัย..."; loadTargets(actionArea, "seer", playersData, me.name); } 
                     else { npcText.innerText = "ความมืดมิดปกคลุม ทุกชีวิตหลับใหล... ภาวนาอย่าให้ภัยร้ายมาเยือน"; }
-                } 
-                else if (state === "day_phase") {
-                    phaseIndicator.innerText = "☀️ แสงอรุณรุ่งสว่าง";
-                    npcText.innerText = "รุ่งอรุณสาดส่อง! คุณสามารถใช้สกิล [เค้นความจริง] เพื่อสงครามจิตวิทยา";
+                } else if (state === "day_phase") {
+                    phaseIndicator.innerText = "☀️ แสงอรุณรุ่งสว่าง"; npcText.innerText = "รุ่งอรุณสาดส่อง! คุณสามารถใช้สกิล [เค้นความจริง] เพื่อสงครามจิตวิทยา";
                     loadTargets(actionArea, "prank", playersData, me.name);
-                    processWolfKills(voteResultArea, playersData); // โชว์ว่าเมื่อคืนใครตาย
-                } 
-                else if (state === "voting_phase") {
-                    phaseIndicator.innerText = "⚖️ การพิพากษาแห่งสภา";
-                    npcText.innerText = "เวลาแห่งการพิพากษามาถึงแล้ว... จงตัดสินชะตา ใครคือผู้ที่ต้องชดใช้ด้วยชีวิต!";
+                    processWolfKills(voteResultArea, playersData); // ประมวลผลศพ
+                } else if (state === "voting_phase") {
+                    phaseIndicator.innerText = "⚖️ การพิพากษาแห่งสภา"; npcText.innerText = "เวลาแห่งการพิพากษามาถึงแล้ว... จงตัดสินชะตา ใครคือผู้ที่ต้องชดใช้ด้วยชีวิต!";
                     loadTargets(actionArea, "vote", playersData, me.name);
+                } else if (state === "result_phase") {
+                    phaseIndicator.innerText = "📜 ผลคำพิพากษา"; npcText.innerText = "สภาได้ตัดสินเจตจำนงแล้ว...";
+                    calculateVotesAndTrust(voteResultArea, playersData); // ประมวลผลโหวต
                 } 
-                else if (state === "result_phase") {
-                    phaseIndicator.innerText = "📜 ผลคำพิพากษา";
-                    npcText.innerText = "สภาได้ตัดสินเจตจำนงแล้ว...";
-                    calculateVotesAndTrust(voteResultArea, playersData);
-                } 
-                else if (state === "wolf_win") { // หมาป่าชนะ
-                    phaseIndicator.innerText = "🩸 อวสานแห่งแสงสว่าง";
-                    roleElement.innerHTML = "WOLVES WIN!"; roleElement.className = "glow-text-wolf";
+                // ================== ฉากจบ (Grand Finale) ==================
+                else if (state === "wolf_win") {
+                    phaseIndicator.innerText = "🩸 อวสานแห่งแสงสว่าง"; roleElement.innerHTML = "WOLVES WIN!"; roleElement.className = "glow-text-wolf";
                     npcText.innerText = "เสียงหอนกึกก้อง... หมู่บ้านถูกย้อมด้วยสีเลือด หมาป่าคือผู้ชนะอย่างแท้จริง!";
                     mainContainer.classList.add("epic-win-wolf"); winWolfAudio.play();
-                } 
-                else if (state === "villager_win") { // ชาวบ้านชนะ
-                    phaseIndicator.innerText = "✨ ชัยชนะแห่งแสงสว่าง";
-                    roleElement.innerHTML = "VILLAGERS WIN!"; roleElement.className = "glow-text-villager";
+                } else if (state === "villager_win") {
+                    phaseIndicator.innerText = "✨ ชัยชนะแห่งแสงสว่าง"; roleElement.innerHTML = "VILLAGERS WIN!"; roleElement.className = "glow-text-villager";
                     npcText.innerText = "แสงสว่างขับไล่ความมืดมิด! หมาป่าถูกกำจัดหมดสิ้น หมู่บ้านกลับมาสงบสุขอีกครั้ง!";
                     mainContainer.classList.add("epic-win-villager"); winVillagerAudio.play();
                 }
             });
         });
 
-        // ================= 5. ฟังก์ชันสร้างปุ่มกด (ส่อง, ฆ่า, โหวต, ป่วน) =================
+        // ================= 5. ฟังก์ชัน Action =================
         function loadTargets(container, mode, playersObj, myName) {
             Object.keys(playersObj).forEach(pId => {
                 if (pId !== myPlayerId && playersObj[pId].isAlive) {
@@ -441,37 +386,28 @@
                     btn.onclick = () => {
                         playSound('click');
                         if (mode === "seer") showToast(`ความจริง: <b>${playersObj[pId].name}</b> คือ [${playersObj[pId].role === 'wolf' ? 'หมาป่า 🐺' : 'ฝ่ายดี ✨'}]`, "mystic");
-                        else if (mode === "prank") {
-                            db.ref("werewolf_game/pranks/" + pId).set(myName);
-                            showToast(`ส่งคำท้าทายเค้นความจริงไปหา <b>${playersObj[pId].name}</b> แล้ว!`, "warning");
-                        }
-                        else if (mode === "kill") {
-                            db.ref("werewolf_game/wolf_kills/" + pId).set(true); 
-                            showToast(`หมายหัวสังหาร <b>${playersObj[pId].name}</b> เรียบร้อย!`, "error");
-                        }
-                        else if (mode === "vote") {
-                            db.ref("werewolf_game/votes/" + myPlayerId).set(pId); 
-                            showToast(`ส่งผลโหวตประหาร <b>${playersObj[pId].name}</b> ให้สภาแล้ว!`, "normal");
-                        }
+                        else if (mode === "prank") { db.ref("werewolf_game/pranks/" + pId).set(myName); showToast(`ส่งคำท้าทายเค้นความจริงไปหา <b>${playersObj[pId].name}</b> แล้ว!`, "warning"); }
+                        else if (mode === "kill") { db.ref("werewolf_game/wolf_kills/" + pId).set(true); showToast(`หมายหัวสังหาร <b>${playersObj[pId].name}</b> เรียบร้อย!`, "error"); }
+                        else if (mode === "vote") { db.ref("werewolf_game/votes/" + myPlayerId).set(pId); showToast(`ส่งผลโหวตประหาร <b>${playersObj[pId].name}</b> ให้สภาแล้ว!`, "normal"); }
                     };
                     container.appendChild(btn);
                 }
             });
         }
 
-        // ================= 6. ฟังก์ชันคำนวณผลลัพธ์ =================
+        // ================= 6. ฟังก์ชันประมวลผลการตายอย่างแม่นยำ (อัปเกรด) =================
         function processWolfKills(container, playersObj) {
             db.ref("werewolf_game/wolf_kills").once("value", (snap) => {
                 if(snap.exists()) {
                     let deadList = [];
                     snap.forEach(child => { 
                         let id = child.key; deadList.push(playersObj[id].name); 
-                        if(id === myPlayerId) { 
-                            db.ref("werewolf_game/players/" + myPlayerId + "/isAlive").set(false); 
-                            db.ref("werewolf_game/players/" + myPlayerId + "/trust").set(0); 
-                        }
+                        // 🔥 สั่งให้ทุกคนส่งคำสั่งประหารลง Database การันตีบอทหรือคนออกเกมก็ต้องตาย
+                        db.ref("werewolf_game/players/" + id + "/isAlive").set(false); 
                     });
-                    container.innerHTML = `<div class='vote-result-box' style='border-color:#9b59b6;'>รุ่งเช้านี้... มีผู้เสียชีวิตถูกพบในเงามืด: <b>${deadList.join(", ")}</b></div>`;
+                    container.innerHTML = `<div class='vote-result-box' style='border-color:#ff4757;'>รุ่งเช้านี้... มีผู้เสียชีวิตถูกพบในเงามืด: <b>${deadList.join(", ")}</b></div>`;
+                } else {
+                    container.innerHTML = `<div class='vote-result-box' style='border-color:#2ed573; color:#2ed573;'>รุ่งเช้านี้... ไม่มีใครเสียชีวิต หมู่บ้านปลอดภัย!</div>`;
                 }
             });
         }
@@ -479,7 +415,14 @@
         function calculateVotesAndTrust(container, playersObj) {
             db.ref("werewolf_game/votes").once("value", (snap) => {
                 const votes = snap.val();
-                if (!votes) { container.innerHTML = "<div class='vote-result-box'>ไม่มีผู้ใดถูกโหวต... หมาป่ายังลอยนวล!</div>"; return; }
+                if (!votes) { 
+                    container.innerHTML = "<div class='vote-result-box' style='border-color:#2ed573; color:#2ed573;'>ไม่มีผู้ใดถูกโหวตในสภา... ทุกคนปลอดภัย!</div>"; 
+                    if (wasInterrogated && myRole !== 'wolf') { // รอดแบบไม่มีคนโหวต ก็ได้ Trust
+                        myTrust = (myTrust || 0) + 5; db.ref("werewolf_game/players/" + myPlayerId + "/trust").set(myTrust);
+                        showToast("✨ ความจริงปรากฏ! คุณรอดพ้นข้อครหา ความน่าเชื่อถือ +5%", "mystic"); wasInterrogated = false;
+                    }
+                    return; 
+                }
                 
                 let tally = {}; Object.values(votes).forEach(tId => { tally[tId] = (tally[tId] || 0) + 1; });
                 let maxVotes = 0; let votedOutId = null;
@@ -494,12 +437,12 @@
                             ความจริงปรากฏ: <b>${p.name} คือ ${p.role === 'wolf' ? '<span style="color:#ff4757">หมาป่า! 🐺</span>' : '<span style="color:#2ed573">ผู้บริสุทธิ์... 🧑</span>'}</b>
                         </div>
                     `;
-                    // ถ้าเราคือคนที่ถูกโหวตออก = ตาย
-                    if(votedOutId === myPlayerId) { 
-                        db.ref("werewolf_game/players/" + myPlayerId + "/isAlive").set(false); 
-                    } 
-                    // ถ้าเราไม่โดนโหวตออก แถมโดนป่วนมา แถมไม่ใช่หมาป่า = ได้ Trust
-                    else if (wasInterrogated && myRole !== 'wolf') {
+                    
+                    // 🔥 สั่งประหารคนถูกโหวตออกลง Database การันตี 100%
+                    db.ref("werewolf_game/players/" + votedOutId + "/isAlive").set(false);
+                    
+                    if(votedOutId === myPlayerId) { wasInterrogated = false; } // เราตายเอง ไม่ต้องบวก Trust
+                    else if (wasInterrogated && myRole !== 'wolf') { // เรารอดชีวิต 
                         myTrust = (myTrust || 0) + 5;
                         db.ref("werewolf_game/players/" + myPlayerId + "/trust").set(myTrust);
                         showToast("✨ ความจริงปรากฏ! คุณรอดพ้นข้อครหา ความน่าเชื่อถือ +5%", "mystic");
@@ -509,8 +452,6 @@
             });
         }
     </script>
-</body>
-</html>
 <!-- ================= จบส่วนที่ 3 ================= -->
 
 
