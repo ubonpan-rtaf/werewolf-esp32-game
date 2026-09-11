@@ -158,6 +158,21 @@
         </div>
     </div>
 
+    <!-- ================= ฉากอินโทรวิดีโอเปิดตัว (Cinematic Intro Overlay) ================= -->
+    <div id="intro-screen" style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 9999; background: #000; display: flex; flex-direction: column; justify-content: center; align-items: center; overflow: hidden;">
+        <video autoplay muted loop playsinline id="intro-video" style="position: absolute; width: 100%; height: 100%; object-fit: cover; filter: brightness(0.65) contrast(1.1);">
+            <source src="lycan-intro.mp4" type="video/mp4">
+            เบราว์เซอร์ของคุณไม่รองรับวิดีโอ
+        </video>
+        
+        <!-- ข้อความและปุ่มกดทับบนวิดีโอ -->
+        <div style="position: relative; z-index: 2; text-align: center; background: rgba(10, 10, 18, 0.75); backdrop-filter: blur(10px); padding: 40px 30px; border-radius: 28px; border: 2px solid rgba(212, 175, 55, 0.5); box-shadow: 0 0 50px rgba(0,0,0,0.9); width: min(90%, 420px);">
+            <h1 style="font-size: 24px; font-weight: 900; background: linear-gradient(135deg, #ffd700, #ff4757); -webkit-background-clip: text; -webkit-text-fill-color: transparent; text-transform: uppercase; margin-bottom: 10px; letter-spacing: 2px;">Werewolf Legends</h1>
+            <p style="font-size: 13.5px; color: #dcdde1; margin-bottom: 25px;">มหากาพย์แห่งความมืดและคำสาปโลหิตกำลังเริ่มต้นขึ้น...</p>
+            <button class="btn" onclick="enterGameWorld()" style="background: linear-gradient(135deg, #ff4757, #ff6b81); color: white; box-shadow: 0 8px 25px rgba(255, 71, 87, 0.5);">🔥 เปิดผนึกประตูมิติ (เข้าสู่เกม)</button>
+        </div>
+    </div>
+    
    <!-- Modal คัมภีร์คู่มือ (ฉบับอัปเกรดสกิลแฝง) -->
     <div id="manual-modal" class="modal">
         <div class="modal-content" style="max-height: 88vh; padding: 35px 25px;">
@@ -204,6 +219,26 @@
 <!-- ================= จบส่วนที่ 2 ================= -->
 <!-- ================= ส่วนที่ 3: ระบบ JavaScript (อัปเกรดตรรกะประมวลผล) ================= -->
     <script>
+// ฟังก์ชันกดเข้าสู่โลกเกมจากหน้าอินโทรวิดีโอ
+        function enterGameWorld() {
+            playSound('click');
+            
+            // เล่นเพลงประกอบหลักทันทีตามสิทธิ์ผู้ใช้คลิก
+            bgmMusic.play().then(() => {
+                isMusicPlaying = true;
+                const btn = document.getElementById("music-toggle-btn");
+                if(btn) { btn.innerText = "🔇 ปิดเพลงบรรยากาศ"; btn.style.color = "#ff4757"; }
+            }).catch(e => console.log("BGM play error"));
+
+            // ซ่อนหน้าจออินโทรวิดีโอแบบFade Out
+            const introScreen = document.getElementById("intro-screen");
+            introScreen.style.transition = "opacity 0.8s ease";
+            introScreen.style.opacity = "0";
+            setTimeout(() => {
+                introScreen.style.display = "none";
+            }, 800);
+        }
+        
         // ================= 1. ระบบ Custom Toast Notification =================
         function showToast(message, type = 'normal') {
             const container = document.getElementById('toast-container');
