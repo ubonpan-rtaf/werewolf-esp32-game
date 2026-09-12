@@ -1,49 +1,66 @@
-body {
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    background-color: #1a1a1a;
-    color: #ffffff;
-    text-align: center;
-    padding: 50px;
-}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: 'Prompt', sans-serif; background: #05050a; color: #f1f2f6; min-height: 100vh; display: flex; justify-content: center; align-items: center; overflow: hidden; }
 
-#game-container {
-    background-color: #333333;
-    padding: 30px;
-    border-radius: 10px;
-    max-width: 400px;
-    margin: auto;
-    box-shadow: 0 4px 10px rgba(0,0,0,0.5);
-}
+/* วิดีโอพื้นหลัง Intro */
+#bg-video { position: fixed; top: 0; left: 0; min-width: 100%; min-height: 100%; z-index: -10; object-fit: cover; filter: brightness(0.25) contrast(1.2); }
 
-input[type="text"] {
-    padding: 10px;
-    width: 80%;
-    margin-bottom: 20px;
-    border-radius: 5px;
-    border: none;
-    font-size: 16px;
-}
+.game-container { background: rgba(16, 16, 26, 0.75); backdrop-filter: blur(15px); -webkit-backdrop-filter: blur(15px); border: 2px solid rgba(212, 175, 55, 0.4); padding: 30px 20px; border-radius: 24px; width: 100%; max-width: 450px; max-height: 95vh; display: flex; flex-direction: column; box-shadow: 0 0 50px rgba(0,0,0,0.9); text-align: center; position: relative; z-index: 10; overflow-y: auto; }
+.game-container::-webkit-scrollbar { width: 0px; }
 
-button {
-    padding: 10px 20px;
-    background-color: #e74c3c;
-    color: white;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    font-size: 16px;
-    transition: background-color 0.3s;
-}
+h2 { font-size: clamp(22px, 5vw, 26px); font-weight: 900; margin-bottom: 5px; background: linear-gradient(135deg, #ffd700, #ff4757); -webkit-background-clip: text; -webkit-text-fill-color: transparent; text-transform: uppercase; }
+.subtitle { font-size: 13px; color: #aaa; margin-bottom: 20px; letter-spacing: 1px; }
 
-button:hover {
-    background-color: #c0392b;
-}
+input[type="text"] { width: 100%; padding: 14px 18px; background: rgba(0, 0, 0, 0.6); border: 1px solid rgba(212, 175, 55, 0.3); border-radius: 12px; color: #fff; font-size: 16px; margin-bottom: 12px; font-family: 'Prompt'; transition: 0.3s; }
+input[type="text"]:focus { border-color: #ffd700; box-shadow: 0 0 15px rgba(212, 175, 55, 0.3); outline: none; }
 
-#status-message {
-    color: #2ecc71;
-    margin-top: 20px;
-    font-weight: bold;
-    font-size: 18px;
-    white-space: pre-line; /* ทำให้รองรับการขึ้นบรรทัดใหม่ด้วย \n */
-}
+/* ปุ่มกดดึงภาพ ui-button.png */
+.btn { width: 100%; padding: 15px; background: url('ui-button.png') center/100% 100% no-repeat, linear-gradient(135deg, #d4af37, #aa8c2c); color: #111; border: none; border-radius: 12px; font-size: 16px; font-weight: 800; cursor: pointer; margin-bottom: 10px; text-transform: uppercase; text-shadow: 0 1px 2px rgba(255,255,255,0.3); transition: 0.2s; box-shadow: 0 5px 15px rgba(212,175,55,0.3); }
+.btn:hover { transform: translateY(-2px); filter: brightness(1.1); }
+.btn-secondary { background: rgba(255, 255, 255, 0.08); border: 1px solid rgba(255, 255, 255, 0.18); color: #dcdde1; box-shadow: none; }
+
+/* การ์ดดึงภาพ ui-card-frame.png */
+.role-card-epic { flex: 1; display: flex; flex-direction: column; background: url('ui-card-frame.png') center/100% 100% no-repeat, rgba(15, 15, 20, 0.9); border-radius: 20px; padding: 25px 15px; position: relative; border: none; }
+.role-portrait-container { width: 130px; height: 130px; margin: 0 auto 10px auto; border-radius: 50%; padding: 3px; background: linear-gradient(135deg, #ffd700, #ff4757); box-shadow: 0 0 25px rgba(255, 71, 87, 0.4); overflow: hidden; }
+.role-portrait { width: 100%; height: 100%; border-radius: 50%; object-fit: cover; background-color: #000; }
+.role-name-epic { font-size: 28px; font-weight: 900; margin-bottom: 5px; text-transform: uppercase; text-shadow: 0 0 10px rgba(255,255,255,0.2); }
+
+/* หลอดความน่าเชื่อถือดึงภาพ ui-trust-bar.png */
+.trust-bar-container { background: url('ui-trust-bar.png') center/100% 100% no-repeat, rgba(0,0,0,0.8); border-radius: 10px; width: 90%; margin: 10px auto; height: 22px; position: relative; overflow: hidden; border: 1px solid rgba(46,213,115,0.4); }
+.trust-bar-fill { background: linear-gradient(90deg, #2ed573, #1abc9c); height: 100%; width: 0%; transition: width 1s ease; }
+.trust-text { position: absolute; width: 100%; top: 0; left: 0; line-height: 22px; font-size: 11px; font-weight: bold; color: white; text-shadow: 1px 1px 2px #000; }
+
+/* กล่องข้อความ NPC ดึงภาพ ui-dialogue-box.png */
+.npc-dialogue { background: url('ui-dialogue-box.png') center/100% 100% no-repeat, rgba(0, 0, 0, 0.8); border: none !important; padding: 15px; border-radius: 10px; margin: 10px 0; font-size: 13.5px; text-align: left; font-style: italic; color: #dfe4ea; }
+
+/* ป้ายหัวข้อและห้อง ดึงภาพ ui-header-banner.png */
+.role-badge-title, .room-info { background: url('ui-header-banner.png') center/100% 100% no-repeat, rgba(0,0,0,0.8); border: none !important; color: #ffd700; font-weight: bold; text-shadow: 0 1px 2px #000; padding: 6px 14px; border-radius: 12px; }
+.room-info { position: absolute; top: 15px; right: 15px; font-size: 11px; }
+
+/* หลอดเวลาอัตโนมัติ */
+.timer-container { width: 90%; background: rgba(0,0,0,0.8); border: 1px solid #ffd700; border-radius: 10px; height: 22px; margin: 10px auto; position: relative; overflow: hidden; box-shadow: 0 0 10px rgba(212,175,55,0.3); }
+.timer-bar { height: 100%; width: 100%; background: linear-gradient(90deg, #ff4757, #ff8c00, #ffd700); transition: width 1s linear; }
+.timer-text { position: absolute; width: 100%; top: 0; left: 0; line-height: 22px; font-size: 11px; font-weight: 700; color: #fff; text-shadow: 1px 1px 2px #000; }
+
+.action-scroll-area { max-height: 30vh; overflow-y: auto; padding-right: 5px; flex-shrink: 0; }
+.action-scroll-area::-webkit-scrollbar { width: 4px; } .action-scroll-area::-webkit-scrollbar-thumb { background: #d4af37; border-radius: 4px; }
+.target-btn { width: 100%; padding: 12px; margin: 6px 0; background: rgba(255,255,255,0.05); border: 1px solid rgba(212, 175, 55, 0.3); color: white; border-radius: 10px; font-family: 'Prompt'; font-size: 14px; text-align: left; padding-left: 15px; cursor: pointer; transition: 0.2s; }
+.target-btn:hover { background: rgba(212,175,55,0.2); border-color: #ffd700; transform: scale(1.02); }
+.btn-prank { background: rgba(155, 89, 182, 0.15); border-color: rgba(155, 89, 182, 0.5); }
+
+.vote-result-box { background: rgba(231, 76, 60, 0.15); border: 1px solid rgba(231, 76, 60, 0.4); padding: 15px; border-radius: 12px; margin-top: 15px; color: #fff; font-size: 14px; text-align: left; }
+.vote-winner { font-size: 20px; font-weight: 900; color: #ff4757; text-align: center; margin: 10px 0; }
+
+.epic-win-wolf { background: radial-gradient(circle, #4a0000 0%, #0a0000 100%) !important; box-shadow: 0 0 120px rgba(255,0,0,0.6) !important; }
+.epic-win-villager { background: radial-gradient(circle, #003311 0%, #000a05 100%) !important; box-shadow: 0 0 120px rgba(46,213,115,0.6) !important; }
+.glow-text-wolf { color: #ff4757; text-shadow: 0 0 30px #ff0000; font-size: 35px; }
+.glow-text-villager { color: #2ed573; text-shadow: 0 0 30px #00ff00; font-size: 35px; }
+
+.modal { display: none; position: fixed; z-index: 100; left: 0; top: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.85); justify-content: center; align-items: center; padding: 20px; }
+.modal-content { background: url('ui-modal-bg.png') center/100% 100% no-repeat, rgba(20, 20, 25, 0.95); border: none !important; padding: 30px; border-radius: 24px; width: min(100%, 420px); max-height: 80vh; overflow-y: auto; text-align: left; box-shadow: 0 25px 60px rgba(0,0,0,0.8); }
+.close-btn { background: url('ui-button.png') center/100% 100% no-repeat, #d4af37; color: #111; border: none; padding: 12px; width: 100%; border-radius: 12px; font-weight: 800; margin-top: 20px; cursor: pointer; font-family: 'Prompt'; }
+
+#toast-container { position: fixed; top: 20px; left: 50%; transform: translateX(-50%); z-index: 999999; display: flex; flex-direction: column; gap: 8px; width: 90%; max-width: 350px; pointer-events: none; }
+.custom-toast { background: rgba(20, 20, 30, 0.95); border-left: 4px solid #2ed573; color: white; padding: 14px; border-radius: 10px; font-size: 13.5px; display: flex; align-items: center; gap: 10px; animation: toastIn 0.4s forwards, toastOut 0.4s ease 3s forwards; }
+@keyframes toastIn { from { opacity: 0; transform: translateY(-20px); } to { opacity: 1; transform: translateY(0); } }
+@keyframes toastOut { from { opacity: 1; transform: translateY(0); } to { opacity: 0; transform: translateY(-20px); } }
 
