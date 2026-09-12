@@ -6,116 +6,94 @@
     <title>WEREWOLF LEGENDS: EPIC FANTASY RPG</title>
     <link href="https://fonts.googleapis.com/css2?family=Prompt:wght@300;400;600;700;900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
 </head>
 <body>
-    <video autoplay muted loop playsinline id="bg-video">
-        <source src="lycan-intro.mp4" type="video/mp4">
-    </video>
 
-    <div id="intro-screen" style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 99999; background: #000; display: flex; flex-direction: column; justify-content: center; align-items: center; overflow: hidden;">
-        <video autoplay muted loop playsinline style="position: absolute; width: 100%; height: 100%; object-fit: cover; filter: brightness(0.5) contrast(1.1);">
-            <source src="lycan-intro.mp4" type="video/mp4">
-        </video>
-        <div style="position: relative; z-index: 2; text-align: center; background: rgba(10, 10, 15, 0.85); backdrop-filter: blur(15px); padding: 35px 25px; border-radius: 20px; border: 2px solid #c5a059; width: min(90%, 350px);">
-            <h1 style="font-size: 22px; font-weight: 900; background: linear-gradient(135deg, #ffd700, #ff4757); -webkit-background-clip: text; -webkit-text-fill-color: transparent; margin-bottom: 8px;">Werewolf Legends</h1>
-            <p style="font-size: 12px; color: #dcdde1; margin-bottom: 20px;">มหากาพย์แห่งความมืดและคำสาปโลหิต...</p>
-            <button class="btn" onclick="enterGameWorld()">🔥 เปิดผนึกประตูมิติ</button>
-        </div>
-    </div>
-
-    <div id="gm-modal" class="modal">
-        <div class="modal-content" style="text-align: center;">
-            <h3 style="color:#ffd700; font-size:16px; margin-bottom: 15px;">👑 แผงควบคุมสภา (GAME MASTER)</h3>
-            <button class="btn" onclick="gmStartGame()">▶️ เริ่มเกม / แจกบท</button>
-            <button class="btn" onclick="gmNextPhase()">⏭️ ข้ามเฟสถัดไป</button>
-            <button class="btn" onclick="gmAddBot()">🤖 เพิ่มบอท (Add Bot)</button>
-            <button class="btn btn-danger" onclick="gmResetGame()">🔄 ยุบห้องเซิร์ฟเวอร์</button>
-            <button class="close-btn" onclick="toggleGMPanel()">ปิดแผงควบคุม</button>
-        </div>
-    </div>
-
+    <!-- แจ้งเตือนข้อความสถานะระบบ -->
     <div id="toast-container"></div>
 
-    <div class="game-container" id="main-container">
-        
-        <div id="lobby-screen" style="flex: 1; display: flex; flex-direction: column; justify-content: center;">
-            <h2>Werewolf Legends</h2>
-            <div class="subtitle">ระบบเซิร์ฟเวอร์อิสระ & มัลติเพลเยอร์</div>
-            
-            <input type="text" id="player-name" placeholder="ระบุฉายานักรบของคุณ..." autocomplete="off">
-            
-            <div style="text-align: left; margin-bottom: 8px;">
-                <label style="font-size: 11px; color: #c5a059; font-weight: bold;">เลือกหรือสร้างเซิร์ฟเวอร์:</label>
-                <select id="room-select" onchange="onRoomSelectChange()">
-                    <option value="NEW">➕ สร้างห้องใหม่ (New Server)</option>
-                </select>
-            </div>
-            
-            <input type="text" id="room-id" placeholder="รหัสห้อง 4 หลัก (เพื่อจอยเพื่อน)" autocomplete="off">
-            
-            <button class="btn" onclick="joinRoom()">⚔️ เข้าสู่สนามรบ</button>
-            <button class="btn btn-secondary" onclick="openManual()">📖 เปิดคัมภีร์กฎเกม</button>
+    <!-- ปุ่มเปิดแผง Game Master -->
+    <button class="gm-toggle-btn" onclick="toggleGMPanel()" title="เปิดแผงควบคุมสภา">👑</button>
 
-            <div style="background: rgba(0,0,0,0.6); padding: 12px; border-radius: 12px; margin-top: 10px; border: 1px solid rgba(197,160,89,0.3);">
-                <div style="display:flex; justify-content: space-between; margin-bottom: 8px;">
-                    <span style="font-size: 11px; color: #ffd700;">🎵 ระดับเสียงเพลงประกอบ</span>
-                    <span style="font-size: 11px; color: #2ed573; cursor: pointer;" onclick="toggleBGM()" id="bgm-status">เปิด/ปิด</span>
-                </div>
-                <div style="display:flex; align-items:center; gap:10px;">
-                    <span>🔈</span><input type="range" id="vol-slider" min="0" max="1" step="0.05" value="0.3" style="flex:1; accent-color:#ffd700;" oninput="changeVolume(this.value)"><span>🔊</span>
+    <!-- ฉาก Intro เข้าเกม -->
+    <div id="intro-screen" class="intro-screen">
+        <video autoplay muted loop playsinline id="intro-video" class="intro-video">
+            <source src="lycan-intro.mp4" type="video/mp4">
+        </video>
+        <div class="intro-content">
+            <h1 class="intro-title">Werewolf Legends</h1>
+            <p class="intro-subtitle">มหากาพย์แห่งความมืดและคำสาปโลหิต...</p>
+            <button class="btn btn-intro" onclick="enterGameWorld()">🔥 เปิดผนึกประตูมิติ</button>
+        </div>
+    </div>
+
+    <!-- แผงควบคุม Game Master (แทนปุ่ม ESP32) -->
+    <div id="gm-panel" class="gm-panel-container">
+        <div class="gm-title">👑 แผงควบคุม GAME MASTER</div>
+        <div class="gm-btn-group">
+            <button class="gm-btn" onclick="gmStartGame()">▶️ เริ่มเกม/แจกบท</button>
+            <button class="gm-btn" onclick="gmNextPhase()">⏭️ เลื่อนเฟส</button>
+            <button class="gm-btn" onclick="gmAddBot()">🤖 เพิ่มบอท</button>
+            <button class="gm-btn gm-btn-danger" onclick="gmResetGame()">🔄 ล้างกระดาน</button>
+        </div>
+    </div>
+
+    <!-- กล่องหลักของเกม -->
+    <div class="game-container" id="main-container">
+        <!-- หน้า Lobby -->
+        <div id="lobby-screen">
+            <h2>Werewolf Legends</h2>
+            <p>มหากาพย์แฟนตาซี RPG ดาร์กเวิลด์</p>
+            <input type="text" id="player-name" placeholder="ระบุฉายานักรบของคุณ..." autocomplete="off">
+            <button class="btn" onclick="joinGame()">🛡️ เข้าร่วมสงคราม</button>
+            <button class="btn btn-secondary" onclick="openManual()">📖 เปิดคัมภีร์กฎเกม & สกิล</button>
+            
+            <div class="music-panel">
+                <button class="btn-music" id="music-toggle-btn" onclick="toggleBGM()">🎶 เปิดเพลงบรรยากาศแฟนตาซี</button>
+                <div class="volume-control">
+                    <span>🔈</span>
+                    <input type="range" min="0" max="1" step="0.05" value="0.4" class="volume-slider" oninput="changeVolume(this.value)">
+                    <span>🔊</span>
                 </div>
             </div>
         </div>
         
-        <div id="game-screen" style="display:none; height: 100%; flex-direction: column; position: relative;">
-            <div class="room-info" id="room-display">ROOM: XXXX</div>
-            
-            <button class="gm-toggle-btn" id="gm-toggle-btn" onclick="toggleGMPanel()" title="แผงควบคุมสภา">👑</button>
-
+        <!-- หน้าจอตอนเล่นเกม (Game Screen) -->
+        <div id="game-screen" style="display:none;">
             <div class="role-card-epic" id="role-card-bg">
-                <div class="role-badge-title" id="phase-indicator">รอผู้เล่น...</div>
-                
+                <div class="role-badge-title" id="phase-indicator">สถานะ: เตรียมพร้อม</div>
                 <div class="role-portrait-container" id="portrait-border">
-                    <img src="" id="role-image" class="role-portrait" onerror="this.src='data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' viewBox=\'0 0 100 100\'><rect width=\'100\' height=\'100\' fill=\'%23111\'/></svg>'">
+                    <img src="" id="role-image" class="role-portrait" onerror="this.src='data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' viewBox=\'0 0 100 100\'><rect width=\'100\' height=\'100\' fill=\'%23111\'/><text x=\'50\' y=\'55\' font-size=\'40\' text-anchor=\'middle\' fill=\'white\'>🛡️</text></svg>'">
                 </div>
                 <div class="role-name-epic" id="my-role">กำลังโหลด...</div>
                 
                 <div class="trust-bar-container" id="trust-container" style="display:none;">
                     <div class="trust-bar-fill" id="trust-bar"></div>
-                    <div class="bar-text">ความน่าเชื่อถือ <span id="trust-val">0</span>%</div>
-                </div>
-                <div class="timer-container" id="timer-box" style="display:none;">
-                    <div class="timer-bar" id="timer-bar"></div>
-                    <div class="bar-text" id="timer-text">กำลังประมวลผล...</div>
+                    <div class="trust-text">ความน่าเชื่อถือ <span id="trust-val">0</span>%</div>
                 </div>
 
-                <div class="npc-dialogue" id="npc-text">เชื่อมต่อระบบสภา...</div>
-                
+                <div class="npc-dialogue" id="npc-text">กำลังเชื่อมต่อมิติ...</div>
                 <div id="action-area" class="action-scroll-area"></div>
-                
-                <div id="vote-result-area" style="flex-shrink: 0;"></div>
-                
-                <button class="btn btn-secondary btn-danger" onclick="leaveRoom()" style="margin-top:8px; margin-bottom:0; flex-shrink:0;">🚪 ออกจากเกม / กลับหน้าหลัก</button>
+                <div id="vote-result-area"></div>
             </div>
         </div>
     </div>
 
+    <!-- Modal คู่มือและกติกา -->
     <div id="manual-modal" class="modal">
         <div class="modal-content">
-            <h3 style="color:#ffd700; text-align:center; font-size:16px; margin-bottom: 12px;">📖 คัมภีร์ศักดิ์สิทธิ์</h3>
-            <p style="font-size:12px; color:#dcdde1; line-height:1.6; margin-bottom: 10px;">
-                <b>• แผงควบคุม GM:</b> คนสร้างห้องให้กดปุ่ม 👑 มุมขวาบน เพื่อเปิดแผงควบคุม เริ่มเกม เลื่อนเฟส หรือเพิ่มบอทได้ตลอดเวลา<br>
-                <b>• บทบาท:</b> หมาป่า (ล่าเหยื่อ), ผู้หยั่งรู้ (ส่องบทบาท), อัศวิน (กางโล่), นักปรุงยา (ใช้ยา), ชาวบ้าน (สืบสวน)<br>
-                <b>• กฎพิเศษ:</b> โหวตเสมอ = ไม่มีคนตาย, แกล้งจับผิดคนบริสุทธิ์แล้วเขารอด = Trust +5%<br>
-                <b>• ออโต้รัน:</b> เกมรันเวลาอัตโนมัติ ไม่ต้องมีคนคุมก็เล่นได้
-            </p>
-            <button class="close-btn" onclick="closeManual()">รับทราบ</button>
+            <h3 class="modal-title">📖 คัมภีร์ศักดิ์สิทธิ์</h3>
+            <h4 class="modal-subtitle">🛠️ สกิลใหม่: เค้นความจริง (Interrogate)</h4>
+            <p class="modal-text">กดใช้ในตอนกลางวันเพื่อสงครามจิตวิทยา! หากคนถูกแกล้งไม่ใช่หมาป่า และรอดจากการโหวตประหาร จะได้รับ <span style="color:#2ed573; font-weight:bold;">Trust +5%</span></p>
+            <h4 class="modal-subtitle">🕹️ ผู้คุมเกม (Game Master)</h4>
+            <p class="modal-text" style="color:#aaa;">คุณสามารถกดไอคอน 👑 มุมขวาบน เพื่อเปิดแผงควบคุมเกม ดำเนินการแจกบท เลื่อนเฟสเวลา และรีเซ็ตเกมได้ทันที (ใช้แทน ESP32)</p>
+            <button class="close-btn" onclick="closeManual()">รับทราบข้อตกลงสภา</button>
         </div>
     </div>
 
-    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
-    <script src="app.js"></script>
+    <script src="script.js"></script>
 </body>
 </html>
 
