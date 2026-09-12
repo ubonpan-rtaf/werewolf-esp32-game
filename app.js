@@ -1,5 +1,5 @@
 /* ==========================================================
-   WEREWOLF LEGENDS: ALGORITHM & LOGIC (V3 - MASTERPIECE)
+   WEREWOLF LEGENDS: ALGORITHM & LOGIC (FIXED GM & TIMER)
    ========================================================== */
 
 function showToast(msg, type='normal') {
@@ -21,7 +21,6 @@ localStorage.setItem("ww_player_id", myPlayerId);
 let currentRoom = ""; let isHost = false; let myRole = "villager"; let myTrust = 0; let wasInterrogated = false; let isDead = false;
 let phaseEndTime = 0; let timerInterval = null; let lastState = "";
 
-// ================= ระบบเสียง =================
 const bgm = new Audio('wolf-music.mp3'); bgm.loop = true; bgm.volume = 0.3; let isBgmPlaying = false;
 const winWolfAudio = new Audio('https://actions.google.com/sounds/v1/horror/monster_snarl.ogg');
 const winVillagerAudio = new Audio('https://actions.google.com/sounds/v1/crowds/crowd_cheer.ogg');
@@ -49,8 +48,8 @@ function playNpcVoice(phase) {
 function changeVolume(val) { bgm.volume = parseFloat(val); }
 function toggleBGM() {
     playSound('click'); const status = document.getElementById("bgm-status");
-    if(isBgmPlaying){ bgm.pause(); isBgmPlaying=false; if(status) status.innerText="ระบบเสียง: ปิด"; showToast("ปิดเพลงประกอบแล้ว"); } 
-    else { bgm.play(); isBgmPlaying=true; if(status) status.innerText="ระบบเสียง: เปิด"; showToast("เปิดเพลงประกอบแล้ว"); }
+    if(isBgmPlaying){ bgm.pause(); isBgmPlaying=false; if(status) status.innerText="ปิด"; showToast("ปิดเพลงประกอบแล้ว"); } 
+    else { bgm.play(); isBgmPlaying=true; if(status) status.innerText="เปิด"; showToast("เปิดเพลงประกอบแล้ว"); }
 }
 function enterGameWorld() {
     playSound('click'); bgm.play().then(() => { isBgmPlaying = true; }).catch(e => {});
@@ -61,7 +60,6 @@ function enterGameWorld() {
 function openManual() { playSound('click'); document.getElementById("manual-modal").style.display = "flex"; }
 function closeManual() { playSound('click'); document.getElementById("manual-modal").style.display = "none"; }
 
-// ================= ระบบห้อง =================
 db.ref("werewolf_rooms").on("value", snap => {
     const select = document.getElementById("room-select"); if(!select) return;
     select.innerHTML = '<option value="NEW">➕ สร้างห้องใหม่ (Host New Server)</option>';
@@ -103,23 +101,21 @@ async function joinRoom() {
     document.getElementById("game-screen").style.display = "flex";
     document.getElementById("room-display").innerText = "ROOM: " + currentRoom;
     
-    if(isHost) {
-        document.getElementById("gm-toggle-btn").style.display = "flex"; // โชว์ปุ่ม GM เฉพาะ Host
-    }
+    // โชว์ปุ่ม 👑 เฉพาะคนเป็น Host
+    if(isHost) { document.getElementById("gm-toggle-btn").style.display = "flex"; }
     
     listenToGame();
     showToast("เข้าสู่ห้องสำเร็จ!", "normal");
 }
 
 function leaveRoom() {
-    if(confirm("ต้องการออกจากห้องนี้ และกลับหน้าหลักใช่หรือไม่?")) {
+    if(confirm("ต้องการออกจากเกม และกลับหน้าหลักใช่หรือไม่?")) {
         playSound('alert');
         db.ref(`werewolf_rooms/${currentRoom}/players/${myPlayerId}`).remove();
         window.location.reload();
     }
 }
 
-// ================= ระบบเชื่อมต่อและการเล่นเกม =================
 function listenToGame() {
     db.ref(`werewolf_rooms/${currentRoom}/pranks/${myPlayerId}`).on("value", snap => {
         if (snap.exists() && snap.val() !== "") {
@@ -129,7 +125,6 @@ function listenToGame() {
         }
     });
 
-    // ตรวจสอบว่า Host สั่งล้างห้องหรือไม่
     db.ref(`werewolf_rooms/${currentRoom}/system`).on("value", snap => {
         const sys = snap.val(); 
         if(!sys) { alert("สภาล่ม (Host สั่งยุบห้อง) ระบบจะพากลับหน้าหลัก"); window.location.reload(); return; }
@@ -160,8 +155,12 @@ function listenToGame() {
     });
 }
 
-// ================= 🔥 แผงควบคุม GAME MASTER (เฉพาะ Host) 🔥 =================
-function toggleGMPanel() { playSound('click'); const panel = document.getElementById('gm-panel'); panel.style.display = panel.style.display === 'flex' ? 'none' : 'flex'; }
+// ================= 🔥 แผงควบคุม GAME MASTER (Modal) 🔥 =================
+function toggleGMPanel() { 
+    playSound('click'); 
+    const panel = document.getElementById('gm-modal'); 
+    panel.style.display = panel.style.display === 'flex' ? 'none' : 'flex'; 
+}
 
 async function gmStartGame() {
     playSound('click'); toggleGMPanel();
@@ -173,14 +172,16 @@ async function gmStartGame() {
 async function gmNextPhase() { playSound('click'); toggleGMPanel(); forceNextPhase(); }
 
 function gmAddBot() {
-    playSound('click'); let botId = "bot_" + Date.now(); let botName = "Hero_Bot_" + Math.floor(Math.random()*90+10);
+    playSound('click'); toggleGMPanel();
+    let botId = "bot_" + Date.now(); let botName = "Hero_Bot_" + Math.floor(Math.random()*90+10);
     db.ref(`werewolf_rooms/${currentRoom}/players/${botId}`).set({ name: botName, role: "waiting", isAlive: true, trust: 0 });
     showToast(`เพิ่มบอท ${botName} สำเร็จ!`, "normal");
 }
 
 async function gmResetGame() {
-    playSound('alert');
+    toggleGMPanel();
     if(confirm("ต้องการยุบห้องนี้ใช่หรือไม่? ทุกคนจะเด้งออกทันที!")) {
+        playSound('alert');
         await db.ref(`werewolf_rooms/${currentRoom}`).remove();
     }
 }
@@ -324,4 +325,8 @@ async function showVotes(container) {
     if(isTie || !target) { container.innerHTML = `<div class='vote-result-box' style='border-color:#ffd700;'>⚖️ มติสภาเสียงเท่ากัน... ไม่มีผู้ใดถูกขับไล่!</div>`; return; }
 
     const pSnap = await db.ref(`werewolf_rooms/${currentRoom}/players/${target}`).once("value"); const p = pSnap.val();
-    container.innerHTML = `<div class='vote-re
+    container.innerHTML = `<div class='vote-result-box'>มติสภา (${max} เสียง) ขับไล่ <div class='vote-winner'>${p.name}</div><hr style='border:1px solid rgba(255,255,255,0.1); margin:8px 0;'>ความจริง: <b>${p.name} คือ ${p.role==='wolf'?'<span style="color:#ff4757">หมาป่า! 🐺</span>':'<span style="color:#2ed573">ผู้บริสุทธิ์... 🧑</span>'}</b></div>`;
+    
+    if(target === myPlayerId) { db.ref(`werewolf_rooms/${currentRoom}/players/${target}/isAlive`).set(false); wasInterrogated = false; } 
+    else if(wasInterrogated && myRole !== 'wolf') { myTrust+=5; db.ref(`werewolf_rooms/${currentRoom}/players/${myPlayerId}/trust`).set(myTrust); showToast("✨ รอดพ้นข้อครหา Trust +5%", "mystic"); wasInterrogated = false; }
+}
