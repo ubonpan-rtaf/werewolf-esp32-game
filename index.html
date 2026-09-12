@@ -114,6 +114,7 @@
 
     <!-- ฉากอินโทรวิดีโอ (ล็อค Z-index) -->
     <div id="intro-screen" style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 9999; background: #000; display: flex; flex-direction: column; justify-content: center; align-items: center; overflow: hidden;">
+        <!-- เพิ่ม pointer-events: none ป้องกันวิดีโอขวางการสัมผัสจอ -->
         <video autoplay muted loop playsinline id="intro-video" style="position: absolute; width: 100%; height: 100%; object-fit: cover; filter: brightness(0.65) contrast(1.1); pointer-events: none;">
             <source src="lycan-intro.mp4" type="video/mp4">
         </video>
@@ -146,7 +147,7 @@
             <span class="timer-text" id="timer-display">⏳ 0s</span>
         </div>
 
-        <!-- หน้า Lobby (เพิ่มระบบสร้างห้อง/เข้าห้อง) -->
+        <!-- หน้า Lobby (มีระบบสร้างห้อง/เข้าห้องครบถ้วน) -->
         <div id="lobby-screen">
             <h2>Werewolf Legends</h2>
             <p>ระบุชื่อและสร้าง หรือเข้าร่วมห้องสมรภูมิ</p>
@@ -189,7 +190,7 @@
         </div>
     </div>
 
-        <!-- Modal คัมภีร์คู่มือ (อัปเดตคลาสใหม่ครบชุด) -->
+    <!-- Modal คัมภีร์คู่มือ (อัปเดตคลาสใหม่ครบชุด Alchemist, Guardian, ฯลฯ) -->
     <div id="manual-modal" class="modal">
         <div class="modal-content">
             <h3 style="color:#ffd700; text-align:center; font-size:22px; margin-bottom: 20px;">📖 คัมภีร์ & ระบบสกิลแฝง</h3>
