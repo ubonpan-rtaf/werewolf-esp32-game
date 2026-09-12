@@ -11,15 +11,13 @@
 </head>
 <body>
 
-    <!-- แจ้งเตือนข้อความสถานะระบบ -->
     <div id="toast-container"></div>
 
-    <!-- ปุ่มเปิดแผง Game Master -->
     <button class="gm-toggle-btn" onclick="toggleGMPanel()" title="เปิดแผงควบคุมสภา">👑</button>
 
-    <!-- ฉาก Intro เข้าเกม -->
+    <!-- ฉาก Intro เข้าเกม (เพิ่ม pointer-events: none ที่ video ป้องกันการแย่งแตะหน้าจอ) -->
     <div id="intro-screen" class="intro-screen">
-        <video autoplay muted loop playsinline id="intro-video" class="intro-video">
+        <video autoplay muted loop playsinline id="intro-video" class="intro-video" style="pointer-events: none;">
             <source src="lycan-intro.mp4" type="video/mp4">
         </video>
         <div class="intro-content">
@@ -29,7 +27,6 @@
         </div>
     </div>
 
-    <!-- แผงควบคุม Game Master (แทนปุ่ม ESP32) -->
     <div id="gm-panel" class="gm-panel-container">
         <div class="gm-title">👑 แผงควบคุม GAME MASTER</div>
         <div class="gm-btn-group">
@@ -40,9 +37,7 @@
         </div>
     </div>
 
-    <!-- กล่องหลักของเกม -->
     <div class="game-container" id="main-container">
-        <!-- หน้า Lobby -->
         <div id="lobby-screen">
             <h2>Werewolf Legends</h2>
             <p>มหากาพย์แฟนตาซี RPG ดาร์กเวิลด์</p>
@@ -60,7 +55,6 @@
             </div>
         </div>
         
-        <!-- หน้าจอตอนเล่นเกม (Game Screen) -->
         <div id="game-screen" style="display:none;">
             <div class="role-card-epic" id="role-card-bg">
                 <div class="role-badge-title" id="phase-indicator">สถานะ: เตรียมพร้อม</div>
@@ -81,7 +75,6 @@
         </div>
     </div>
 
-    <!-- Modal คู่มือและกติกา -->
     <div id="manual-modal" class="modal">
         <div class="modal-content">
             <h3 class="modal-title">📖 คัมภีร์ศักดิ์สิทธิ์</h3>
