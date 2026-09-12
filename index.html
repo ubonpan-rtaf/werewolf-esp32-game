@@ -1,3 +1,4 @@
+<!-- ================= ส่วนที่ 1: HTML Head และ CSS ================= -->
 <!DOCTYPE html>
 <html lang="th">
 <head>
@@ -5,39 +6,124 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>WEREWOLF LEGENDS: EPIC FANTASY RPG</title>
     <link href="https://fonts.googleapis.com/css2?family=Prompt:wght@300;400;600;700;900&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="style.css">
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        
+        body { 
+            font-family: 'Prompt', sans-serif; 
+            background: linear-gradient(rgba(10, 10, 18, 0.85), rgba(5, 5, 12, 0.95)), url('https://images.unsplash.com/photo-1518709268805-4e9042af9f23?q=80&w=1920&auto=format&fit=crop') no-repeat center center fixed; 
+            background-size: cover; color: #f1f2f6; min-height: 100vh; display: flex; 
+            align-items: flex-start; 
+            padding: 60px 15px 120px 15px; 
+            transition: background 2s ease, box-shadow 2s ease; overflow-x: hidden; 
+        }
+        
+        .game-container { 
+            background: rgba(16, 16, 26, 0.86); backdrop-filter: blur(25px); -webkit-backdrop-filter: blur(25px); 
+            border: 2px solid rgba(212, 175, 55, 0.35); padding: 35px 24px; border-radius: 32px; width: min(100%, 480px); 
+            box-shadow: 0 35px 70px rgba(0, 0, 0, 0.95), inset 0 0 20px rgba(212, 175, 55, 0.1); text-align: center; 
+            position: relative; animation: fadeIn 0.8s cubic-bezier(0.16, 1, 0.3, 1); 
+            margin: auto; margin-bottom: 80px; 
+        }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(20px) scale(0.95); } to { opacity: 1; transform: translateY(0) scale(1); } }
+        
+        h2 { font-size: 28px; font-weight: 900; margin-bottom: 8px; background: linear-gradient(135deg, #ffd700 0%, #ff8c00 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; text-transform: uppercase; letter-spacing: 1px; }
+        p { font-size: 14.5px; color: #b2bec3; margin-bottom: 24px; line-height: 1.6; }
+        
+        input[type="text"] { width: 100%; padding: 16px 20px; background: rgba(10, 10, 15, 0.92); border: 2px solid rgba(212, 175, 55, 0.25); border-radius: 16px; color: #fff; font-size: 17px; font-family: 'Prompt', sans-serif; outline: none; margin-bottom: 16px; transition: 0.3s; }
+        input[type="text"]:focus { border-color: #ffd700; box-shadow: 0 0 25px rgba(212, 175, 55, 0.4); }
+        .btn { width: 100%; padding: 16px; background: linear-gradient(135deg, #d4af37 0%, #aa8c2c 100%); color: #111; border: none; border-radius: 16px; font-size: 17px; font-weight: 800; font-family: 'Prompt', sans-serif; cursor: pointer; transition: all 0.3s; margin-bottom: 12px; text-transform: uppercase; box-shadow: 0 8px 25px rgba(212, 175, 55, 0.35); }
+        .btn:hover { transform: translateY(-3px); box-shadow: 0 12px 30px rgba(212, 175, 55, 0.55); }
+        .btn-secondary { background: rgba(255, 255, 255, 0.08); border: 1px solid rgba(255, 255, 255, 0.18); color: #dcdde1; box-shadow: none; }
+        
+        .music-panel { background: rgba(10, 10, 15, 0.85); border: 1px solid rgba(212, 175, 55, 0.3); border-radius: 16px; padding: 14px; margin-top: 15px; display: flex; flex-direction: column; gap: 10px; }
+        .btn-music { background: rgba(46, 213, 115, 0.15); border: 1px solid rgba(46, 213, 115, 0.35); color: #2ed573; font-size: 14px; padding: 12px; border-radius: 12px; font-weight: 700; cursor: pointer; font-family: 'Prompt'; transition: 0.3s; }
+        
+        .role-card-epic { background: linear-gradient(135deg, rgba(22, 22, 35, 0.95) 0%, rgba(10, 10, 16, 0.98) 100%); border-radius: 24px; padding: 30px 20px; border: 2px solid rgba(212, 175, 55, 0.4); position: relative; box-shadow: inset 0 0 40px rgba(0,0,0,0.85), 0 15px 35px rgba(0,0,0,0.6); transition: border-color 0.5s ease; }
+        .role-badge-title { font-size: 13px; color: #ffd700; font-weight: 700; letter-spacing: 2.5px; margin-bottom: 18px; display: inline-block; padding: 6px 16px; background: rgba(212, 175, 55, 0.12); border-radius: 20px; border: 1px solid rgba(212, 175, 55, 0.3); text-transform: uppercase; }
+        .role-portrait-container { width: 140px; height: 140px; margin: 0 auto 15px auto; border-radius: 50%; padding: 4px; background: linear-gradient(135deg, #ffd700, #ff8c00); animation: floatAvatar 4s ease-in-out infinite; box-shadow: 0 0 25px rgba(212, 175, 55, 0.3); transition: background 0.5s ease; }
+        .role-portrait { width: 100%; height: 100%; border-radius: 50%; object-fit: cover; border: 4px solid #1a1a2e; background-color: #111; }
+        @keyframes floatAvatar { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-8px); } }
+        .role-name-epic { font-size: 32px; font-weight: 900; margin-bottom: 12px; text-transform: uppercase; letter-spacing: 1px; text-shadow: 0 0 15px rgba(255,255,255,0.2); }
+        
+        .trust-bar-container { background: rgba(0,0,0,0.6); border-radius: 12px; width: 85%; margin: 15px auto; height: 18px; border: 1px solid rgba(255,255,255,0.15); overflow: hidden; position: relative; box-shadow: inset 0 0 10px rgba(0,0,0,0.8); }
+        .trust-bar-fill { background: linear-gradient(90deg, #2ed573, #1abc9c); height: 100%; width: 0%; transition: width 1s cubic-bezier(0.4, 0, 0.2, 1); }
+        .trust-text { position: absolute; width: 100%; text-align: center; top: 0; left: 0; font-size: 11px; font-weight: bold; color: white; line-height: 18px; }
+
+        .npc-dialogue { background: rgba(0, 0, 0, 0.7); border-left: 4px solid #d4af37; padding: 14px 16px; border-radius: 10px; margin: 20px 0; font-size: 14.5px; color: #dfe4ea; text-align: left; font-style: italic; line-height: 1.6; }
+        .npc-dialogue::before { content: '📜 สาส์นจากผู้คุมสภา:'; display: block; font-style: normal; font-weight: 700; color: #ffd700; font-size: 12px; margin-bottom: 6px; }
+        
+        .action-scroll-area { max-height: 40vh; overflow-y: auto; padding-right: 8px; margin-top: 15px; }
+        .action-scroll-area::-webkit-scrollbar { width: 6px; }
+        .action-scroll-area::-webkit-scrollbar-thumb { background: rgba(212, 175, 55, 0.5); border-radius: 4px; }
+        
+        .target-btn { display: block; width: 100%; padding: 15px; margin: 10px 0; background: rgba(255,255,255,0.06); border: 1px solid rgba(212, 175, 55, 0.25); color: white; border-radius: 14px; cursor: pointer; font-family: 'Prompt'; transition: all 0.2s; font-size: 15px; text-align: left; padding-left: 20px; font-weight: 600; }
+        .target-btn:hover { background: rgba(212,175,55,0.25); border-color: #ffd700; transform: scale(1.02); }
+        .btn-prank { background: rgba(155, 89, 182, 0.15); border-color: rgba(155, 89, 182, 0.5); }
+        
+        .vote-result-box { background: rgba(231, 76, 60, 0.15); border: 1px solid rgba(231, 76, 60, 0.4); padding: 18px; border-radius: 14px; margin-top: 20px; color: #fff; font-size: 15px; text-align: left; line-height: 1.6; animation: slideUp 0.5s ease; }
+        .vote-winner { font-size: 22px; font-weight: 900; color: #ff4757; text-align: center; margin: 12px 0; text-shadow: 0 0 10px rgba(255, 71, 87, 0.5); }
+        @keyframes slideUp { from { opacity: 0; transform: translateY(15px); } to { opacity: 1; transform: translateY(0); } }
+
+        .epic-win-wolf { background: radial-gradient(circle, #4a0000 0%, #0a0000 100%) !important; box-shadow: 0 0 120px rgba(255,0,0,0.6), inset 0 0 50px rgba(255,0,0,0.3) !important; border-color: #ff4757 !important; }
+        .epic-win-villager { background: radial-gradient(circle, #003311 0%, #000a05 100%) !important; box-shadow: 0 0 120px rgba(46,213,115,0.6), inset 0 0 50px rgba(46,213,115,0.3) !important; border-color: #2ed573 !important; }
+        .glow-text-wolf { color: #ff4757; text-shadow: 0 0 30px #ff0000, 0 0 10px #ff0000; font-size: 40px; }
+        .glow-text-villager { color: #2ed573; text-shadow: 0 0 30px #00ff00, 0 0 10px #00ff00; font-size: 40px; }
+
+        .modal { display: none; position: fixed; z-index: 10005; left: 0; top: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.88); backdrop-filter: blur(8px); justify-content: center; align-items: center; padding: 20px; }
+        .modal-content { background: rgba(20, 20, 25, 0.98); border: 2px solid #d4af37; padding: 30px; border-radius: 24px; width: min(100%, 450px); max-height: 85vh; overflow-y: auto; text-align: left; box-shadow: 0 25px 60px rgba(0,0,0,0.8); }
+        .close-btn { background: linear-gradient(135deg, #ffd700, #ff8c00); color: #111; border: none; padding: 15px; width: 100%; border-radius: 14px; font-weight: 800; margin-top: 25px; cursor: pointer; font-family: 'Prompt'; }
+        
+        #toast-container { position: fixed; top: 20px; left: 50%; transform: translateX(-50%); z-index: 10006; display: flex; flex-direction: column; gap: 10px; width: 90%; max-width: 400px; pointer-events: none; }
+        .custom-toast { background: rgba(20, 20, 30, 0.95); border-left: 5px solid #2ed573; color: white; padding: 16px 20px; border-radius: 12px; font-family: 'Prompt'; font-size: 14.5px; box-shadow: 0 10px 30px rgba(0,0,0,0.6); display: flex; align-items: center; gap: 12px; animation: toastIn 0.4s forwards, toastOut 0.4s ease 3.5s forwards; opacity: 0; }
+        .custom-toast.error { border-color: #ff4757; } .custom-toast.warning { border-color: #ffd700; } .custom-toast.mystic { border-color: #9b59b6; }
+        @keyframes toastIn { from { opacity: 0; transform: translateY(-30px); } to { opacity: 1; transform: translateY(0); } }
+        @keyframes toastOut { from { opacity: 1; transform: translateY(0); } to { opacity: 0; transform: translateY(-30px); } }
+
+        .gm-panel-container { position: fixed; bottom: 0; left: 0; width: 100%; background: rgba(10,10,15,0.95); backdrop-filter: blur(10px); border-top: 2px solid #d4af37; padding: 15px; z-index: 10001; display: none; flex-direction: column; align-items: center; box-shadow: 0 -10px 30px rgba(0,0,0,0.8); }
+        .gm-title { color: #ffd700; font-size: 12px; font-weight: bold; margin-bottom: 10px; letter-spacing: 1px; }
+        .gm-btn-group { display: flex; gap: 8px; width: min(100%, 480px); justify-content: center; flex-wrap: wrap; }
+        .gm-btn { flex: 1; min-width: 100px; background: rgba(212,175,55,0.15); border: 1px solid rgba(212,175,55,0.5); color: #fff; padding: 10px; border-radius: 8px; font-family: 'Prompt'; font-size: 13px; font-weight: 600; cursor: pointer; transition: 0.2s; }
+        .gm-btn:hover { background: rgba(212,175,55,0.3); transform: translateY(-2px); }
+        .gm-btn-danger { background: rgba(255,71,87,0.15); border-color: #ff4757; }
+        .gm-btn-danger:hover { background: rgba(255,71,87,0.3); }
+        .gm-toggle-btn { position: fixed; top: 15px; right: 15px; background: rgba(0,0,0,0.6); border: 1px solid #d4af37; color: #ffd700; width: 45px; height: 45px; border-radius: 50%; font-size: 20px; cursor: pointer; z-index: 10002; box-shadow: 0 0 15px rgba(212,175,55,0.3); display: flex; justify-content: center; align-items: center; }
+    </style>
     <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
 </head>
+  <!-- ================= ส่วนที่ 2: โครงสร้าง HTML (UI ภายใน Body) ================= -->
 <body>
-
     <div id="toast-container"></div>
 
     <button class="gm-toggle-btn" onclick="toggleGMPanel()" title="เปิดแผงควบคุมสภา">👑</button>
 
-    <!-- ฉาก Intro เข้าเกม (เพิ่ม pointer-events: none ที่ video ป้องกันการแย่งแตะหน้าจอ) -->
-    <div id="intro-screen" class="intro-screen">
-        <video autoplay muted loop playsinline id="intro-video" class="intro-video" style="pointer-events: none;">
+    <!-- ฉากอินโทรวิดีโอ (ล็อค Z-index) -->
+    <div id="intro-screen" style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 9999; background: #000; display: flex; flex-direction: column; justify-content: center; align-items: center; overflow: hidden;">
+        <!-- เพิ่ม pointer-events: none ป้องกันวิดีโอขวางการสัมผัสจอ -->
+        <video autoplay muted loop playsinline id="intro-video" style="position: absolute; width: 100%; height: 100%; object-fit: cover; filter: brightness(0.65) contrast(1.1); pointer-events: none;">
             <source src="lycan-intro.mp4" type="video/mp4">
         </video>
-        <div class="intro-content">
-            <h1 class="intro-title">Werewolf Legends</h1>
-            <p class="intro-subtitle">มหากาพย์แห่งความมืดและคำสาปโลหิต...</p>
-            <button class="btn btn-intro" onclick="enterGameWorld()">🔥 เปิดผนึกประตูมิติ</button>
+        <div style="position: relative; z-index: 2; text-align: center; background: rgba(10, 10, 18, 0.75); backdrop-filter: blur(10px); padding: 40px 30px; border-radius: 28px; border: 2px solid rgba(212, 175, 55, 0.5); box-shadow: 0 0 50px rgba(0,0,0,0.9); width: min(90%, 420px);">
+            <h1 style="font-size: 24px; font-weight: 900; background: linear-gradient(135deg, #ffd700, #ff4757); -webkit-background-clip: text; -webkit-text-fill-color: transparent; text-transform: uppercase; margin-bottom: 10px; letter-spacing: 2px;">Werewolf Legends</h1>
+            <p style="font-size: 13.5px; color: #dcdde1; margin-bottom: 25px;">มหากาพย์แห่งความมืดและคำสาปโลหิต...</p>
+            <button class="btn" onclick="enterGameWorld()" style="background: linear-gradient(135deg, #ff4757, #ff6b81); color: white;">🔥 เปิดผนึกประตูมิติ</button>
         </div>
     </div>
 
+    <!-- แผงควบคุม Game Master -->
     <div id="gm-panel" class="gm-panel-container">
         <div class="gm-title">👑 แผงควบคุม GAME MASTER</div>
         <div class="gm-btn-group">
             <button class="gm-btn" onclick="gmStartGame()">▶️ เริ่มเกม/แจกบท</button>
-            <button class="gm-btn" onclick="gmNextPhase()">⏭️ เลื่อนเฟส</button>
+            <button class="gm-btn" onclick="gmNextPhase()">⏭️ เลื่อนเฟสถัดไป</button>
             <button class="gm-btn" onclick="gmAddBot()">🤖 เพิ่มบอท</button>
             <button class="gm-btn gm-btn-danger" onclick="gmResetGame()">🔄 ล้างกระดาน</button>
         </div>
     </div>
 
     <div class="game-container" id="main-container">
+        <!-- หน้า Lobby -->
         <div id="lobby-screen">
             <h2>Werewolf Legends</h2>
             <p>มหากาพย์แฟนตาซี RPG ดาร์กเวิลด์</p>
@@ -47,14 +133,13 @@
             
             <div class="music-panel">
                 <button class="btn-music" id="music-toggle-btn" onclick="toggleBGM()">🎶 เปิดเพลงบรรยากาศแฟนตาซี</button>
-                <div class="volume-control">
-                    <span>🔈</span>
-                    <input type="range" min="0" max="1" step="0.05" value="0.4" class="volume-slider" oninput="changeVolume(this.value)">
-                    <span>🔊</span>
+                <div style="display:flex; align-items:center; gap:10px; font-size:13px; color:#b2bec3; margin-top:8px;">
+                    <span>🔈</span><input type="range" min="0" max="1" step="0.05" value="0.4" style="flex:1; accent-color:#ffd700;" oninput="changeVolume(this.value)"><span>🔊</span>
                 </div>
             </div>
         </div>
         
+        <!-- หน้าจอเล่นเกมหลัก (Game Screen) -->
         <div id="game-screen" style="display:none;">
             <div class="role-card-epic" id="role-card-bg">
                 <div class="role-badge-title" id="phase-indicator">สถานะ: เตรียมพร้อม</div>
@@ -75,18 +160,246 @@
         </div>
     </div>
 
+    <!-- Modal คัมภีร์คู่มือ -->
     <div id="manual-modal" class="modal">
         <div class="modal-content">
-            <h3 class="modal-title">📖 คัมภีร์ศักดิ์สิทธิ์</h3>
-            <h4 class="modal-subtitle">🛠️ สกิลใหม่: เค้นความจริง (Interrogate)</h4>
-            <p class="modal-text">กดใช้ในตอนกลางวันเพื่อสงครามจิตวิทยา! หากคนถูกแกล้งไม่ใช่หมาป่า และรอดจากการโหวตประหาร จะได้รับ <span style="color:#2ed573; font-weight:bold;">Trust +5%</span></p>
-            <h4 class="modal-subtitle">🕹️ ผู้คุมเกม (Game Master)</h4>
-            <p class="modal-text" style="color:#aaa;">คุณสามารถกดไอคอน 👑 มุมขวาบน เพื่อเปิดแผงควบคุมเกม ดำเนินการแจกบท เลื่อนเฟสเวลา และรีเซ็ตเกมได้ทันที (ใช้แทน ESP32)</p>
+            <h3 style="color:#ffd700; text-align:center; font-size:22px; margin-bottom: 20px;">📖 คัมภีร์ศักดิ์สิทธิ์</h3>
+            <h4 style="color:#ff8c00; font-size: 16px;">🛠️ สกิลใหม่: เค้นความจริง (Interrogate)</h4>
+            <p style="font-size:13.5px; color:#dcdde1; line-height:1.6; margin-bottom: 15px;">กดใช้ในตอนกลางวันเพื่อสงครามจิตวิทยา! หากคนถูกแกล้งไม่ใช่หมาป่า และรอดจากการโหวตประหาร จะได้รับ <span style="color:#2ed573; font-weight:bold;">Trust +5%</span></p>
+            <h4 style="color:#ff8c00; font-size: 16px;">🕹️ ผู้คุมเกม (Game Master)</h4>
+            <p style="font-size:13px; color:#aaa; line-height:1.6;">คุณสามารถกดไอคอน 👑 มุมขวาบน เพื่อเปิดแผงควบคุมเกม ดำเนินการแจกบท เลื่อนเฟสเวลา และรีเซ็ตเกมได้ทันที (ใช้แทน ESP32)</p>
             <button class="close-btn" onclick="closeManual()">รับทราบข้อตกลงสภา</button>
         </div>
     </div>
+    <!-- ================= ส่วนที่ 3: JavaScript และการปิดไฟล์ ================= -->
+    <script>
+        function showToast(message, type = 'normal') {
+            const container = document.getElementById('toast-container');
+            const toast = document.createElement('div');
+            toast.className = `custom-toast ${type}`;
+            let icon = type === 'error' ? '❌' : type === 'warning' ? '🚨' : type === 'mystic' ? '🔮' : '🔔';
+            toast.innerHTML = `<span style="font-size:18px;">${icon}</span> <div>${message}</div>`;
+            container.appendChild(toast);
+            playSound('alert');
+            setTimeout(() => { if (container.contains(toast)) container.removeChild(toast); }, 4000);
+        }
 
-    <script src="script.js"></script>
+        const firebaseConfig = {
+            apiKey: "AIzaSyCwgLaNKEBORncza75PO4IrGxTrF8vKoQw",
+            authDomain: "werewolf-esp32-game.firebaseapp.com",
+            projectId: "werewolf-esp32-game",
+            storageBucket: "werewolf-esp32-game.firebasestorage.app",
+            messagingSenderId: "768089473466",
+            appId: "1:768089473466:web:b9196bc05fa83144c39d83",
+            databaseURL: "https://werewolf-esp32-game-default-rtdb.asia-southeast1.firebasedatabase.app"
+        };
+        firebase.initializeApp(firebaseConfig);
+        const db = firebase.database();
+
+        let myPlayerId = localStorage.getItem("werewolf_player_id") || "player_" + Date.now();
+        localStorage.setItem("werewolf_player_id", myPlayerId);
+        let hasJoined = false; let myRole = "villager"; let myTrust = 0; let wasInterrogated = false;
+
+        const bgmMusic = new Audio('wolf-music.mp3'); bgmMusic.loop = true; bgmMusic.volume = 0.4;
+        let isMusicPlaying = false; let currentVol = 0.4; let currentNpcAudio = null;
+        const npcVoices = { 'role_reveal': new Audio('npc-role.mp3'), 'night_phase': new Audio('npc-night.mp3'), 'day_phase': new Audio('npc-day.mp3'), 'voting_phase': new Audio('npc-vote.mp3'), 'result_phase': new Audio('npc-result.mp3') };
+        const winWolfAudio = new Audio('https://actions.google.com/sounds/v1/horror/monster_snarl.ogg');
+        const winVillagerAudio = new Audio('https://actions.google.com/sounds/v1/crowds/crowd_cheer.ogg');
+        const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+        
+        function playSound(type) {
+            if (audioCtx.state === 'suspended') audioCtx.resume();
+            const osc = audioCtx.createOscillator(); const gain = audioCtx.createGain();
+            osc.connect(gain); gain.connect(audioCtx.destination);
+            if (type === 'click') { osc.frequency.setValueAtTime(440, audioCtx.currentTime); osc.frequency.exponentialRampToValueAtTime(880, audioCtx.currentTime + 0.1); gain.gain.setValueAtTime(0.05, audioCtx.currentTime); gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.1); osc.start(); osc.stop(audioCtx.currentTime + 0.1); } 
+            else if (type === 'alert') { osc.frequency.setValueAtTime(261.63, audioCtx.currentTime); osc.frequency.setValueAtTime(392.00, audioCtx.currentTime + 0.15); gain.gain.setValueAtTime(0.1, audioCtx.currentTime); gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.35); osc.start(); osc.stop(audioCtx.currentTime + 0.35); }
+        }
+
+        function changeVolume(val) { currentVol = parseFloat(val); bgmMusic.volume = currentVol; }
+        function playNpcVoice(phase) {
+            if (currentNpcAudio) { currentNpcAudio.pause(); currentNpcAudio.currentTime = 0; }
+            if(npcVoices[phase]) {
+                if(isMusicPlaying) bgmMusic.volume = 0.05;
+                currentNpcAudio = npcVoices[phase]; currentNpcAudio.play().catch(e => console.log("AutoPlay block"));
+                currentNpcAudio.onended = () => { if(isMusicPlaying) bgmMusic.volume = currentVol; };
+            } else { if(isMusicPlaying) bgmMusic.volume = currentVol; }
+        }
+        function toggleBGM() {
+            const btn = document.getElementById("music-toggle-btn");
+            if (!isMusicPlaying) { bgmMusic.play(); isMusicPlaying = true; btn.innerText = "🔇 ปิดเพลงบรรยากาศ"; btn.style.color = "#ff4757"; } 
+            else { bgmMusic.pause(); isMusicPlaying = false; btn.innerText = "🎶 เปิดเพลงบรรยากาศ"; btn.style.color = "#2ed573"; }
+        }
+        function enterGameWorld() {
+            playSound('click'); bgmMusic.play().then(() => { isMusicPlaying = true; const btn = document.getElementById("music-toggle-btn"); if(btn) { btn.innerText = "🔇 ปิดเพลงบรรยากาศ"; btn.style.color = "#ff4757"; } }).catch(e => {});
+            const intro = document.getElementById("intro-screen"); intro.style.transition = "opacity 0.8s ease"; intro.style.opacity = "0"; setTimeout(() => { intro.style.display = "none"; }, 800);
+        }
+        function openManual() { playSound('click'); document.getElementById("manual-modal").style.display = "flex"; }
+        function closeManual() { playSound('click'); document.getElementById("manual-modal").style.display = "none"; }
+
+        function joinGame() {
+            playSound('click'); const nameInput = document.getElementById("player-name").value.trim();
+            if (nameInput === "") return showToast("โปรดระบุฉายานักรบของคุณก่อน!", "error");
+            db.ref("werewolf_game/players/" + myPlayerId).set({ name: nameInput, role: "waiting", isAlive: true, trust: 0 }).then(() => {
+                hasJoined = true; document.getElementById("lobby-screen").style.display = "none";
+                document.getElementById("game-screen").style.display = "block"; showToast("ยินดีต้อนรับเข้าสู่สมรภูมิรบ!", "normal");
+            });
+        }
+
+        db.ref("werewolf_game/pranks/" + myPlayerId).on("value", snap => {
+            if (snap.exists() && snap.val() !== "") { showToast(`คุณถูก <b>[${snap.val()}]</b> เพ่งเล็งและเค้นความจริง!`, "warning"); wasInterrogated = true; db.ref("werewolf_game/pranks/" + myPlayerId).set(""); }
+        });
+        db.ref("werewolf_game/players/" + myPlayerId).on("value", (snap) => {
+           if (!snap.exists() && hasJoined) { alert("สภาได้ล้างกระดานแล้ว... กลับสู่ล้อบบี้!"); window.location.reload(); }
+        });
+
+        let lastState = ""; let playersData = {};
+        db.ref("werewolf_game/system/gameState").on("value", (snapshot) => {
+            const state = snapshot.val(); if (!hasJoined) return;
+            if(state !== lastState) { playNpcVoice(state); lastState = state; }
+            
+            const phaseInd = document.getElementById("phase-indicator"); const roleImg = document.getElementById("role-image");
+            const roleEl = document.getElementById("my-role"); const npcText = document.getElementById("npc-text");
+            const actionArea = document.getElementById("action-area"); const voteArea = document.getElementById("vote-result-area");
+            const mainCont = document.getElementById("main-container"); const pBorder = document.getElementById("portrait-border"); const cardBg = document.getElementById("role-card-bg");
+            const trustCont = document.getElementById("trust-container"); const trustBar = document.getElementById("trust-bar"); const trustVal = document.getElementById("trust-val");
+            actionArea.innerHTML = ""; voteArea.innerHTML = "";
+
+            db.ref("werewolf_game/players").once("value", (playersSnap) => {
+                playersData = playersSnap.val() || {}; const me = playersData[myPlayerId]; if (!me) return;
+                myRole = me.role || "villager"; myTrust = me.trust || 0;
+                
+                if (!me.isAlive) {
+                    phaseInd.innerText = "สถานะ: สิ้นชีพในสงคราม"; roleImg.src = "img-ghost.jpg"; roleEl.innerHTML = "วิญญาณผู้ล่วงลับ"; roleEl.style.color = "#a4b0be"; trustCont.style.display = "none"; pBorder.style.background = "#333"; cardBg.style.borderColor = "rgba(164, 176, 190, 0.3)"; npcText.innerText = "ร่างของเจ้าสูญสลายไปแล้ว... ทำได้เพียงเฝ้ามองความล่มสลายของดินแดนนี้"; return; 
+                }
+
+                trustCont.style.display = "block"; trustBar.style.width = myTrust + "%"; trustVal.innerText = myTrust;
+                if (myRole === "wolf") { roleImg.src = "img-wolf.jpg"; roleEl.innerHTML = "Crimson Lycan"; roleEl.style.color = "#ff4757"; pBorder.style.background = "linear-gradient(135deg, #ff4757, #8e0000)"; cardBg.style.borderColor = "rgba(255, 71, 87, 0.5)"; } 
+                else if (myRole === "seer") { roleImg.src = "img-seer.jpg"; roleEl.innerHTML = "Cyber Oracle"; roleEl.style.color = "#9b59b6"; pBorder.style.background = "linear-gradient(135deg, #9b59b6, #4b0082)"; cardBg.style.borderColor = "rgba(155, 89, 182, 0.5)"; } 
+                else { roleImg.src = "img-villager.jpg"; roleEl.innerHTML = "Citizen"; roleEl.style.color = "#2ed573"; pBorder.style.background = "linear-gradient(135deg, #2ed573, #006400)"; cardBg.style.borderColor = "rgba(46, 213, 115, 0.5)"; }
+
+                if (state === "role_reveal") { phaseInd.innerText = "คลาสประจำตัว"; npcText.innerText = myRole === "wolf" ? "ซ่อนความลับไว้ให้ลึกที่สุด เตรียมขย้ำในยามวิกาล..." : "จงหาความจริงที่ซ่อนอยู่ในเงามืดก่อนที่ทุกอย่างจะสายเกินไป!"; } 
+                else if (state === "night_phase") { phaseInd.innerText = "🌙 ราตรีกาลแห่งเงามืด"; if (myRole === "wolf") { npcText.innerText = "เลือกเหยื่อสังเวยของเจ้าในคืนนี้..."; loadTargets(actionArea, "kill", playersData, me.name); } else if (myRole === "seer") { npcText.innerText = "เพ่งจิตมองทะลุหน้ากากของผู้ที่เจ้าสงสัย..."; loadTargets(actionArea, "seer", playersData, me.name); } else { npcText.innerText = "ความมืดมิดปกคลุม ทุกชีวิตหลับใหล... ภาวนาอย่าให้ภัยร้ายมาเยือน"; } } 
+                else if (state === "day_phase") { phaseInd.innerText = "☀️ แสงอรุณรุ่งสว่าง"; npcText.innerText = "รุ่งอรุณสาดส่อง! คุณสามารถใช้สกิล [เค้นความจริง] เพื่อสงครามจิตวิทยา"; loadTargets(actionArea, "prank", playersData, me.name); processWolfKills(voteArea, playersData); } 
+                else if (state === "voting_phase") { phaseInd.innerText = "⚖️ การพิพากษาแห่งสภา"; npcText.innerText = "เวลาแห่งการพิพากษามาถึงแล้ว... จงตัดสินชะตา ใครคือผู้ที่ต้องชดใช้ด้วยชีวิต!"; loadTargets(actionArea, "vote", playersData, me.name); } 
+                else if (state === "result_phase") { phaseInd.innerText = "📜 ผลคำพิพากษา"; npcText.innerText = "สภาได้ตัดสินเจตจำนงแล้ว..."; calculateVotesAndTrust(voteArea, playersData); } 
+                else if (state === "wolf_win") { phaseInd.innerText = "🩸 อวสานแห่งแสงสว่าง"; roleEl.innerHTML = "WOLVES WIN!"; roleEl.className = "glow-text-wolf"; npcText.innerText = "เสียงหอนกึกก้อง... หมู่บ้านถูกย้อมด้วยสีเลือด หมาป่าคือผู้ชนะอย่างแท้จริง!"; mainCont.classList.add("epic-win-wolf"); winWolfAudio.play(); } 
+                else if (state === "villager_win") { phaseInd.innerText = "✨ ชัยชนะแห่งแสงสว่าง"; roleEl.innerHTML = "VILLAGERS WIN!"; roleEl.className = "glow-text-villager"; npcText.innerText = "แสงสว่างขับไล่ความมืดมิด! หมาป่าถูกกำจัดหมดสิ้น หมู่บ้านกลับมาสงบสุขอีกครั้ง!"; mainCont.classList.add("epic-win-villager"); winVillagerAudio.play(); }
+            });
+        });
+
+        function loadTargets(container, mode, playersObj, myName) {
+            Object.keys(playersObj).forEach(pId => {
+                if (pId !== myPlayerId && playersObj[pId].isAlive) {
+                    const btn = document.createElement("button"); btn.className = mode === "prank" ? "target-btn btn-prank" : "target-btn";
+                    btn.innerText = mode === "kill" ? "🎯 ล่าเหยื่อ: " + playersObj[pId].name : mode === "seer" ? "🔮 ส่องความจริง: " + playersObj[pId].name : mode === "prank" ? "👉 เค้นความจริง: " + playersObj[pId].name : "⚖️ โหวตประหาร: " + playersObj[pId].name;
+                    btn.onclick = () => {
+                        playSound('click');
+                        if (mode === "seer") showToast(`ความจริง: <b>${playersObj[pId].name}</b> คือ [${playersObj[pId].role === 'wolf' ? 'หมาป่า 🐺' : 'ฝ่ายดี ✨'}]`, "mystic");
+                        else if (mode === "prank") { db.ref("werewolf_game/pranks/" + pId).set(myName); showToast(`ส่งคำท้าทายเค้นความจริงไปหา <b>${playersObj[pId].name}</b> แล้ว!`, "warning"); }
+                        else if (mode === "kill") { db.ref("werewolf_game/wolf_kills/" + pId).set(true); showToast(`หมายหัวสังหาร <b>${playersObj[pId].name}</b> เรียบร้อย!`, "error"); }
+                        else if (mode === "vote") { db.ref("werewolf_game/votes/" + myPlayerId).set(pId); showToast(`ส่งผลโหวตประหาร <b>${playersObj[pId].name}</b> ให้สภาแล้ว!`, "normal"); }
+                    }; container.appendChild(btn);
+                }
+            });
+        }
+
+        function processWolfKills(container, playersObj) {
+            db.ref("werewolf_game/wolf_kills").once("value", (snap) => {
+                if(snap.exists()) { let deadList = []; snap.forEach(child => { let id = child.key; deadList.push(playersObj[id].name); db.ref("werewolf_game/players/" + id + "/isAlive").set(false); }); container.innerHTML = `<div class='vote-result-box' style='border-color:#ff4757;'>รุ่งเช้านี้... มีผู้เสียชีวิตถูกพบในเงามืด: <b>${deadList.join(", ")}</b></div>`; } 
+                else { container.innerHTML = `<div class='vote-result-box' style='border-color:#2ed573; color:#2ed573;'>รุ่งเช้านี้... ไม่มีใครเสียชีวิต หมู่บ้านปลอดภัย!</div>`; }
+            });
+        }
+
+        function calculateVotesAndTrust(container, playersObj) {
+            db.ref("werewolf_game/votes").once("value", (snap) => {
+                const votes = snap.val();
+                if (!votes) { container.innerHTML = "<div class='vote-result-box' style='border-color:#2ed573; color:#2ed573;'>ไม่มีผู้ใดถูกโหวตในสภา... ทุกคนปลอดภัย!</div>"; if (wasInterrogated && myRole !== 'wolf') { myTrust = (myTrust || 0) + 5; db.ref("werewolf_game/players/" + myPlayerId + "/trust").set(myTrust); showToast("✨ คุณรอดพ้นข้อครหา ความน่าเชื่อถือ +5%", "mystic"); wasInterrogated = false; } return; }
+                let tally = {}; Object.values(votes).forEach(tId => { tally[tId] = (tally[tId] || 0) + 1; });
+                let maxVotes = 0; let votedOutId = null; for (const [id, count] of Object.entries(tally)) { if (count > maxVotes) { maxVotes = count; votedOutId = id; } }
+                if (votedOutId && playersObj[votedOutId]) {
+                    const p = playersObj[votedOutId]; container.innerHTML = `<div class='vote-result-box'>มติสภา (${maxVotes} เสียง) ขับไล่... <div class='vote-winner'>${p.name}</div><hr style='border:1px solid rgba(255,255,255,0.1); margin:10px 0;'>ความจริงปรากฏ: <b>${p.name} คือ ${p.role === 'wolf' ? '<span style="color:#ff4757">หมาป่า! 🐺</span>' : '<span style="color:#2ed573">ผู้บริสุทธิ์... 🧑</span>'}</b></div>`;
+                    db.ref("werewolf_game/players/" + votedOutId + "/isAlive").set(false);
+                    if(votedOutId === myPlayerId) { wasInterrogated = false; } else if (wasInterrogated && myRole !== 'wolf') { myTrust = (myTrust || 0) + 5; db.ref("werewolf_game/players/" + myPlayerId + "/trust").set(myTrust); showToast("✨ คุณรอดพ้นข้อครหา ความน่าเชื่อถือ +5%", "mystic"); wasInterrogated = false; }
+                }
+            });
+        }
+
+        function toggleGMPanel() {
+            playSound('click'); const panel = document.getElementById('gm-panel');
+            panel.style.display = panel.style.display === 'flex' ? 'none' : 'flex';
+        }
+
+        let isGmProcessing = false;
+
+        async function gmStartGame() {
+            if(isGmProcessing) return; isGmProcessing = true; playSound('click');
+            try {
+                await db.ref("werewolf_game/actions").remove(); await db.ref("werewolf_game/votes").remove();
+                await db.ref("werewolf_game/wolf_kills").remove(); await db.ref("werewolf_game/pranks").remove();
+                
+                const snap = await db.ref("werewolf_game/players").once("value"); const players = snap.val();
+                if(!players) { showToast("ยังไม่มีผู้เล่นในห้อง!", "error"); isGmProcessing = false; return; }
+                
+                let pKeys = Object.keys(players);
+                for (let i = pKeys.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [pKeys[i], pKeys[j]] = [pKeys[j], pKeys[i]]; }
+                
+                let updates = {};
+                pKeys.forEach((key, idx) => {
+                    let role = "villager"; if (idx === 0) role = "wolf"; else if (idx === 1 && pKeys.length >= 3) role = "seer";
+                    updates[`werewolf_game/players/${key}/role`] = role;
+                    updates[`werewolf_game/players/${key}/isAlive`] = true;
+                    updates[`werewolf_game/players/${key}/trust`] = 0;
+                });
+                await db.ref().update(updates);
+                await db.ref("werewolf_game/system/gameState").set("role_reveal");
+                showToast("แจกบทบาทเรียบร้อย เกมเริ่มต้น!", "normal");
+            } catch(e) { console.error(e); }
+            setTimeout(() => { isGmProcessing = false; }, 1000);
+        }
+
+        async function gmNextPhase() {
+            if(isGmProcessing) return; isGmProcessing = true; playSound('click');
+            try {
+                const snap = await db.ref("werewolf_game/system/gameState").once("value"); let current = snap.val() || "lobby"; let next = "lobby";
+                if (current === "lobby") next = "role_reveal";
+                else if (current === "role_reveal") { await cleanUpNight(); next = "night_phase"; }
+                else if (current === "night_phase") next = "day_phase";
+                else if (current === "day_phase") next = "voting_phase";
+                else if (current === "voting_phase") next = "result_phase";
+                else if (current === "result_phase") { next = await checkWinCondition(); }
+                else if (current === "wolf_win" || current === "villager_win") { gmResetGame(); isGmProcessing = false; return; }
+                else { await cleanUpNight(); next = "night_phase"; }
+                await db.ref("werewolf_game/system/gameState").set(next); showToast(`เลื่อนเป็นเฟส: ${next}`, "warning");
+            } catch(e) { console.error(e); }
+            setTimeout(() => { isGmProcessing = false; }, 1000);
+        }
+
+        async function cleanUpNight() {
+            await db.ref("werewolf_game/votes").remove(); await db.ref("werewolf_game/wolf_kills").remove(); await db.ref("werewolf_game/pranks").remove();
+        }
+
+        async function checkWinCondition() {
+            const snap = await db.ref("werewolf_game/players").once("value"); const players = snap.val() || {};
+            let w = 0, v = 0;
+            for(let key in players) { if(players[key].isAlive) { if(players[key].role === 'wolf') w++; else v++; } }
+            if(w === 0 && v > 0) return "villager_win"; if(w >= v && w > 0) return "wolf_win";
+            await cleanUpNight(); return "night_phase";
+        }
+
+        async function gmResetGame() {
+            if(!confirm("คุณต้องการล้างกระดานและเตะทุกคนกลับ Lobby ใช่หรือไม่?")) return;
+            playSound('alert');
+            await db.ref("werewolf_game").remove();
+            await db.ref("werewolf_game/system/gameState").set("lobby");
+            showToast("ล้างบอร์ดเกมเรียบร้อย", "error");
+        }
+
+        function gmAddBot() {
+            playSound('click'); let botId = "bot_manual_" + Date.now(); let botName = "Hero_Bot_" + Math.floor(Math.random()*90+10);
+            db.ref("werewolf_game/players/" + botId).set({ name: botName, role: "waiting", isAlive: true, trust: 0 });
+            showToast(`เสกบอท ${botName} ลงบอร์ดแล้ว!`, "normal");
+        }
+    </script>
 </body>
 </html>
 
