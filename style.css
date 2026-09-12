@@ -1,12 +1,12 @@
 /* ==========================================================
-   WEREWOLF LEGENDS: EPIC DARK FANTASY HUD
+   WEREWOLF LEGENDS: EPIC DARK FANTASY HUD (ANTI-OVERLAP)
    ========================================================== */
 * { box-sizing: border-box; margin: 0; padding: 0; }
 body {
     font-family: 'Prompt', sans-serif;
-    background: #05050a;
+    background: #030307;
     color: #f1f2f6;
-    min-height: 100vh;
+    height: 100vh;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -15,137 +15,117 @@ body {
 }
 
 #bg-video {
-    position: fixed;
-    top: 0; left: 0;
+    position: absolute; top: 0; left: 0;
     min-width: 100%; min-height: 100%;
-    z-index: -10;
-    object-fit: cover;
-    filter: brightness(0.25) contrast(1.2);
+    z-index: -10; object-fit: cover;
+    filter: brightness(0.2) contrast(1.2);
 }
 
 .game-container {
-    background: linear-gradient(135deg, rgba(12, 12, 22, 0.95) 0%, rgba(5, 5, 10, 0.98) 100%);
-    backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
-    border: 2px solid #c5a059;
-    border-radius: 28px;
-    padding: 25px 20px;
-    width: 100%; max-width: 440px;
-    height: 95vh; max-height: 850px;
+    background: linear-gradient(135deg, rgba(14, 14, 24, 0.95) 0%, rgba(6, 6, 12, 0.98) 100%);
+    backdrop-filter: blur(25px); -webkit-backdrop-filter: blur(25px);
+    border: 2px solid #c5a059; border-radius: 28px; padding: 25px 20px;
+    width: 100%; max-width: 440px; height: 95vh; max-height: 850px;
     display: flex; flex-direction: column;
-    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.95), inset 0 0 30px rgba(197, 160, 89, 0.15);
-    text-align: center;
-    position: relative;
-    z-index: 10;
+    box-shadow: 0 25px 60px rgba(0, 0, 0, 0.95), inset 0 0 30px rgba(197, 160, 89, 0.15);
+    text-align: center; position: relative; z-index: 10;
 }
 
 h2 {
-    font-size: clamp(22px, 6vw, 28px); font-weight: 900; margin-bottom: 5px;
+    font-size: clamp(22px, 6vw, 28px); font-weight: 900; margin-bottom: 6px;
     background: linear-gradient(135deg, #ffd700 0%, #ff4757 100%);
     -webkit-background-clip: text; -webkit-text-fill-color: transparent;
-    text-transform: uppercase; letter-spacing: 1px;
+    text-transform: uppercase; letter-spacing: 1.5px; flex-shrink: 0;
 }
-.subtitle { font-size: 13px; color: #a4b0be; margin-bottom: 20px; }
+.subtitle { font-size: 13px; color: #a4b0be; margin-bottom: 15px; flex-shrink: 0; }
 
 input[type="text"], select {
-    width: 100%; padding: 14px 16px;
-    background: rgba(0, 0, 0, 0.7);
-    border: 1px solid rgba(197, 160, 89, 0.4);
-    border-radius: 12px;
-    color: #fff; font-size: 15px; font-family: 'Prompt', sans-serif;
-    outline: none; margin-bottom: 12px; transition: 0.3s;
+    width: 100%; padding: 14px 18px; background: rgba(0, 0, 0, 0.6);
+    border: 1px solid rgba(197, 160, 89, 0.4); border-radius: 14px;
+    color: #fff; font-size: 15px; font-family: 'Prompt'; outline: none;
+    margin-bottom: 10px; transition: 0.3s;
 }
 input[type="text"]:focus, select:focus { border-color: #ffd700; box-shadow: 0 0 15px rgba(255, 215, 0, 0.3); }
 select option { background: #0c0c16; color: #fff; }
 
 .btn {
-    width: 100%; padding: 14px;
-    background: linear-gradient(135deg, #c5a059 0%, #8c6d28 100%);
-    color: #111; border: none; border-radius: 12px;
-    font-size: 15px; font-weight: 800; font-family: 'Prompt', sans-serif;
-    cursor: pointer; transition: 0.3s; margin-bottom: 10px;
-    text-transform: uppercase; box-shadow: 0 5px 15px rgba(197, 160, 89, 0.3);
+    width: 100%; padding: 14px; background: linear-gradient(135deg, #c5a059 0%, #8c6d28 100%);
+    color: #111; border: none; border-radius: 14px; font-size: 15px; font-weight: 800;
+    font-family: 'Prompt'; cursor: pointer; transition: 0.3s; margin-bottom: 8px;
+    text-transform: uppercase; box-shadow: 0 5px 15px rgba(197, 160, 89, 0.3); flex-shrink: 0;
 }
 .btn:hover { transform: translateY(-2px); background: linear-gradient(135deg, #ffd700 0%, #c5a059 100%); box-shadow: 0 8px 20px rgba(255, 215, 0, 0.4); }
-.btn-secondary { background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.15); color: #dcdde1; box-shadow: none; }
+.btn-secondary { background: rgba(255, 255, 255, 0.08); border: 1px solid rgba(255, 255, 255, 0.15); color: #dcdde1; box-shadow: none; }
+.btn-danger { background: rgba(231, 76, 60, 0.15); border: 1px solid #e74c3c; color: #e74c3c; margin-top: 10px; }
 
-/* การ์ดและตัวละครแบบ Flex-box กันล้นกรอบ */
+/* โครงสร้างการ์ด Flex Box ป้องกันการล้น */
 .role-card-epic {
-    flex: 1; display: flex; flex-direction: column;
-    background: rgba(0, 0, 0, 0.6);
-    border-radius: 20px; padding: 15px;
-    border: 1px solid rgba(197, 160, 89, 0.3);
-    box-shadow: inset 0 0 20px rgba(0,0,0,0.8);
-    overflow: hidden; /* ป้องกันเนื้อหาดันทะลุกรอบ */
+    flex: 1; display: flex; flex-direction: column; background: rgba(10, 10, 18, 0.85);
+    border-radius: 20px; padding: 15px; border: 1px solid rgba(197, 160, 89, 0.4);
+    box-shadow: inset 0 0 25px rgba(0,0,0,0.8); overflow: hidden;
 }
 .role-badge-title {
-    font-size: 12px; color: #ffd700; font-weight: 700; letter-spacing: 1.5px;
-    margin-bottom: 10px; padding: 6px 16px;
-    background: rgba(197, 160, 89, 0.15); border-radius: 12px;
-    border: 1px solid rgba(197, 160, 89, 0.4); align-self: center;
+    font-size: 12px; color: #ffd700; font-weight: 700; letter-spacing: 2px; margin-bottom: 10px;
+    padding: 6px 16px; background: rgba(197, 160, 89, 0.15); border-radius: 12px;
+    border: 1px solid rgba(197, 160, 89, 0.4); align-self: center; flex-shrink: 0; text-transform: uppercase;
 }
 .role-portrait-container {
-    width: 110px; height: 110px; margin: 0 auto 10px auto; flex-shrink: 0;
-    border-radius: 50%; padding: 3px;
-    background: linear-gradient(135deg, #ffd700, #ff4757);
-    box-shadow: 0 0 20px rgba(255, 71, 87, 0.4); overflow: hidden;
+    width: 110px; height: 110px; margin: 0 auto 10px auto; flex-shrink: 0; border-radius: 50%;
+    padding: 3px; background: linear-gradient(135deg, #ffd700, #ff4757);
+    box-shadow: 0 0 20px rgba(255, 71, 87, 0.5); overflow: hidden;
 }
 .role-portrait { width: 100%; height: 100%; border-radius: 50%; object-fit: cover; background-color: #000; }
-.role-name-epic { font-size: 24px; font-weight: 900; margin-bottom: 5px; text-transform: uppercase; flex-shrink: 0; }
+.role-name-epic { font-size: 24px; font-weight: 900; margin-bottom: 8px; text-transform: uppercase; flex-shrink: 0; }
 
-/* หลอดพลัง */
+/* แถบสถานะ */
 .trust-bar-container, .timer-container {
-    background: rgba(0,0,0,0.8); border-radius: 8px; width: 100%; margin: 5px 0; height: 18px;
+    background: rgba(0,0,0,0.7); border-radius: 10px; width: 100%; margin: 5px 0; height: 18px;
     position: relative; overflow: hidden; flex-shrink: 0;
 }
 .trust-bar-container { border: 1px solid rgba(46, 213, 115, 0.4); }
-.timer-container { border: 1px solid rgba(255, 215, 0, 0.5); }
+.timer-container { border: 1px solid rgba(255, 215, 0, 0.4); }
 .trust-bar-fill { background: linear-gradient(90deg, #2ed573, #1abc9c); height: 100%; width: 0%; transition: width 1s ease; }
 .timer-bar { height: 100%; width: 100%; background: linear-gradient(90deg, #ff4757, #ff8c00, #ffd700); transition: width 1s linear; }
 .bar-text { position: absolute; width: 100%; top: 0; left: 0; line-height: 18px; font-size: 11px; font-weight: bold; color: white; text-shadow: 1px 1px 2px #000; }
 
-/* กล่องข้อความ NPC */
-.npc-dialogue {
-    background: rgba(15, 15, 20, 0.9); border-left: 4px solid #c5a059;
-    padding: 10px 12px; border-radius: 8px; margin: 8px 0;
-    font-size: 13px; text-align: left; font-style: italic; color: #dcdde1; flex-shrink: 0;
-}
-
-/* พื้นที่ปุ่มกด: อนุญาตให้เลื่อนได้แค่ตรงนี้ */
+/* พื้นที่ปุ่มเลื่อน Scroll Area (แก้ปัญหาการล้นจอ) */
 .action-scroll-area {
-    flex: 1; /* ขยายเต็มพื้นที่ที่เหลือ */
-    overflow-y: auto; /* เลื่อนขึ้นลงได้ */
-    padding-right: 4px; margin-top: 5px;
+    flex: 1; min-height: 0; overflow-y: auto; padding-right: 4px; margin-top: 8px;
 }
 .action-scroll-area::-webkit-scrollbar { width: 4px; }
 .action-scroll-area::-webkit-scrollbar-thumb { background: #c5a059; border-radius: 4px; }
 
 .target-btn {
-    width: 100%; padding: 12px 14px; margin: 4px 0;
-    background: rgba(255,255,255,0.05); border: 1px solid rgba(197, 160, 89, 0.3);
-    color: white; border-radius: 10px; font-family: 'Prompt', sans-serif;
+    width: 100%; padding: 12px 14px; margin: 4px 0; background: rgba(255,255,255,0.05);
+    border: 1px solid rgba(197, 160, 89, 0.3); color: white; border-radius: 10px; font-family: 'Prompt';
     font-size: 13.5px; text-align: left; cursor: pointer; transition: 0.2s; font-weight: 600;
 }
 .target-btn:hover { background: rgba(197, 160, 89, 0.2); border-color: #ffd700; }
 .btn-prank { background: rgba(155, 89, 182, 0.12); border-color: rgba(155, 89, 182, 0.4); }
 
-/* กล่องผลลัพธ์โหวต */
-.vote-result-box {
-    background: rgba(231, 76, 60, 0.12); border: 1px solid rgba(231, 76, 60, 0.4);
-    padding: 12px; border-radius: 10px; margin-top: 8px; color: #fff;
-    font-size: 13px; text-align: left; line-height: 1.5;
-}
-
+.npc-dialogue { background: rgba(0, 0, 0, 0.6); border-left: 4px solid #c5a059; padding: 10px; border-radius: 8px; margin: 8px 0; font-size: 13px; text-align: left; font-style: italic; color: #dcdde1; flex-shrink: 0; }
+.vote-result-box { background: rgba(231, 76, 60, 0.15); border: 1px solid rgba(231, 76, 60, 0.4); padding: 12px; border-radius: 10px; margin-top: 8px; color: #fff; font-size: 13px; text-align: left; flex-shrink: 0; }
 .room-info { font-size: 11px; color: #ffd700; background: rgba(0,0,0,0.8); padding: 4px 10px; border-radius: 8px; position: absolute; top: 15px; right: 15px; border: 1px solid rgba(197, 160, 89, 0.4); }
 
-.modal { display: none; position: fixed; z-index: 1000; left: 0; top: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.85); justify-content: center; align-items: center; padding: 20px; }
+/* แผง GM */
+.gm-panel-container { position: fixed; bottom: 0; left: 50%; transform: translateX(-50%); width: 100%; max-width: 460px; background: rgba(10,10,15,0.95); backdrop-filter: blur(10px); border-top: 2px solid #ffd700; padding: 15px; border-radius: 20px 20px 0 0; z-index: 9999; display: none; flex-direction: column; align-items: center; box-shadow: 0 -10px 30px rgba(0,0,0,0.9); }
+.gm-title { color: #ffd700; font-size: 12px; font-weight: bold; margin-bottom: 10px; letter-spacing: 1px; }
+.gm-btn-group { display: flex; gap: 8px; width: 100%; flex-wrap: wrap; }
+.gm-btn { flex: 1; min-width: 45%; background: rgba(197, 160, 89, 0.15); border: 1px solid rgba(197, 160, 89, 0.5); color: #fff; padding: 10px; border-radius: 8px; font-family: 'Prompt'; font-size: 13px; font-weight: 600; cursor: pointer; transition: 0.2s; }
+.gm-btn:hover { background: rgba(197, 160, 89, 0.3); border-color: #ffd700; }
+.gm-toggle-btn { position: fixed; top: 15px; right: 15px; background: rgba(0,0,0,0.8); border: 2px solid #ffd700; color: #ffd700; width: 45px; height: 45px; border-radius: 50%; font-size: 20px; cursor: pointer; z-index: 10000; box-shadow: 0 0 15px rgba(255,215,0,0.4); display: none; justify-content: center; align-items: center; transition: 0.3s; }
+.gm-toggle-btn:hover { transform: scale(1.1); }
+
+/* Modal & Toast */
+.modal { display: none; position: fixed; z-index: 100; left: 0; top: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.85); backdrop-filter: blur(5px); justify-content: center; align-items: center; padding: 20px; }
 .modal-content { background: rgba(15, 15, 20, 0.98); border: 2px solid #c5a059; padding: 25px; border-radius: 20px; width: min(100%, 400px); max-height: 80vh; overflow-y: auto; text-align: left; }
-.close-btn { background: linear-gradient(135deg, #c5a059, #8c6d28); color: #111; border: none; padding: 12px; width: 100%; border-radius: 10px; font-weight: 800; margin-top: 15px; cursor: pointer; font-family: 'Prompt', sans-serif; }
+.close-btn { background: linear-gradient(135deg, #c5a059, #8c6d28); color: #111; border: none; padding: 12px; width: 100%; border-radius: 10px; font-weight: 800; margin-top: 15px; cursor: pointer; font-family: 'Prompt'; }
 
 #toast-container { position: fixed; top: 20px; left: 50%; transform: translateX(-50%); z-index: 999999; display: flex; flex-direction: column; gap: 8px; width: 90%; max-width: 350px; pointer-events: none; }
 .custom-toast { background: rgba(15, 15, 20, 0.95); border: 1px solid rgba(197, 160, 89, 0.4); border-left: 4px solid #2ed573; color: white; padding: 12px 15px; border-radius: 10px; font-size: 13.5px; display: flex; align-items: center; gap: 10px; animation: toastIn 0.3s forwards, toastOut 0.3s ease 3s forwards; }
 @keyframes toastIn { from { opacity: 0; transform: translateY(-20px); } to { opacity: 1; transform: translateY(0); } }
 @keyframes toastOut { from { opacity: 1; transform: translateY(0); } to { opacity: 0; transform: translateY(-20px); } }
 
-.epic-win-wolf { background: radial-gradient(circle, #4a0000 0%, #0a0000 100%) !important; box-shadow: 0 0 100px rgba(255,0,0,0.6) !important; }
-.epic-win-villager { background: radial-gradient(circle, #003311 0%, #000a05 100%) !important; box-shadow: 0 0 100px rgba(46,213,115,0.6) !important; }
+.epic-win-wolf { box-shadow: 0 0 80px rgba(255,0,0,0.6) !important; border-color: #ff4757 !important; }
+.epic-win-villager { box-shadow: 0 0 80px rgba(46,213,115,0.6) !important; border-color: #2ed573 !important; }
 
