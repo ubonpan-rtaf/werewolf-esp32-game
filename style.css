@@ -1,270 +1,151 @@
 /* ==========================================================
-   WEREWOLF LEGENDS: ULTIMATE DARK FANTASY UI ENGINE
+   WEREWOLF LEGENDS: EPIC DARK FANTASY HUD
    ========================================================== */
 * { box-sizing: border-box; margin: 0; padding: 0; }
-
 body {
     font-family: 'Prompt', sans-serif;
-    background: #020205;
+    background: #05050a;
     color: #f1f2f6;
     min-height: 100vh;
     display: flex;
     justify-content: center;
     align-items: center;
-    overflow: hidden; /* ป้องกันหน้าจอหลักเลื่อน */
+    padding: 10px;
+    overflow: hidden;
 }
 
-/* วิดีโอพื้นหลัง Intro */
 #bg-video {
     position: fixed;
-    top: 0;
-    left: 0;
-    min-width: 100%;
-    min-height: 100%;
+    top: 0; left: 0;
+    min-width: 100%; min-height: 100%;
     z-index: -10;
     object-fit: cover;
-    filter: brightness(0.2) contrast(1.3);
+    filter: brightness(0.25) contrast(1.2);
 }
 
-/* คอนเทนเนอร์หลัก (ปรับให้ไม่ชนขอบจอ) */
 .game-container {
-    background: rgba(8, 8, 14, 0.85);
-    backdrop-filter: blur(15px);
-    -webkit-backdrop-filter: blur(15px);
-    width: 100%;
-    max-width: 480px;
-    height: 96vh;
-    display: flex;
-    flex-direction: column;
-    box-shadow: 0 0 50px rgba(0,0,0,1);
+    background: linear-gradient(135deg, rgba(12, 12, 22, 0.95) 0%, rgba(5, 5, 10, 0.98) 100%);
+    backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
+    border: 2px solid #c5a059;
+    border-radius: 28px;
+    padding: 25px 20px;
+    width: 100%; max-width: 440px;
+    height: 95vh; max-height: 850px;
+    display: flex; flex-direction: column;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.95), inset 0 0 30px rgba(197, 160, 89, 0.15);
+    text-align: center;
     position: relative;
     z-index: 10;
-    border-radius: 20px;
-    overflow: hidden;
 }
-
-/* ส่วนของหน้า Lobby */
-#lobby-screen {
-    padding: 30px;
-    height: 100%;
-    overflow-y: auto;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-}
-#lobby-screen::-webkit-scrollbar { width: 0; }
 
 h2 {
-    font-size: 32px;
-    font-weight: 900;
-    text-align: center;
-    margin-bottom: 5px;
+    font-size: clamp(22px, 6vw, 28px); font-weight: 900; margin-bottom: 5px;
     background: linear-gradient(135deg, #ffd700 0%, #ff4757 100%);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    text-transform: uppercase;
-    letter-spacing: 2px;
-    text-shadow: 0 0 20px rgba(255, 71, 87, 0.3);
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+    text-transform: uppercase; letter-spacing: 1px;
 }
-.subtitle {
-    font-size: 14px;
-    color: #a4b0be;
-    text-align: center;
-    margin-bottom: 25px;
-    letter-spacing: 1px;
-}
+.subtitle { font-size: 13px; color: #a4b0be; margin-bottom: 20px; }
 
-/* กล่อง Input */
 input[type="text"], select {
-    width: 100%;
-    padding: 16px 20px;
+    width: 100%; padding: 14px 16px;
     background: rgba(0, 0, 0, 0.7);
-    border: 2px solid rgba(0, 255, 255, 0.3);
+    border: 1px solid rgba(197, 160, 89, 0.4);
     border-radius: 12px;
-    color: #fff;
-    font-size: 16px;
-    font-family: 'Prompt', sans-serif;
-    outline: none;
-    margin-bottom: 15px;
-    transition: 0.3s;
-    box-shadow: inset 0 0 10px rgba(0,255,255,0.1);
+    color: #fff; font-size: 15px; font-family: 'Prompt', sans-serif;
+    outline: none; margin-bottom: 12px; transition: 0.3s;
 }
-input[type="text"]:focus, select:focus {
-    border-color: #00ffff;
-    box-shadow: 0 0 15px rgba(0, 255, 255, 0.4), inset 0 0 10px rgba(0,255,255,0.2);
-}
-select option { background: #08080e; color: #fff; }
+input[type="text"]:focus, select:focus { border-color: #ffd700; box-shadow: 0 0 15px rgba(255, 215, 0, 0.3); }
+select option { background: #0c0c16; color: #fff; }
 
-/* ปุ่มกด (ใช้ภาพ ui-button.png) */
-.btn, .target-btn {
-    width: 100%;
-    /* ปรับ Padding ให้ข้อความอยู่ตรงกลางกรอบพอดี */
-    padding: 18px 25px; 
-    background: url('ui-button.png') center/100% 100% no-repeat;
-    color: #fff;
-    border: none;
-    font-size: 15px;
-    font-weight: 800;
-    font-family: 'Prompt', sans-serif;
-    cursor: pointer;
-    transition: all 0.2s;
-    margin-bottom: 12px;
-    text-transform: uppercase;
-    text-shadow: 0 2px 4px rgba(0,0,0,0.9);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    min-height: 65px;
+.btn {
+    width: 100%; padding: 14px;
+    background: linear-gradient(135deg, #c5a059 0%, #8c6d28 100%);
+    color: #111; border: none; border-radius: 12px;
+    font-size: 15px; font-weight: 800; font-family: 'Prompt', sans-serif;
+    cursor: pointer; transition: 0.3s; margin-bottom: 10px;
+    text-transform: uppercase; box-shadow: 0 5px 15px rgba(197, 160, 89, 0.3);
 }
-.btn:hover, .target-btn:hover {
-    transform: scale(1.02);
-    filter: brightness(1.2) drop-shadow(0 0 10px rgba(0, 255, 255, 0.4));
-}
-.target-btn {
-    margin-bottom: 8px;
-    font-size: 14px;
-    text-transform: none;
-}
+.btn:hover { transform: translateY(-2px); background: linear-gradient(135deg, #ffd700 0%, #c5a059 100%); box-shadow: 0 8px 20px rgba(255, 215, 0, 0.4); }
+.btn-secondary { background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.15); color: #dcdde1; box-shadow: none; }
 
-/* =========================================
-   ROLE CARD (ใช้ภาพ ui-card-frame.png) 
-   ========================================= */
-#game-screen {
-    height: 100%;
-    display: flex;
-    flex-direction: column;
-}
+/* การ์ดและตัวละครแบบ Flex-box กันล้นกรอบ */
 .role-card-epic {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-    background: url('ui-card-frame.png') center/100% 100% no-repeat;
-    /* ระยะปลอดภัย (Padding) สำคัญมาก! เพื่อไม่ให้เนื้อหาทับขอบกรอบ */
-    padding: 60px 45px 50px 45px; 
-    position: relative;
-    overflow: hidden;
-}
-
-/* ป้ายสถานะ (ใช้ ui-header.png) */
-.role-badge-title {
-    background: url('ui-header.png') center/100% 100% no-repeat;
-    width: 90%;
-    margin: 0 auto 15px auto;
-    padding: 15px 10px;
-    font-size: 14px;
-    color: #00ffff;
-    font-weight: 800;
-    text-align: center;
-    text-transform: uppercase;
-    text-shadow: 0 0 10px rgba(0, 255, 255, 0.8);
-    letter-spacing: 1px;
-}
-
-/* รูปตัวละคร */
-.role-portrait-container {
-    width: 130px;
-    height: 130px;
-    margin: 0 auto 15px auto;
-    border-radius: 50%;
-    padding: 4px;
-    background: linear-gradient(135deg, #00ffff, #0055ff);
-    box-shadow: 0 0 30px rgba(0, 255, 255, 0.4);
-    overflow: hidden;
-    flex-shrink: 0;
-}
-.role-portrait {
-    width: 100%;
-    height: 100%;
-    border-radius: 50%;
-    object-fit: cover;
-    background-color: #000;
-}
-.role-name-epic {
-    font-size: 26px;
-    font-weight: 900;
-    margin-bottom: 10px;
-    text-align: center;
-    text-transform: uppercase;
-    text-shadow: 0 0 15px rgba(0, 255, 255, 0.5);
-    flex-shrink: 0;
-}
-
-/* หลอดคะแนนและเวลา (ใช้ ui-trust.png) */
-.status-bar-wrapper {
-    background: url('ui-trust.png') center/100% 100% no-repeat;
-    width: 100%;
-    height: 40px;
-    margin: 5px 0;
-    padding: 10px 30px; /* ระยะให้หลอดสีอยู่ตรงกลางพอดี */
-    display: flex;
-    align-items: center;
-    flex-shrink: 0;
-}
-.status-bar-inner {
-    width: 100%;
-    height: 10px;
-    background: rgba(0,0,0,0.8);
-    border-radius: 5px;
-    overflow: hidden;
-    position: relative;
-}
-.trust-bar-fill { background: linear-gradient(90deg, #00ffff, #0055ff); height: 100%; width: 0%; transition: width 1s ease; }
-.timer-bar-fill { background: linear-gradient(90deg, #ff4757, #ffd700); height: 100%; width: 100%; transition: width 1s linear; }
-.status-text {
-    position: absolute; width: 100%; top: -2px; left: 0; text-align: center; font-size: 10px; font-weight: bold; color: white; text-shadow: 1px 1px 2px #000;
-}
-
-/* ข้อความบรรยายเกม */
-.npc-dialogue {
+    flex: 1; display: flex; flex-direction: column;
     background: rgba(0, 0, 0, 0.6);
-    border: 1px solid rgba(0, 255, 255, 0.3);
-    padding: 12px;
-    border-radius: 8px;
-    margin: 10px 0;
-    font-size: 13px;
-    text-align: center;
-    color: #dcdde1;
-    flex-shrink: 0;
+    border-radius: 20px; padding: 15px;
+    border: 1px solid rgba(197, 160, 89, 0.3);
+    box-shadow: inset 0 0 20px rgba(0,0,0,0.8);
+    overflow: hidden; /* ป้องกันเนื้อหาดันทะลุกรอบ */
+}
+.role-badge-title {
+    font-size: 12px; color: #ffd700; font-weight: 700; letter-spacing: 1.5px;
+    margin-bottom: 10px; padding: 6px 16px;
+    background: rgba(197, 160, 89, 0.15); border-radius: 12px;
+    border: 1px solid rgba(197, 160, 89, 0.4); align-self: center;
+}
+.role-portrait-container {
+    width: 110px; height: 110px; margin: 0 auto 10px auto; flex-shrink: 0;
+    border-radius: 50%; padding: 3px;
+    background: linear-gradient(135deg, #ffd700, #ff4757);
+    box-shadow: 0 0 20px rgba(255, 71, 87, 0.4); overflow: hidden;
+}
+.role-portrait { width: 100%; height: 100%; border-radius: 50%; object-fit: cover; background-color: #000; }
+.role-name-epic { font-size: 24px; font-weight: 900; margin-bottom: 5px; text-transform: uppercase; flex-shrink: 0; }
+
+/* หลอดพลัง */
+.trust-bar-container, .timer-container {
+    background: rgba(0,0,0,0.8); border-radius: 8px; width: 100%; margin: 5px 0; height: 18px;
+    position: relative; overflow: hidden; flex-shrink: 0;
+}
+.trust-bar-container { border: 1px solid rgba(46, 213, 115, 0.4); }
+.timer-container { border: 1px solid rgba(255, 215, 0, 0.5); }
+.trust-bar-fill { background: linear-gradient(90deg, #2ed573, #1abc9c); height: 100%; width: 0%; transition: width 1s ease; }
+.timer-bar { height: 100%; width: 100%; background: linear-gradient(90deg, #ff4757, #ff8c00, #ffd700); transition: width 1s linear; }
+.bar-text { position: absolute; width: 100%; top: 0; left: 0; line-height: 18px; font-size: 11px; font-weight: bold; color: white; text-shadow: 1px 1px 2px #000; }
+
+/* กล่องข้อความ NPC */
+.npc-dialogue {
+    background: rgba(15, 15, 20, 0.9); border-left: 4px solid #c5a059;
+    padding: 10px 12px; border-radius: 8px; margin: 8px 0;
+    font-size: 13px; text-align: left; font-style: italic; color: #dcdde1; flex-shrink: 0;
 }
 
-/* พื้นที่ปุ่มเลื่อนได้ (หัวใจหลักที่แก้ปัญหาการล้นจอ) */
+/* พื้นที่ปุ่มกด: อนุญาตให้เลื่อนได้แค่ตรงนี้ */
 .action-scroll-area {
-    flex: 1; /* ใช้พื้นที่ที่เหลือทั้งหมด */
-    overflow-y: auto; /* เลื่อนได้เมื่อปุ่มเยอะ */
-    padding: 5px;
-    margin-top: 5px;
-    display: flex;
-    flex-direction: column;
+    flex: 1; /* ขยายเต็มพื้นที่ที่เหลือ */
+    overflow-y: auto; /* เลื่อนขึ้นลงได้ */
+    padding-right: 4px; margin-top: 5px;
 }
 .action-scroll-area::-webkit-scrollbar { width: 4px; }
-.action-scroll-area::-webkit-scrollbar-thumb { background: #00ffff; border-radius: 4px; }
+.action-scroll-area::-webkit-scrollbar-thumb { background: #c5a059; border-radius: 4px; }
+
+.target-btn {
+    width: 100%; padding: 12px 14px; margin: 4px 0;
+    background: rgba(255,255,255,0.05); border: 1px solid rgba(197, 160, 89, 0.3);
+    color: white; border-radius: 10px; font-family: 'Prompt', sans-serif;
+    font-size: 13.5px; text-align: left; cursor: pointer; transition: 0.2s; font-weight: 600;
+}
+.target-btn:hover { background: rgba(197, 160, 89, 0.2); border-color: #ffd700; }
+.btn-prank { background: rgba(155, 89, 182, 0.12); border-color: rgba(155, 89, 182, 0.4); }
 
 /* กล่องผลลัพธ์โหวต */
 .vote-result-box {
-    background: rgba(255, 0, 0, 0.15);
-    border: 1px solid rgba(255, 71, 87, 0.6);
-    padding: 15px;
-    border-radius: 12px;
-    color: #fff;
-    font-size: 14px;
-    text-align: center;
-    margin-top: auto;
-    box-shadow: inset 0 0 20px rgba(255,0,0,0.3);
+    background: rgba(231, 76, 60, 0.12); border: 1px solid rgba(231, 76, 60, 0.4);
+    padding: 12px; border-radius: 10px; margin-top: 8px; color: #fff;
+    font-size: 13px; text-align: left; line-height: 1.5;
 }
 
-/* เอฟเฟกต์จบเกม */
-.epic-win-wolf { background: radial-gradient(circle, #4a0000 0%, #000 100%) !important; }
-.epic-win-villager { background: radial-gradient(circle, #002233 0%, #000 100%) !important; }
-.glow-text-wolf { color: #ff4757 !important; text-shadow: 0 0 30px #ff0000 !important; font-size: 30px !important; }
-.glow-text-villager { color: #00ffff !important; text-shadow: 0 0 30px #00ffff !important; font-size: 30px !important; }
+.room-info { font-size: 11px; color: #ffd700; background: rgba(0,0,0,0.8); padding: 4px 10px; border-radius: 8px; position: absolute; top: 15px; right: 15px; border: 1px solid rgba(197, 160, 89, 0.4); }
 
-/* ป๊อปอัปแจ้งเตือน Toast */
+.modal { display: none; position: fixed; z-index: 1000; left: 0; top: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.85); justify-content: center; align-items: center; padding: 20px; }
+.modal-content { background: rgba(15, 15, 20, 0.98); border: 2px solid #c5a059; padding: 25px; border-radius: 20px; width: min(100%, 400px); max-height: 80vh; overflow-y: auto; text-align: left; }
+.close-btn { background: linear-gradient(135deg, #c5a059, #8c6d28); color: #111; border: none; padding: 12px; width: 100%; border-radius: 10px; font-weight: 800; margin-top: 15px; cursor: pointer; font-family: 'Prompt', sans-serif; }
+
 #toast-container { position: fixed; top: 20px; left: 50%; transform: translateX(-50%); z-index: 999999; display: flex; flex-direction: column; gap: 8px; width: 90%; max-width: 350px; pointer-events: none; }
-.custom-toast { background: rgba(0, 0, 0, 0.95); border: 1px solid #00ffff; color: white; padding: 14px; border-radius: 12px; font-size: 14px; display: flex; align-items: center; gap: 10px; box-shadow: 0 10px 30px rgba(0,255,255,0.2); animation: toastIn 0.3s forwards, toastOut 0.3s ease 3s forwards; }
+.custom-toast { background: rgba(15, 15, 20, 0.95); border: 1px solid rgba(197, 160, 89, 0.4); border-left: 4px solid #2ed573; color: white; padding: 12px 15px; border-radius: 10px; font-size: 13.5px; display: flex; align-items: center; gap: 10px; animation: toastIn 0.3s forwards, toastOut 0.3s ease 3s forwards; }
 @keyframes toastIn { from { opacity: 0; transform: translateY(-20px); } to { opacity: 1; transform: translateY(0); } }
 @keyframes toastOut { from { opacity: 1; transform: translateY(0); } to { opacity: 0; transform: translateY(-20px); } }
 
-/* หน้า Modal กติกา */
-.modal { display: none; position: fixed; z-index: 1000; left: 0; top: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.9); justify-content: center; align-items: center; padding: 20px; }
-.modal-content { background: rgba(10, 10, 18, 0.95); border: 2px solid #00ffff; padding: 30px; border-radius: 20px; width: min(100%, 400px); max-height: 85vh; overflow-y: auto; text-align: left; box-shadow: 0 0 50px rgba(0,255,255,0.2); }
+.epic-win-wolf { background: radial-gradient(circle, #4a0000 0%, #0a0000 100%) !important; box-shadow: 0 0 100px rgba(255,0,0,0.6) !important; }
+.epic-win-villager { background: radial-gradient(circle, #003311 0%, #000a05 100%) !important; box-shadow: 0 0 100px rgba(46,213,115,0.6) !important; }
 
