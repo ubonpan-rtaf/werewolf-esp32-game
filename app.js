@@ -1,5 +1,52 @@
+let audioCtx = null;
+
+function initAudioContext() {
+    if (!audioCtx) {
+        try {
+            audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+        } catch (e) {
+            console.warn("Web Audio API not supported", e);
+        }
+    }
+    if (audioCtx && audioCtx.state === 'suspended') {
+        audioCtx.resume().catch(() => {});
+    }
+}
+
+function playSound(type) {
+    try {
+        initAudioContext();
+        if (!audioCtx) return;
+        
+        const osc = audioCtx.createOscillator(); 
+        const gain = audioCtx.createGain();
+        osc.connect(gain); 
+        gain.connect(audioCtx.destination);
+        
+        const now = audioCtx.currentTime;
+        if (type === 'click') { 
+            osc.frequency.setValueAtTime(440, now); 
+            osc.frequency.exponentialRampToValueAtTime(880, now + 0.1); 
+            gain.gain.setValueAtTime(0.05, now); 
+            gain.gain.exponentialRampToValueAtTime(0.001, now + 0.1); 
+            osc.start(now); 
+            osc.stop(now + 0.1); 
+        } else if (type === 'alert') { 
+            osc.frequency.setValueAtTime(261.63, now); 
+            osc.frequency.setValueAtTime(392.00, now + 0.15); 
+            gain.gain.setValueAtTime(0.1, now); 
+            gain.gain.exponentialRampToValueAtTime(0.001, now + 0.35); 
+            osc.start(now); 
+            osc.stop(now + 0.35); 
+        }
+    } catch (e) {
+        console.warn("Sound error:", e);
+    }
+}
+
 function showToast(message, type = 'normal') {
     const container = document.getElementById('toast-container');
+    if (!container) return;
     const toast = document.createElement('div');
     toast.className = `custom-toast ${type}`;
     let icon = type === 'error' ? '❌' : type === 'warning' ? '🚨' : type === 'mystic' ? '🔮' : '🔔';
@@ -18,7 +65,12 @@ const firebaseConfig = {
     appId: "1:768089473466:web:b9196bc05fa83144c39d83",
     databaseURL: "https://werewolf-esp32-game-default-rtdb.asia-southeast1.firebasedatabase.app"
 };
-firebase.initializeApp(firebaseConfig);
+
+try {
+    firebase.initializeApp(firebaseConfig);
+} catch (e) {
+    console.error("Firebase init error:", e);
+}
 const db = firebase.database();
 
 let myPlayerId = localStorage.getItem("werewolf_player_id") || "player_" + Date.now();
@@ -45,31 +97,6 @@ const npcVoices = {
 
 const winWolfAudio = new Audio('https://actions.google.com/sounds/v1/horror/monster_snarl.ogg');
 const winVillagerAudio = new Audio('https://actions.google.com/sounds/v1/crowds/crowd_cheer.ogg');
-const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-
-function playSound(type) {
-    if (audioCtx.state === 'suspended') audioCtx.resume();
-    const osc = audioCtx.createOscillator(); 
-    const gain = audioCtx.createGain();
-    osc.connect(gain); 
-    gain.connect(audioCtx.destination);
-    
-    if (type === 'click') { 
-        osc.frequency.setValueAtTime(440, audioCtx.currentTime); 
-        osc.frequency.exponentialRampToValueAtTime(880, audioCtx.currentTime + 0.1); 
-        gain.gain.setValueAtTime(0.05, audioCtx.currentTime); 
-        gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.1); 
-        osc.start(); 
-        osc.stop(audioCtx.currentTime + 0.1); 
-    } else if (type === 'alert') { 
-        osc.frequency.setValueAtTime(261.63, audioCtx.currentTime); 
-        osc.frequency.setValueAtTime(392.00, audioCtx.currentTime + 0.15); 
-        gain.gain.setValueAtTime(0.1, audioCtx.currentTime); 
-        gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.35); 
-        osc.start(); 
-        osc.stop(audioCtx.currentTime + 0.35); 
-    }
-}
 
 function changeVolume(val) { 
     currentVol = parseFloat(val); 
@@ -84,7 +111,7 @@ function playNpcVoice(phase) {
     if (npcVoices[phase]) {
         if (isMusicPlaying) bgmMusic.volume = 0.05;
         currentNpcAudio = npcVoices[phase]; 
-        currentNpcAudio.play().catch(e => console.log("AutoPlay block"));
+        currentNpcAudio.play().catch(() => {});
         currentNpcAudio.onended = () => { 
             if (isMusicPlaying) bgmMusic.volume = currentVol; 
         };
@@ -96,19 +123,32 @@ function playNpcVoice(phase) {
 function toggleBGM() {
     const btn = document.getElementById("music-toggle-btn");
     if (!isMusicPlaying) { 
-        bgmMusic.play(); 
+        bgmMusic.play().catch(() => {}); 
         isMusicPlaying = true; 
-        btn.innerText = "🔇 ปิดเพลงบรรยากาศ"; 
-        btn.style.color = "#ff4757"; 
+        if (btn) {
+            btn.innerText = "🔇 ปิดเพลงบรรยากาศ"; 
+            btn.style.color = "#ff4757"; 
+        }
     } else { 
         bgmMusic.pause(); 
         isMusicPlaying = false; 
-        btn.innerText = "🎶 เปิดเพลงบรรยากาศ"; 
-        btn.style.color = "#2ed573"; 
+        if (btn) {
+            btn.innerText = "🎶 เปิดเพลงบรรยากาศ"; 
+            btn.style.color = "#2ed573"; 
+        }
     }
 }
 
 function enterGameWorld() {
+    // 1. ซ่อนหน้าจอ Intro ทันที
+    const intro = document.getElementById("intro-screen"); 
+    if (intro) {
+        intro.style.transition = "opacity 0.6s ease"; 
+        intro.style.opacity = "0"; 
+        setTimeout(() => { intro.style.display = "none"; }, 600);
+    }
+    
+    // 2. รันเสียงหลังจากปลดล็อกสิทธิ์บนเบราว์เซอร์แล้ว
     playSound('click'); 
     bgmMusic.play().then(() => { 
         isMusicPlaying = true; 
@@ -117,12 +157,7 @@ function enterGameWorld() {
             btn.innerText = "🔇 ปิดเพลงบรรยากาศ"; 
             btn.style.color = "#ff4757"; 
         } 
-    }).catch(e => {});
-    
-    const intro = document.getElementById("intro-screen"); 
-    intro.style.transition = "opacity 0.8s ease"; 
-    intro.style.opacity = "0"; 
-    setTimeout(() => { intro.style.display = "none"; }, 800);
+    }).catch(() => {});
 }
 
 function openManual() { 
@@ -192,8 +227,8 @@ db.ref("werewolf_game/system/gameState").on("value", (snapshot) => {
     const trustBar = document.getElementById("trust-bar"); 
     const trustVal = document.getElementById("trust-val");
     
-    actionArea.innerHTML = ""; 
-    voteArea.innerHTML = "";
+    if (actionArea) actionArea.innerHTML = ""; 
+    if (voteArea) voteArea.innerHTML = "";
 
     db.ref("werewolf_game/players").once("value", (playersSnap) => {
         playersData = playersSnap.val() || {}; 
@@ -272,19 +307,20 @@ db.ref("werewolf_game/system/gameState").on("value", (snapshot) => {
             roleEl.className = "glow-text-wolf"; 
             npcText.innerText = "เสียงหอนกึกก้อง... หมู่บ้านถูกย้อมด้วยสีเลือด หมาป่าคือผู้ชนะอย่างแท้จริง!"; 
             mainCont.classList.add("epic-win-wolf"); 
-            winWolfAudio.play(); 
+            winWolfAudio.play().catch(() => {}); 
         } else if (state === "villager_win") { 
             phaseInd.innerText = "✨ ชัยชนะแห่งแสงสว่าง"; 
             roleEl.innerHTML = "VILLAGERS WIN!"; 
             roleEl.className = "glow-text-villager"; 
             npcText.innerText = "แสงสว่างขับไล่ความมืดมิด! หมาป่าถูกกำจัดหมดสิ้น หมู่บ้านกลับมาสงบสุขอีกครั้ง!"; 
             mainCont.classList.add("epic-win-villager"); 
-            winVillagerAudio.play(); 
+            winVillagerAudio.play().catch(() => {}); 
         }
     });
 });
 
 function loadTargets(container, mode, playersObj, myName) {
+    if (!container) return;
     Object.keys(playersObj).forEach(pId => {
         if (pId !== myPlayerId && playersObj[pId].isAlive) {
             const btn = document.createElement("button"); 
@@ -312,6 +348,7 @@ function loadTargets(container, mode, playersObj, myName) {
 }
 
 function processWolfKills(container, playersObj) {
+    if (!container) return;
     db.ref("werewolf_game/wolf_kills").once("value", (snap) => {
         if (snap.exists()) { 
             let deadList = []; 
@@ -328,6 +365,7 @@ function processWolfKills(container, playersObj) {
 }
 
 function calculateVotesAndTrust(container, playersObj) {
+    if (!container) return;
     db.ref("werewolf_game/votes").once("value", (snap) => {
         const votes = snap.val();
         if (!votes) { 
@@ -373,7 +411,9 @@ function calculateVotesAndTrust(container, playersObj) {
 function toggleGMPanel() {
     playSound('click'); 
     const panel = document.getElementById('gm-panel');
-    panel.style.display = panel.style.display === 'flex' ? 'none' : 'flex';
+    if (panel) {
+        panel.style.display = panel.style.display === 'flex' ? 'none' : 'flex';
+    }
 }
 
 let isGmProcessing = false; 
@@ -481,4 +521,20 @@ async function checkWinCondition() {
 async function gmResetGame() {
     if (!confirm("คุณต้องการล้างกระดานและเตะทุกคนกลับ Lobby ใช่หรือไม่?")) return;
     playSound('alert');
-    await db.ref("werewolf_game"
+    await db.ref("werewolf_game").remove();
+    await db.ref("werewolf_game/system/gameState").set("lobby");
+    showToast("ล้างบอร์ดเกมเรียบร้อย", "error");
+}
+
+function gmAddBot() {
+    playSound('click'); 
+    let botId = "bot_manual_" + Date.now(); 
+    let botName = "Hero_Bot_" + Math.floor(Math.random() * 90 + 10);
+    db.ref("werewolf_game/players/" + botId).set({ 
+        name: botName, 
+        role: "waiting", 
+        isAlive: true, 
+        trust: 0 
+    });
+    showToast(`เสกบอท ${botName} ลงบอร์ดแล้ว!`, "normal");
+}
