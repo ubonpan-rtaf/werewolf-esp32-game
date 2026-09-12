@@ -6,30 +6,39 @@
     <title>WEREWOLF LEGENDS: EPIC FANTASY RPG</title>
     <link href="https://fonts.googleapis.com/css2?family=Prompt:wght@300;400;600;700;900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
-    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
 </head>
 <body>
     <video autoplay muted loop playsinline id="bg-video">
         <source src="lycan-intro.mp4" type="video/mp4">
     </video>
 
+    <button class="gm-toggle-btn" id="gm-toggle-btn" onclick="toggleGMPanel()" title="แผงควบคุมสภา">👑</button>
+
     <div id="intro-screen" style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 9999; background: #000; display: flex; flex-direction: column; justify-content: center; align-items: center; overflow: hidden;">
         <video autoplay muted loop playsinline style="position: absolute; width: 100%; height: 100%; object-fit: cover; filter: brightness(0.6) contrast(1.1);">
             <source src="lycan-intro.mp4" type="video/mp4">
         </video>
         <div style="position: relative; z-index: 2; text-align: center; background: rgba(10, 10, 15, 0.85); backdrop-filter: blur(15px); padding: 35px 25px; border-radius: 24px; border: 2px solid #c5a059; width: min(90%, 380px);">
-            <h1 style="font-size: 22px; font-weight: 900; background: linear-gradient(135deg, #ffd700, #ff4757); -webkit-background-clip: text; -webkit-text-fill-color: transparent; margin-bottom: 8px;">Werewolf Legends</h1>
+            <h1 style="font-size: 24px; font-weight: 900; background: linear-gradient(135deg, #ffd700, #ff4757); -webkit-background-clip: text; -webkit-text-fill-color: transparent; margin-bottom: 8px;">Werewolf Legends</h1>
             <p style="font-size: 13px; color: #dcdde1; margin-bottom: 20px;">มหากาพย์แห่งความมืดและคำสาปโลหิต...</p>
             <button class="btn" onclick="enterGameWorld()">🔥 เปิดผนึกประตูมิติ</button>
+        </div>
+    </div>
+
+    <div id="gm-panel" class="gm-panel-container">
+        <div class="gm-title">👑 แผงควบคุมสภา (GAME MASTER)</div>
+        <div class="gm-btn-group">
+            <button class="gm-btn" onclick="gmStartGame()">▶️ เริ่มเกม/แจกบท</button>
+            <button class="gm-btn" onclick="gmNextPhase()">⏭️ ข้ามเฟสถัดไป</button>
+            <button class="gm-btn" onclick="gmAddBot()">🤖 เพิ่มบอท (Add Bot)</button>
+            <button class="gm-btn" style="background: rgba(231,76,60,0.2); border-color:#e74c3c;" onclick="gmResetGame()">🔄 ยุบห้องเซิร์ฟเวอร์</button>
         </div>
     </div>
 
     <div id="toast-container"></div>
 
     <div class="game-container" id="main-container">
-        
-        <div id="lobby-screen">
+        <div id="lobby-screen" style="flex: 1; display: flex; flex-direction: column; justify-content: center;">
             <h2>Werewolf Legends</h2>
             <div class="subtitle">ระบบเซิร์ฟเวอร์อิสระ & มัลติเพลเยอร์</div>
             
@@ -38,7 +47,7 @@
             <div style="text-align: left; margin-bottom: 10px;">
                 <label style="font-size: 12px; color: #c5a059; font-weight: bold;">เลือกหรือสร้างห้องเซิร์ฟเวอร์:</label>
                 <select id="room-select" onchange="onRoomSelectChange()">
-                    <option value="NEW">➕ สร้างห้องใหม่ (Host New Server)</option>
+                    <option value="NEW">➕ สร้างห้องใหม่ (New Server)</option>
                 </select>
             </div>
             
@@ -46,10 +55,19 @@
             
             <button class="btn" onclick="joinRoom()">⚔️ เข้าสู่สนามรบ</button>
             <button class="btn btn-secondary" onclick="openManual()">📖 เปิดคัมภีร์กฎเกม</button>
-            <button class="btn btn-secondary" onclick="toggleBGM()" style="margin-top: 5px;">🎵 เปิด/ปิด เพลงประกอบ</button>
+
+            <div style="background: rgba(0,0,0,0.6); padding: 12px; border-radius: 12px; margin-top: 10px; border: 1px solid rgba(197,160,89,0.3);">
+                <div style="display:flex; justify-content: space-between; margin-bottom: 8px;">
+                    <span style="font-size: 12px; color: #ffd700;">🎵 ระดับเสียงเพลงประกอบ</span>
+                    <span style="font-size: 12px; color: #2ed573; cursor: pointer;" onclick="toggleBGM()" id="bgm-status">เปิด/ปิดเสียง</span>
+                </div>
+                <div style="display:flex; align-items:center; gap:10px;">
+                    <span>🔈</span><input type="range" id="vol-slider" min="0" max="1" step="0.05" value="0.3" style="flex:1; accent-color:#ffd700;" oninput="changeVolume(this.value)"><span>🔊</span>
+                </div>
+            </div>
         </div>
         
-        <div id="game-screen" style="display:none; height: 100%; display: flex; flex-direction: column;">
+        <div id="game-screen" style="display:none; height: 100%; flex-direction: column;">
             <div class="room-info" id="room-display">ROOM: XXXX</div>
             
             <div class="role-card-epic" id="role-card-bg">
@@ -58,7 +76,6 @@
                 <div class="role-portrait-container" id="portrait-border">
                     <img src="" id="role-image" class="role-portrait" onerror="this.src='data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' viewBox=\'0 0 100 100\'><rect width=\'100\' height=\'100\' fill=\'%23111\'/></svg>'">
                 </div>
-                
                 <div class="role-name-epic" id="my-role">กำลังโหลด...</div>
                 
                 <div class="trust-bar-container" id="trust-container" style="display:none;">
@@ -75,7 +92,7 @@
                 <div id="action-area" class="action-scroll-area"></div>
                 <div id="vote-result-area" style="flex-shrink: 0;"></div>
                 
-                <button id="force-next-btn" onclick="forceNextPhase()" style="display:none; margin-top:10px; flex-shrink: 0; background:rgba(197,160,89,0.15); border:1px solid #c5a059; color:#ffd700; padding:10px; border-radius:10px; font-family:'Prompt'; font-size:12px; font-weight:bold; cursor:pointer;">👑 [Host] ข้ามเฟสถัดไป</button>
+                <button class="btn btn-secondary btn-danger" id="leave-room-btn" onclick="leaveRoom()">🚪 ออกจากเกม / กลับหน้าหลัก</button>
             </div>
         </div>
     </div>
@@ -84,15 +101,19 @@
         <div class="modal-content">
             <h3 style="color:#ffd700; text-align:center; font-size:18px; margin-bottom: 12px;">📖 คัมภีร์ศักดิ์สิทธิ์</h3>
             <p style="font-size:13px; color:#dcdde1; line-height:1.6; margin-bottom: 15px;">
-                <b>• ระบบห้องอิสระ:</b> สร้างห้องใหม่ หรือใส่รหัส 4 หลักเพื่อเข้าห้องเพื่อน<br>
-                <b>• บทบาท:</b> Crimson Lycan (ฆ่า), Cyber Oracle (ส่อง), Aegis Guardian (ปกป้อง), Dark Alchemist (ปรุงยา)<br>
-                <b>• กฎพิเศษ:</b> โหวตเสมอ = ไม่มีคนตาย, แกล้งคนแล้วรอด = Trust +5%<br>
-                <b>• ออโต้รัน:</b> เกมรันเวลาอัตโนมัติ Host สามารถกดข้ามเฟสได้
+                <b>• แผงควบคุม GM:</b> คนสร้างห้องจะมีปุ่ม 👑 มุมขวาบน เพื่อเปิดแผงเสกบอท หรือเริ่มเกมได้<br>
+                <b>• บทบาท:</b> หมาป่า (ล่าเหยื่อ), ผู้หยั่งรู้ (ส่องบทบาท), อัศวิน (กางโล่), นักปรุงยา (ใช้ยา), ชาวบ้าน (สืบสวน)<br>
+                <b>• กฎพิเศษ:</b> โหวตเสมอ = ไม่มีคนตาย, แกล้งจับผิดคนบริสุทธิ์แล้วเขารอด = Trust +5%<br>
+                <b>• ออโต้รัน:</b> เกมรันเวลาอัตโนมัติ ไม่ต้องมีคนคุมก็เล่นได้
             </p>
             <button class="close-btn" onclick="closeManual()">รับทราบ</button>
         </div>
     </div>
 
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
     <script src="app.js"></script>
 </body>
 </html>
+
+
