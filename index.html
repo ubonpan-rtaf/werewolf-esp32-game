@@ -10,18 +10,19 @@
     <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
 </head>
 <body>
+    <!-- วิดีโอพื้นหลัง Intro เดิมที่ยอดเยี่ยมของคุณ -->
     <video autoplay muted loop playsinline id="bg-video">
         <source src="lycan-intro.mp4" type="video/mp4">
     </video>
 
-    <!-- หน้า Intro ข้ามวิดีโอ -->
+    <!-- หน้าอินโทรเปิดตัว -->
     <div id="intro-screen" style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 9999; background: #000; display: flex; flex-direction: column; justify-content: center; align-items: center; overflow: hidden;">
         <video autoplay muted loop playsinline style="position: absolute; width: 100%; height: 100%; object-fit: cover; filter: brightness(0.65) contrast(1.1);">
             <source src="lycan-intro.mp4" type="video/mp4">
         </video>
-        <div style="position: relative; z-index: 2; text-align: center; background: rgba(10, 10, 18, 0.75); backdrop-filter: blur(10px); padding: 40px 30px; border-radius: 28px; border: 2px solid rgba(212, 175, 55, 0.5); box-shadow: 0 0 50px rgba(0,0,0,0.9); width: min(90%, 420px);">
-            <h1 style="font-size: 24px; font-weight: 900; background: linear-gradient(135deg, #ffd700, #ff4757); -webkit-background-clip: text; -webkit-text-fill-color: transparent; text-transform: uppercase; margin-bottom: 10px; letter-spacing: 2px;">Werewolf Legends</h1>
-            <p style="font-size: 13.5px; color: #dcdde1; margin-bottom: 25px;">มหากาพย์แห่งความมืดและคำสาปโลหิต...</p>
+        <div style="position: relative; z-index: 2; text-align: center; background: rgba(12, 12, 22, 0.85); backdrop-filter: blur(15px); padding: 35px 25px; border-radius: 24px; border: 2px solid #c5a059; box-shadow: 0 0 40px rgba(0,0,0,0.9); width: min(90%, 400px);">
+            <h1 style="font-size: 24px; font-weight: 900; background: linear-gradient(135deg, #ffd700, #ff4757); -webkit-background-clip: text; -webkit-text-fill-color: transparent; text-transform: uppercase; margin-bottom: 8px; letter-spacing: 1.5px;">Werewolf Legends</h1>
+            <p style="font-size: 13px; color: #dcdde1; margin-bottom: 20px;">มหากาพย์แห่งความมืดและคำสาปโลหิต...</p>
             <button class="btn" onclick="enterGameWorld()">🔥 เปิดผนึกประตูมิติ</button>
         </div>
     </div>
@@ -29,23 +30,23 @@
     <div id="toast-container"></div>
 
     <div class="game-container" id="main-container">
-        <!-- หน้า Lobby สร้างห้อง -->
+        <!-- หน้า Lobby -->
         <div id="lobby-screen">
             <h2>Werewolf Legends</h2>
             <div class="subtitle">ระบบเซิร์ฟเวอร์อิสระ & ออโต้รัน</div>
             
-            <input type="text" id="player-name" placeholder="ระบุฉายานักรบ..." autocomplete="off">
+            <input type="text" id="player-name" placeholder="ระบุฉายานักรบของคุณ..." autocomplete="off">
             <input type="text" id="room-id" placeholder="รหัสห้อง (เว้นว่างเพื่อสร้างห้องใหม่)" autocomplete="off">
             
             <button class="btn" onclick="joinRoom()">⚔️ เข้าร่วม / สร้างเซิร์ฟเวอร์</button>
             <button class="btn btn-secondary" onclick="openManual()">📖 เปิดคัมภีร์กฎเกม</button>
             
-            <div style="margin-top: 15px;">
+            <div style="margin-top: 10px;">
                 <button class="btn btn-secondary" onclick="toggleBGM()">🎵 เปิด/ปิด เพลงประกอบ</button>
             </div>
         </div>
         
-        <!-- หน้าจอเล่นเกม -->
+        <!-- หน้าจอเล่นเกมหลัก -->
         <div id="game-screen" style="display:none;">
             <div class="room-info" id="room-display">ROOM: XXXX</div>
             
@@ -58,16 +59,14 @@
                 
                 <div class="role-name-epic" id="my-role">กำลังโหลด...</div>
                 
-                <!-- หลอด Trust Score -->
                 <div class="trust-bar-container" id="trust-container" style="display:none;">
                     <div class="trust-bar-fill" id="trust-bar"></div>
                     <div class="trust-text">ความน่าเชื่อถือ <span id="trust-val">0</span>%</div>
                 </div>
 
-                <!-- หลอดเวลา Auto-Timer -->
                 <div class="timer-container" id="timer-box" style="display:none;">
                     <div class="timer-bar" id="timer-bar"></div>
-                    <div class="timer-text" id="timer-text">ระบบกำลังประมวลผล...</div>
+                    <div class="timer-text" id="timer-text">กำลังประมวลผล...</div>
                 </div>
 
                 <div class="npc-dialogue" id="npc-text">เชื่อมต่อระบบสภา...</div>
@@ -75,7 +74,7 @@
                 <div id="action-area" class="action-scroll-area"></div>
                 <div id="vote-result-area"></div>
                 
-                <button id="force-next-btn" onclick="forceNextPhase()" style="display:none; margin-top:10px; background:rgba(255,255,255,0.1); border:1px solid #aaa; color:#fff; padding:8px; border-radius:8px; font-family:'Prompt'; font-size:11px; cursor:pointer;">👑 [Host] เริ่มเกม / ข้ามเฟส</button>
+                <button id="force-next-btn" onclick="forceNextPhase()" style="display:none; margin-top:10px; background:rgba(255,255,255,0.08); border:1px solid #c5a059; color:#ffd700; padding:10px; border-radius:10px; font-family:'Prompt'; font-size:12px; font-weight:bold; cursor:pointer; width:100%;">👑 [Host] ข้ามเฟสถัดไป</button>
             </div>
         </div>
     </div>
@@ -83,17 +82,16 @@
     <!-- Modal คู่มือ -->
     <div id="manual-modal" class="modal">
         <div class="modal-content">
-            <h3 style="color:#ffd700; text-align:center; font-size:20px; margin-bottom: 15px;">📖 คัมภีร์ศักดิ์สิทธิ์</h3>
+            <h3 style="color:#ffd700; text-align:center; font-size:18px; margin-bottom: 12px;">📖 คัมภีร์ศักดิ์สิทธิ์</h3>
             <p style="font-size:13px; color:#dcdde1; line-height:1.6; margin-bottom: 15px;">
-                <b>ระบบห้องอิสระ:</b> สร้างห้องหรือใส่รหัสเพื่อนเพื่อเล่นร่วมกัน<br>
-                <b>สกิลเค้นความจริง:</b> กดแกล้งเพื่อนตอนกลางวัน หากเขาไม่ใช่หมาป่าและรอดโหวต จะได้ Trust +5%<br>
-                <b>ออโต้รัน:</b> เกมรันเวลาและเปลี่ยนเฟสอัตโนมัติ (Host สามารถกดปุ่มเริ่มเกมที่ด้านล่างการ์ดได้ทันที)
+                <b>• ระบบห้องอิสระ:</b> สร้างห้องใหม่ หรือใส่รหัส 4 ตัวเพื่อเข้าห้องเดียวกับเพื่อน<br>
+                <b>• บทบาทพิเศษ:</b> มีทั้ง Crimson Lycan, Cyber Oracle (ผู้หยั่งรู้), Aegis Guardian (อัศวินโล่ป้องกัน), และ Dark Alchemist<br>
+                <b>• ออโต้รัน:</b> เกมรันเวลาและเปลี่ยนเฟสอัตโนมัติ (Host สามารถกดปุ่มข้ามเฟสด้านล่างได้ทันที)
             </p>
-            <button class="close-btn" onclick="closeManual()">ปิดคัมภีร์</button>
+            <button class="close-btn" onclick="closeManual()">รับทราบ</button>
         </div>
     </div>
 
     <script src="app.js"></script>
 </body>
 </html>
-
