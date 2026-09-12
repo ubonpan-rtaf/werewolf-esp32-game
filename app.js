@@ -149,6 +149,7 @@ function startTimer() {
         let timeLeft = phaseEndTime - Date.now();
         if(timeLeft <= 0) {
             timeLeft = 0; clearInterval(timerInterval);
+            // ป้องกันให้เฉพาะ Host เป็นคนสั่งเปลี่ยนเฟสอัตโนมัติ ลดปัญหา Race Condition
             if(isHost) forceNextPhase();
         }
         let pct = (timeLeft / maxDuration) * 100;
@@ -190,7 +191,9 @@ async function assignRoles() {
         let r = "villager"; 
         if(idx === 0) r = "wolf"; 
         else if(idx === 1 && keys.length >= 3) r = "seer";
-        else if(idx === 2 && keys.length >= 5) r = "guardian";
+        else if(idx === 2 && keys.length >= 4) r = "guardian";
+        else if(idx === 3 && keys.length >= 5) r = "alchemist";
+        
         up[`werewolf_rooms/${currentRoom}/players/${k}/role`] = r;
         up[`werewolf_rooms/${currentRoom}/players/${k}/isAlive`] = true;
         up[`werewolf_rooms/${currentRoom}/players/${k}/trust`] = 0;
@@ -198,6 +201,8 @@ async function assignRoles() {
     await db.ref().update(up);
     await db.ref(`werewolf_rooms/${currentRoom}/votes`).remove();
     await db.ref(`werewolf_rooms/${currentRoom}/wolf_kills`).remove();
+    await db.ref(`werewolf_rooms/${currentRoom}/guardian_shields`).remove();
+    await db.ref(`werewolf_rooms/${currentRoom}/alchemist_actions`).remove();
     await db.ref(`werewolf_rooms/${currentRoom}/pranks`).remove();
 }
 
@@ -210,6 +215,8 @@ async function checkWin() {
     
     await db.ref(`werewolf_rooms/${currentRoom}/votes`).remove(); 
     await db.ref(`werewolf_rooms/${currentRoom}/wolf_kills`).remove();
+    await db.ref(`werewolf_rooms/${currentRoom}/guardian_shields`).remove();
+    await db.ref(`werewolf_rooms/${currentRoom}/alchemist_actions`).remove();
     return "night_phase";
 }
 
@@ -224,7 +231,18 @@ function updateGameUI(state) {
     mainContainer.classList.remove("epic-win-wolf", "epic-win-villager");
     
     if(state==="role_reveal") { ind.innerText="สถานะ: แจกบทบาท"; txt.innerText="ชะตากรรมของท่านถูกกำหนดแล้ว จงจดจำบทบาทของตนไว้ให้ดี..."; }
-    else if(state==="night_phase") { ind.innerText="🌙 ราตรีกาล"; txt.innerText="ความมืดเข้าปกคลุมหมู่บ้าน..."; if(!isDead) loadActions(actionArea, myRole==='wolf'?'kill':myRole==='seer'?'seer':'none'); }
+    else if(state==="night_phase") { 
+        ind.innerText="🌙 ราตรีกาล"; 
+        txt.innerText="ความมืดเข้าปกคลุมหมู่บ้าน ผู้มีหน้าที่จงปฏิบัติภารกิจ..."; 
+        if(!isDead) {
+            let actionType = 'none';
+            if(myRole === 'wolf') actionType = 'kill';
+            else if(myRole === 'seer') actionType = 'seer';
+            else if(myRole === 'guardian') actionType = 'protect';
+            else if(myRole === 'alchemist') actionType = 'potion';
+            loadActions(actionArea, actionType);
+        }
+    }
     else if(state==="day_phase") { ind.innerText="☀️ แสงอรุณรุ่งสว่าง"; txt.innerText="รุ่งอรุณมาถึง สำรวจความเสียหายและใช้สกิลเค้นความจริง!"; showKills(voteArea); if(!isDead) loadActions(actionArea, "prank"); }
     else if(state==="voting_phase") { ind.innerText="⚖️ การพิพากษาแห่งสภา"; txt.innerText="เวลาแห่งการโหวตประหารมาถึงแล้ว!"; if(!isDead) loadActions(actionArea, "vote"); }
     else if(state==="result_phase") { ind.innerText="📜 ผลคำพิพากษา"; txt.innerText="สภาได้ตัดสินแล้ว..."; showVotes(voteArea); }
@@ -243,39 +261,73 @@ async function loadActions(container, mode) {
     const snap = await db.ref(`werewolf_rooms/${currentRoom}/players`).once("value");
     let p = snap.val();
     for(let k in p) {
-        if(k !== myPlayerId && p[k].isAlive) {
-            const btn = document.createElement("button"); btn.className = mode==="prank" ? "target-btn btn-prank" : "target-btn";
-            btn.innerText = mode==="kill" ? "🎯 สังหาร: "+p[k].name : mode==="seer" ? "🔮 ส่องความจริง: "+p[k].name : mode==="prank" ? "👉 เค้นความจริง: "+p[k].name : "⚖️ โหวตประหาร: "+p[k].name;
-            btn.onclick = () => {
-                btn.style.background = "#d4af37"; btn.style.color = "#000"; btn.innerText = "บันทึกคำสั่งแล้ว"; btn.disabled = true;
-                if(mode==="kill") db.ref(`werewolf_rooms/${currentRoom}/wolf_kills/${k}`).set(true);
-                else if(mode==="vote") db.ref(`werewolf_rooms/${currentRoom}/votes/${myPlayerId}`).set(k);
-                else if(mode==="prank") {
-                    db.ref(`werewolf_rooms/${currentRoom}/pranks/${k}`).set("เพื่อนร่วมทีม");
-                    showToast(`ส่งคำท้าเค้นความจริงไปหา ${p[k].name} แล้ว!`, "warning");
-                }
-                else if(mode==="seer") showToast(`${p[k].name} คือ [${p[k].role==='wolf'?'หมาป่า 🐺':'ฝ่ายดี ✨'}]`, "mystic");
-            }; container.appendChild(btn);
+        if((mode !== 'protect' && k !== myPlayerId) || mode === 'protect') { // Guardian ป้องกันตัวเองได้
+            if(p[k].isAlive) {
+                const btn = document.createElement("button"); btn.className = mode==="prank" ? "target-btn btn-prank" : "target-btn";
+                btn.innerText = mode==="kill" ? "🎯 ล่าเหยื่อ: "+p[k].name 
+                              : mode==="seer" ? "🔮 ส่องความจริง: "+p[k].name 
+                              : mode==="protect" ? "🛡️ ปกป้อง: "+p[k].name 
+                              : mode==="potion" ? "🧪 เลือกใช้ยาพิษ/ยาใส: "+p[k].name 
+                              : mode==="prank" ? "👉 เค้นความจริง: "+p[k].name 
+                              : "⚖️ โหวตประหาร: "+p[k].name;
+                
+                btn.onclick = () => {
+                    btn.style.background = "#d4af37"; btn.style.color = "#000"; btn.innerText = "บันทึกคำสั่งแล้ว"; btn.disabled = true;
+                    if(mode==="kill") db.ref(`werewolf_rooms/${currentRoom}/wolf_kills/${k}`).set(true);
+                    else if(mode==="vote") db.ref(`werewolf_rooms/${currentRoom}/votes/${myPlayerId}`).set(k);
+                    else if(mode==="protect") {
+                        db.ref(`werewolf_rooms/${currentRoom}/guardian_shields/${k}`).set(true);
+                        showToast(`ร่ายเวทย์ปกป้อง ${p[k].name} เรียบร้อย!`, "mystic");
+                    }
+                    else if(mode==="potion") {
+                        db.ref(`werewolf_rooms/${currentRoom}/alchemist_actions/${myPlayerId}`).set({ target: k, action: 'poison' });
+                        showToast(`ปรุงยาพิษหมายมั่นจัดการ ${p[k].name}!`, "error");
+                    }
+                    else if(mode==="prank") {
+                        db.ref(`werewolf_rooms/${currentRoom}/pranks/${k}`).set("เพื่อนร่วมทีม");
+                        showToast(`ส่งคำท้าเค้นความจริงไปหา ${p[k].name} แล้ว!`, "warning");
+                    }
+                    else if(mode==="seer") showToast(`${p[k].name} คือ [${p[k].role==='wolf'?'หมาป่า 🐺':'ฝ่ายดี ✨'}]`, "mystic");
+                }; container.appendChild(btn);
+            }
         }
     }
 }
 
 async function showKills(container) {
-    const snap = await db.ref(`werewolf_rooms/${currentRoom}/wolf_kills`).once("value");
-    if(snap.exists()) {
-        const deadSnaps = await db.ref(`werewolf_rooms/${currentRoom}/players`).once("value"); const ps = deadSnaps.val();
-        let deadNames = [];
-        snap.forEach(c => { 
-            if(ps[c.key]) {
-                deadNames.push(ps[c.key].name); 
-                db.ref(`werewolf_rooms/${currentRoom}/players/${c.key}/isAlive`).set(false);
-                db.ref(`werewolf_rooms/${currentRoom}/players/${c.key}/trust`).set(0); 
+    // ตรวจสอบโล่ป้องกันของ Guardian และยาพิษ Alchemist
+    const shieldSnap = await db.ref(`werewolf_rooms/${currentRoom}/guardian_shields`).once("value");
+    const shields = shieldSnap.val() || {};
+
+    const killSnap = await db.ref(`werewolf_rooms/${currentRoom}/wolf_kills`).once("value");
+    const deadSnaps = await db.ref(`werewolf_rooms/${currentRoom}/players`).once("value"); 
+    const ps = deadSnaps.val() || {};
+    
+    let deadNames = [];
+    let savedNames = [];
+
+    if(killSnap.exists()) {
+        killSnap.forEach(c => { 
+            let targetId = c.key;
+            if(ps[targetId]) {
+                if(shields[targetId]) {
+                    // มีโล่อัศวินป้องกัน! รอดชีวิต
+                    savedNames.push(ps[targetId].name);
+                } else {
+                    deadNames.push(ps[targetId].name); 
+                    db.ref(`werewolf_rooms/${currentRoom}/players/${targetId}/isAlive`).set(false);
+                    db.ref(`werewolf_rooms/${currentRoom}/players/${targetId}/trust`).set(0); 
+                }
             }
         });
-        container.innerHTML = `<div class='vote-result-box' style='border-color:#ff4757;'>รุ่งเช้านี้... มีผู้เสียชีวิต: <b>${deadNames.join(", ")}</b></div>`;
-    } else {
-        container.innerHTML = `<div class='vote-result-box' style='border-color:#2ed573;'>รุ่งเช้านี้... ไม่มีใครเสียชีวิต หมู่บ้านปลอดภัย!</div>`;
     }
+
+    let reportHtml = "";
+    if(deadNames.length > 0) reportHtml += `<div class='vote-result-box' style='border-color:#ff4757;'>💀 ผู้เสียชีวิตในคืนนี้: <b>${deadNames.join(", ")}</b></div>`;
+    if(savedNames.length > 0) reportHtml += `<div class='vote-result-box' style='border-color:#3498db; margin-top:5px;'>🛡️ อัศวินแห่งแสงสามารถปกป้องชีวิตของ <b>${savedNames.join(", ")}</b> ไว้ได้ทันเวลา!</div>`;
+    if(deadNames.length === 0 && savedNames.length === 0) reportHtml = `<div class='vote-result-box' style='border-color:#2ed573;'>รุ่งเช้านี้... ไม่มีใครเสียชีวิต หมู่บ้านปลอดภัย!</div>`;
+
+    container.innerHTML = reportHtml;
 }
 
 async function showVotes(container) {
@@ -291,7 +343,18 @@ async function showVotes(container) {
         return;
     }
     const votes = snap.val(); let tally={}; Object.values(votes).forEach(v => tally[v]=(tally[v]||0)+1);
-    let max=0, target=null; for(let id in tally){ if(tally[id]>max){ max=tally[id]; target=id; } }
+    let max=0, target=null, isTie=false; 
+    for(let id in tally){ 
+        if(tally[id]>max){ max=tally[id]; target=id; isTie=false; }
+        else if(tally[id]===max) { isTie=true; }
+    }
+
+    // 🔥 ระบบป้องกันคะแนนโหวตเท่ากัน (Tie-Breaking)
+    if(isTie || !target) {
+        container.innerHTML = `<div class='vote-result-box' style='border-color:#ffd700;'>⚖️ มติสภาเสียงเท่ากัน... ไม่มีผู้ใดถูกขับไล่ในรอบนี้!</div>`;
+        return;
+    }
+
     if(target) {
         const pSnap = await db.ref(`werewolf_rooms/${currentRoom}/players/${target}`).once("value"); const p = pSnap.val();
         container.innerHTML = `
@@ -312,4 +375,5 @@ async function showVotes(container) {
         }
     }
 }
+
 
