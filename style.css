@@ -33,7 +33,7 @@ body {
 
 @keyframes fadeIn { 
     from { opacity: 0; transform: translateY(20px) scale(0.95); } 
-    to { opacity: 1; transform: translateY(0) scale(1); } 
+    to { opacity: 1; transform: translateY(0); } 
 }
 
 h2 { 
@@ -512,6 +512,7 @@ input[type="text"]:focus {
     to { opacity: 0; transform: translateY(-30px); } 
 }
 
+/* ปรับ z-index ของ GM Panel ให้อยู่ระดับ 10001 (เหนือฉาก Intro 9997) */
 .gm-panel-container { 
     position: fixed; 
     bottom: 0; 
@@ -521,7 +522,7 @@ input[type="text"]:focus {
     backdrop-filter: blur(10px); 
     border-top: 2px solid #d4af37; 
     padding: 15px; 
-    z-index: 998; 
+    z-index: 10001; 
     display: none; 
     flex-direction: column; 
     align-items: center; 
@@ -585,7 +586,7 @@ input[type="text"]:focus {
     border-radius: 50%; 
     font-size: 20px; 
     cursor: pointer; 
-    z-index: 9999; 
+    z-index: 10002; 
     box-shadow: 0 0 15px rgba(212,175,55,0.3); 
     display: flex; 
     justify-content: center; 
