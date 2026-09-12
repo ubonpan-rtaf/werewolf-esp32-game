@@ -2,7 +2,7 @@
 <html lang="th">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>WEREWOLF LEGENDS: EPIC FANTASY RPG</title>
     <link href="https://fonts.googleapis.com/css2?family=Prompt:wght@300;400;600;700;900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
@@ -14,97 +14,85 @@
         <source src="lycan-intro.mp4" type="video/mp4">
     </video>
 
-    <div id="intro-screen" style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 9999; background: #000; display: flex; flex-direction: column; justify-content: center; align-items: center;">
-        <video autoplay muted loop playsinline style="position: absolute; width: 100%; height: 100%; object-fit: cover; filter: brightness(0.6) contrast(1.2);">
+    <div id="intro-screen" style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 9999; background: #000; display: flex; flex-direction: column; justify-content: center; align-items: center; overflow: hidden;">
+        <video autoplay muted loop playsinline style="position: absolute; width: 100%; height: 100%; object-fit: cover; filter: brightness(0.6) contrast(1.1);">
             <source src="lycan-intro.mp4" type="video/mp4">
         </video>
-        <div style="position: relative; z-index: 2; text-align: center; background: rgba(0,0,0,0.7); backdrop-filter: blur(10px); padding: 40px; border-radius: 20px; border: 1px solid #00ffff; width: min(90%, 400px);">
-            <h1 style="font-size: 26px; font-weight: 900; background: linear-gradient(135deg, #00ffff, #0055ff); -webkit-background-clip: text; -webkit-text-fill-color: transparent; text-transform: uppercase; margin-bottom: 10px;">Werewolf Legends</h1>
-            <p style="font-size: 13px; color: #dcdde1; margin-bottom: 25px;">มหากาพย์แห่งความมืดและคำสาปโลหิต...</p>
-            <button class="btn" onclick="enterGameWorld()" style="margin-bottom: 0;">🔥 เปิดผนึกประตูมิติ</button>
+        <div style="position: relative; z-index: 2; text-align: center; background: rgba(10, 10, 15, 0.85); backdrop-filter: blur(15px); padding: 35px 25px; border-radius: 24px; border: 2px solid #c5a059; width: min(90%, 380px);">
+            <h1 style="font-size: 22px; font-weight: 900; background: linear-gradient(135deg, #ffd700, #ff4757); -webkit-background-clip: text; -webkit-text-fill-color: transparent; margin-bottom: 8px;">Werewolf Legends</h1>
+            <p style="font-size: 13px; color: #dcdde1; margin-bottom: 20px;">มหากาพย์แห่งความมืดและคำสาปโลหิต...</p>
+            <button class="btn" onclick="enterGameWorld()">🔥 เปิดผนึกประตูมิติ</button>
         </div>
     </div>
 
     <div id="toast-container"></div>
 
     <div class="game-container" id="main-container">
+        
         <div id="lobby-screen">
             <h2>Werewolf Legends</h2>
-            <div class="subtitle">ระบบเซิร์ฟเวอร์มัลติเพลเยอร์ & ออโต้รัน</div>
+            <div class="subtitle">ระบบเซิร์ฟเวอร์อิสระ & มัลติเพลเยอร์</div>
             
             <input type="text" id="player-name" placeholder="ระบุฉายานักรบของคุณ..." autocomplete="off">
             
-            <div style="text-align: left; margin-bottom: 5px;">
-                <label style="font-size: 12px; color: #00ffff; font-weight: bold;">เลือกห้องเซิร์ฟเวอร์:</label>
-                <select id="room-select" onchange="onRoomSelectChange()" style="margin-top: 5px;">
-                    <option value="NEW">➕ สร้างห้องเซิร์ฟเวอร์ใหม่ (New Server)</option>
+            <div style="text-align: left; margin-bottom: 10px;">
+                <label style="font-size: 12px; color: #c5a059; font-weight: bold;">เลือกหรือสร้างห้องเซิร์ฟเวอร์:</label>
+                <select id="room-select" onchange="onRoomSelectChange()">
+                    <option value="NEW">➕ สร้างห้องใหม่ (Host New Server)</option>
                 </select>
             </div>
             
-            <input type="text" id="room-id" placeholder="รหัสห้อง 4 หลัก (กรณีเข้าห้องเพื่อน)" autocomplete="off">
+            <input type="text" id="room-id" placeholder="รหัสห้อง 4 หลัก (เพื่อจอยเพื่อน)" autocomplete="off">
             
             <button class="btn" onclick="joinRoom()">⚔️ เข้าสู่สนามรบ</button>
-            
-            <div style="display: flex; gap: 10px; margin-top: 10px;">
-                <button class="btn btn-secondary" onclick="openManual()" style="flex: 1; min-height: 45px; background: none; border: 1px solid #aaa; padding: 10px;">📖 กฎกติกา</button>
-                <button class="btn btn-secondary" onclick="toggleBGM()" style="flex: 1; min-height: 45px; background: none; border: 1px solid #00ffff; color:#00ffff; padding: 10px;">🎵 เปิด/ปิดเพลง</button>
-            </div>
+            <button class="btn btn-secondary" onclick="openManual()">📖 เปิดคัมภีร์กฎเกม</button>
+            <button class="btn btn-secondary" onclick="toggleBGM()" style="margin-top: 5px;">🎵 เปิด/ปิด เพลงประกอบ</button>
         </div>
         
-        <div id="game-screen" style="display:none;">
+        <div id="game-screen" style="display:none; height: 100%; display: flex; flex-direction: column;">
+            <div class="room-info" id="room-display">ROOM: XXXX</div>
+            
             <div class="role-card-epic" id="role-card-bg">
-                
-                <div style="position: absolute; top: 15px; right: 20px; font-size: 11px; color:#fff; background: rgba(0,0,0,0.8); padding: 4px 8px; border-radius: 6px; border: 1px solid #00ffff; z-index: 100;">
-                    ROOM: <span id="room-display">XXXX</span>
-                </div>
-
-                <div class="role-badge-title" id="phase-indicator">รอผู้เล่นเข้าห้อง...</div>
+                <div class="role-badge-title" id="phase-indicator">รอผู้เล่น...</div>
                 
                 <div class="role-portrait-container" id="portrait-border">
-                    <img src="" id="role-image" class="role-portrait" onerror="this.src='data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' viewBox=\'0 0 100 100\'><rect width=\'100\' height=\'100\' fill=\'%23111\'/><text x=\'50\' y=\'55\' font-size=\'40\' text-anchor=\'middle\' fill=\'white\'>🛡️</text></svg>'">
+                    <img src="" id="role-image" class="role-portrait" onerror="this.src='data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' viewBox=\'0 0 100 100\'><rect width=\'100\' height=\'100\' fill=\'%23111\'/></svg>'">
                 </div>
                 
                 <div class="role-name-epic" id="my-role">กำลังโหลด...</div>
                 
-                <div class="status-bar-wrapper" id="trust-container" style="display:none;">
-                    <div class="status-bar-inner">
-                        <div class="trust-bar-fill" id="trust-bar"></div>
-                        <div class="status-text">ความน่าเชื่อถือ <span id="trust-val">0</span>%</div>
-                    </div>
+                <div class="trust-bar-container" id="trust-container" style="display:none;">
+                    <div class="trust-bar-fill" id="trust-bar"></div>
+                    <div class="bar-text">ความน่าเชื่อถือ <span id="trust-val">0</span>%</div>
                 </div>
-
-                <div class="status-bar-wrapper" id="timer-box" style="display:none;">
-                    <div class="status-bar-inner">
-                        <div class="timer-bar-fill" id="timer-bar"></div>
-                        <div class="status-text" id="timer-text">กำลังประมวลผล...</div>
-                    </div>
+                <div class="timer-container" id="timer-box" style="display:none;">
+                    <div class="timer-bar" id="timer-bar"></div>
+                    <div class="bar-text" id="timer-text">กำลังประมวลผล...</div>
                 </div>
 
                 <div class="npc-dialogue" id="npc-text">เชื่อมต่อระบบสภา...</div>
                 
                 <div id="action-area" class="action-scroll-area"></div>
-                <div id="vote-result-area" style="width: 100%;"></div>
+                <div id="vote-result-area" style="flex-shrink: 0;"></div>
                 
-                <button id="force-next-btn" onclick="forceNextPhase()" style="display:none; margin-top:10px; background:rgba(0,255,255,0.1); border:1px solid #00ffff; color:#00ffff; padding:10px; border-radius:8px; font-family:'Prompt'; font-size:13px; font-weight:bold; cursor:pointer; width:100%; flex-shrink:0;">👑 [Host] ข้ามเฟสถัดไป / เริ่มเกม</button>
+                <button id="force-next-btn" onclick="forceNextPhase()" style="display:none; margin-top:10px; flex-shrink: 0; background:rgba(197,160,89,0.15); border:1px solid #c5a059; color:#ffd700; padding:10px; border-radius:10px; font-family:'Prompt'; font-size:12px; font-weight:bold; cursor:pointer;">👑 [Host] ข้ามเฟสถัดไป</button>
             </div>
         </div>
     </div>
 
     <div id="manual-modal" class="modal">
         <div class="modal-content">
-            <h3 style="color:#00ffff; text-align:center; font-size:18px; margin-bottom: 12px; text-transform: uppercase;">📖 คัมภีร์แห่งแสง</h3>
+            <h3 style="color:#ffd700; text-align:center; font-size:18px; margin-bottom: 12px;">📖 คัมภีร์ศักดิ์สิทธิ์</h3>
             <p style="font-size:13px; color:#dcdde1; line-height:1.6; margin-bottom: 15px;">
-                <b>• ระบบห้อง (Multiplayer):</b> สร้างห้องใหม่ หรือใส่รหัส 4 หลักของเพื่อนเพื่อจอยเข้าปาร์ตี้เดียวกันได้ทันที<br>
-                <b>• บทบาท (Roles):</b> Crimson Lycan (หมาป่า), Cyber Oracle (ส่องคลาส), Aegis Guardian (โล่ป้องกัน), Dark Alchemist (ยาพิษ)<br>
-                <b>• เค้นความจริง (Interrogate):</b> สกิลเฉพาะตอนกลางวัน หากเป้าหมายไม่ใช่หมาป่า และรอดจากการประหาร เขาจะได้ Trust Score +5%<br>
-                <b>• ระบบออโต้รัน:</b> ไม่ต้องพึ่งพากรรมการ เกมดำเนินเวลาและประกาศผลอัตโนมัติ!
+                <b>• ระบบห้องอิสระ:</b> สร้างห้องใหม่ หรือใส่รหัส 4 หลักเพื่อเข้าห้องเพื่อน<br>
+                <b>• บทบาท:</b> Crimson Lycan (ฆ่า), Cyber Oracle (ส่อง), Aegis Guardian (ปกป้อง), Dark Alchemist (ปรุงยา)<br>
+                <b>• กฎพิเศษ:</b> โหวตเสมอ = ไม่มีคนตาย, แกล้งคนแล้วรอด = Trust +5%<br>
+                <b>• ออโต้รัน:</b> เกมรันเวลาอัตโนมัติ Host สามารถกดข้ามเฟสได้
             </p>
-            <button class="btn" onclick="closeManual()" style="margin-bottom:0;">รับทราบ</button>
+            <button class="close-btn" onclick="closeManual()">รับทราบ</button>
         </div>
     </div>
 
     <script src="app.js"></script>
 </body>
 </html>
-
-
