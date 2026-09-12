@@ -10,7 +10,6 @@
     <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
 </head>
 <body>
-    <!-- วิดีโอพื้นหลัง Intro เดิมที่ยอดเยี่ยมของคุณ -->
     <video autoplay muted loop playsinline id="bg-video">
         <source src="lycan-intro.mp4" type="video/mp4">
     </video>
@@ -20,7 +19,7 @@
         <video autoplay muted loop playsinline style="position: absolute; width: 100%; height: 100%; object-fit: cover; filter: brightness(0.65) contrast(1.1);">
             <source src="lycan-intro.mp4" type="video/mp4">
         </video>
-        <div style="position: relative; z-index: 2; text-align: center; background: rgba(12, 12, 22, 0.85); backdrop-filter: blur(15px); padding: 35px 25px; border-radius: 24px; border: 2px solid #c5a059; box-shadow: 0 0 40px rgba(0,0,0,0.9); width: min(90%, 400px);">
+        <div style="position: relative; z-index: 2; text-align: center; background: rgba(12, 12, 22, 0.88); backdrop-filter: blur(15px); padding: 35px 25px; border-radius: 24px; border: 2px solid #c5a059; box-shadow: 0 0 50px rgba(0,0,0,0.9); width: min(90%, 410px);">
             <h1 style="font-size: 24px; font-weight: 900; background: linear-gradient(135deg, #ffd700, #ff4757); -webkit-background-clip: text; -webkit-text-fill-color: transparent; text-transform: uppercase; margin-bottom: 8px; letter-spacing: 1.5px;">Werewolf Legends</h1>
             <p style="font-size: 13px; color: #dcdde1; margin-bottom: 20px;">มหากาพย์แห่งความมืดและคำสาปโลหิต...</p>
             <button class="btn" onclick="enterGameWorld()">🔥 เปิดผนึกประตูมิติ</button>
@@ -30,15 +29,24 @@
     <div id="toast-container"></div>
 
     <div class="game-container" id="main-container">
-        <!-- หน้า Lobby -->
+        <!-- หน้า Lobby / เลือกเซิร์ฟเวอร์และห้อง -->
         <div id="lobby-screen">
             <h2>Werewolf Legends</h2>
-            <div class="subtitle">ระบบเซิร์ฟเวอร์อิสระ & ออโต้รัน</div>
+            <div class="subtitle">ระบบเซิร์ฟเวอร์อิสระ & มัลติเพลเยอร์</div>
             
             <input type="text" id="player-name" placeholder="ระบุฉายานักรบของคุณ..." autocomplete="off">
-            <input type="text" id="room-id" placeholder="รหัสห้อง (เว้นว่างเพื่อสร้างห้องใหม่)" autocomplete="off">
             
-            <button class="btn" onclick="joinRoom()">⚔️ เข้าร่วม / สร้างเซิร์ฟเวอร์</button>
+            <!-- เลือกห้องหรือสร้างห้องใหม่ -->
+            <div style="margin-bottom: 12px; text-align: left;">
+                <label style="font-size: 12px; color: #c5a059; font-weight: bold; margin-bottom: 4px; display: block;">เลือกหรือสร้างห้องเซิร์ฟเวอร์:</label>
+                <select id="room-select" onchange="onRoomSelectChange()">
+                    <option value="NEW">➕ สร้างห้องเซิร์ฟเวอร์ใหม่ (New Server)</option>
+                </select>
+            </div>
+            
+            <input type="text" id="room-id" placeholder="รหัสห้อง 4 หลัก (กรณีจอยห้องเพื่อน)" autocomplete="off">
+            
+            <button class="btn" onclick="joinRoom()">⚔️ เข้าสู่สนามรบ</button>
             <button class="btn btn-secondary" onclick="openManual()">📖 เปิดคัมภีร์กฎเกม</button>
             
             <div style="margin-top: 10px;">
@@ -74,7 +82,7 @@
                 <div id="action-area" class="action-scroll-area"></div>
                 <div id="vote-result-area"></div>
                 
-                <button id="force-next-btn" onclick="forceNextPhase()" style="display:none; margin-top:10px; background:rgba(255,255,255,0.08); border:1px solid #c5a059; color:#ffd700; padding:10px; border-radius:10px; font-family:'Prompt'; font-size:12px; font-weight:bold; cursor:pointer; width:100%;">👑 [Host] ข้ามเฟสถัดไป</button>
+                <button id="force-next-btn" onclick="forceNextPhase()" style="display:none; margin-top:12px; background:rgba(197,160,89,0.15); border:1px solid #c5a059; color:#ffd700; padding:12px; border-radius:12px; font-family:'Prompt'; font-size:13px; font-weight:bold; cursor:pointer; width:100%;">👑 [Host] ข้ามเฟสถัดไป</button>
             </div>
         </div>
     </div>
@@ -84,9 +92,9 @@
         <div class="modal-content">
             <h3 style="color:#ffd700; text-align:center; font-size:18px; margin-bottom: 12px;">📖 คัมภีร์ศักดิ์สิทธิ์</h3>
             <p style="font-size:13px; color:#dcdde1; line-height:1.6; margin-bottom: 15px;">
-                <b>• ระบบห้องอิสระ:</b> สร้างห้องใหม่ หรือใส่รหัส 4 ตัวเพื่อเข้าห้องเดียวกับเพื่อน<br>
-                <b>• บทบาทพิเศษ:</b> มีทั้ง Crimson Lycan, Cyber Oracle (ผู้หยั่งรู้), Aegis Guardian (อัศวินโล่ป้องกัน), และ Dark Alchemist<br>
-                <b>• ออโต้รัน:</b> เกมรันเวลาและเปลี่ยนเฟสอัตโนมัติ (Host สามารถกดปุ่มข้ามเฟสด้านล่างได้ทันที)
+                <b>• ระบบเลือกห้อง/เซิร์ฟเวอร์:</b> สามารถเลือกห้องที่มีคนสร้างไว้แล้วจากรายการ หรือกดสร้างห้องใหม่เพื่อรองรับผู้เล่นจำนวนมากพร้อมกันได้อิสระ<br>
+                <b>• บทบาทพิเศษ:</b> Crimson Lycan, Cyber Oracle, Aegis Guardian และ Dark Alchemist<br>
+                <b>• ระบบออโต้รัน:</b> เกมดำเนินเวลาอัตโนมัติ Host สามารถกดปุ่มข้ามเฟสได้ตลอดเวลา
             </p>
             <button class="close-btn" onclick="closeManual()">รับทราบ</button>
         </div>
@@ -95,3 +103,4 @@
     <script src="app.js"></script>
 </body>
 </html>
+
