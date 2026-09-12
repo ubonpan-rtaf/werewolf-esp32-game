@@ -53,6 +53,32 @@ function enterGameWorld() {
 function openManual() { document.getElementById("manual-modal").style.display = "flex"; }
 function closeManual() { document.getElementById("manual-modal").style.display = "none"; }
 
+// โหลดรายการห้องที่มีอยู่ในระบบแบบเรียลไทม์เพื่อให้ผู้เล่นเลือกจอยได้ทันที
+db.ref("werewolf_rooms").on("value", snap => {
+    const select = document.getElementById("room-select");
+    if(!select) return;
+    select.innerHTML = '<option value="NEW">➕ สร้างห้องเซิร์ฟเวอร์ใหม่ (New Server)</option>';
+    if(snap.exists()) {
+        snap.forEach(roomSnap => {
+            let rId = roomSnap.key;
+            let opt = document.createElement("option");
+            opt.value = rId;
+            opt.innerText = `🎮 ห้องเซิร์ฟเวอร์: [ ${rId} ]`;
+            select.appendChild(opt);
+        });
+    }
+});
+
+function onRoomSelectChange() {
+    const val = document.getElementById("room-select").value;
+    const roomInput = document.getElementById("room-id");
+    if(val !== "NEW") {
+        roomInput.value = val;
+    } else {
+        roomInput.value = "";
+    }
+}
+
 async function joinRoom() {
     const name = document.getElementById("player-name").value.trim();
     let roomInput = document.getElementById("room-id").value.trim().toUpperCase();
