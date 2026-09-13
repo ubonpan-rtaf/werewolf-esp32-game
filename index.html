@@ -11,18 +11,19 @@
         
         body { 
             font-family: 'Prompt', sans-serif; 
-            background: linear-gradient(rgba(10, 10, 15, 0.9), rgba(5, 5, 10, 0.98)), url('https://images.unsplash.com/photo-1518709268805-4e9042af9f23?q=80&w=1920&auto=format&fit=crop') no-repeat center center fixed; 
+            /* ตั้งค่าเริ่มต้นเป็นฉากกลางคืน bg-night.jpg */
+            background: linear-gradient(rgba(10, 10, 15, 0.9), rgba(5, 5, 10, 0.98)), url('bg-night.jpg') no-repeat center center fixed; 
             background-size: cover; color: #f1f2f6; min-height: 100vh; display: flex; 
             align-items: flex-start; justify-content: center;
-            padding: 30px 15px 150px 15px; /* เผื่อที่ด้านล่างให้แผง GM แบบลอยตัว */
+            padding: 30px 15px 120px 15px; 
+            transition: background 1.5s ease-in-out; /* อนิเมชันเฟดภาพพื้นหลัง */
             overflow-x: hidden; 
         }
         
-        /* กรอบเกมหลัก */
         .game-container { 
             background: rgba(18, 18, 25, 0.88); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); 
             border: 1px solid rgba(212, 175, 55, 0.3); padding: 25px 20px; border-radius: 24px; 
-            width: 100%; max-width: 420px; /* จำกัดความกว้างบนมือถือ */
+            width: 100%; max-width: 420px; 
             box-shadow: 0 20px 50px rgba(0, 0, 0, 0.9), inset 0 0 15px rgba(212, 175, 55, 0.08); 
             text-align: center; position: relative; animation: fadeIn 0.6s cubic-bezier(0.16, 1, 0.3, 1); 
             margin: auto; display: flex; flex-direction: column; align-items: center;
@@ -43,7 +44,6 @@
         .btn-secondary { background: rgba(255, 255, 255, 0.05); border: 1px solid rgba(255, 255, 255, 0.15); color: #dfe4ea; box-shadow: none; margin-bottom: 0; }
         .btn-create { background: linear-gradient(135deg, #9b59b6, #8e44ad); color: white; box-shadow: 0 5px 15px rgba(155, 89, 182, 0.25); }
         
-        /* ป้ายห้องและเวลา (หดตัวพอดีคำ) */
         .room-badge { background: rgba(0, 0, 0, 0.6); border: 1px solid rgba(212, 175, 55, 0.25); border-radius: 16px; padding: 6px 16px; margin-bottom: 15px; display: flex; gap: 15px; align-items: center; width: fit-content; box-shadow: inset 0 0 10px rgba(0,0,0,0.5); }
         .room-badge-title { font-size: 10px; color: #a4b0be; text-transform: uppercase; }
         .room-badge-id { color: #ffd700; font-size: 16px; font-weight: 900; letter-spacing: 1.5px; }
@@ -53,16 +53,18 @@
         .btn-music { background: rgba(46, 213, 115, 0.1); border: 1px solid rgba(46, 213, 115, 0.2); color: #2ed573; font-size: 12px; height: 34px; border-radius: 8px; font-weight: 700; cursor: pointer; font-family: 'Prompt'; }
         
         .role-card-epic { background: linear-gradient(135deg, rgba(26, 26, 36, 0.95) 0%, rgba(15, 15, 22, 0.98) 100%); border-radius: 18px; padding: 20px 15px; border: 1px solid rgba(212, 175, 55, 0.2); box-shadow: inset 0 0 20px rgba(0,0,0,0.8); width: 100%; display: flex; flex-direction: column; align-items: center;}
-        .role-badge-title { font-size: 11px; color: #ffd700; font-weight: 700; letter-spacing: 1px; margin-bottom: 12px; display: inline-block; padding: 4px 12px; background: rgba(212, 175, 55, 0.1); border-radius: 12px; border: 1px solid rgba(212, 175, 55, 0.2); text-transform: uppercase; width: fit-content; }
-        .role-portrait-container { width: 100px; height: 100px; margin: 0 auto 12px auto; border-radius: 50%; padding: 3px; background: linear-gradient(135deg, #ffd700, #ff8c00); box-shadow: 0 0 15px rgba(212, 175, 55, 0.2); }
-        .role-portrait { width: 100%; height: 100%; border-radius: 50%; object-fit: cover; border: 3px solid #1a1a2e; background-color: #111; }
+        .role-badge-title { font-size: 11px; color: #ffd700; font-weight: 700; letter-spacing: 1px; margin-bottom: 15px; display: inline-block; padding: 4px 12px; background: rgba(212, 175, 55, 0.1); border-radius: 12px; border: 1px solid rgba(212, 175, 55, 0.2); text-transform: uppercase; width: fit-content; }
+        
+        /* สี่เหลี่ยมจัตุรัสขอบมน */
+        .role-portrait-container { width: 120px; height: 120px; margin: 0 auto 12px auto; border-radius: 16px; padding: 4px; background: linear-gradient(135deg, #ffd700, #ff8c00); box-shadow: 0 0 15px rgba(212, 175, 55, 0.2); transition: background 0.5s ease; }
+        .role-portrait { width: 100%; height: 100%; border-radius: 12px; object-fit: cover; border: 3px solid #1a1a2e; background-color: #111; }
+        
         .role-name-epic { font-size: 22px; font-weight: 900; margin-bottom: 8px; text-transform: uppercase; letter-spacing: 1px; text-shadow: 0 0 10px rgba(255,255,255,0.1); text-align: center;}
         
         .trust-bar-container { background: rgba(0,0,0,0.5); border-radius: 8px; width: 90%; margin: 8px auto; height: 12px; border: 1px solid rgba(255,255,255,0.1); overflow: hidden; position: relative; }
         .trust-bar-fill { background: linear-gradient(90deg, #2ed573, #1abc9c); height: 100%; width: 0%; transition: width 1s cubic-bezier(0.4, 0, 0.2, 1); }
         .trust-text { position: absolute; width: 100%; text-align: center; top: 0; left: 0; font-size: 9px; font-weight: bold; color: white; line-height: 12px; text-shadow: 0 0 2px black; }
 
-        /* ข้อความสภา (หดตัวพอดีคำ) */
         .npc-dialogue { background: rgba(0, 0, 0, 0.5); border-left: 3px solid #d4af37; padding: 8px 12px; border-radius: 6px; margin: 10px auto; font-size: 13px; color: #dfe4ea; text-align: left; font-style: italic; line-height: 1.4; width: fit-content; max-width: 100%; }
         .npc-dialogue::before { content: '📜 สาส์นจากสภา:'; display: block; font-style: normal; font-weight: 700; color: #ffd700; font-size: 11px; margin-bottom: 4px; }
         
@@ -77,20 +79,8 @@
         .vote-result-box { background: rgba(231, 76, 60, 0.1); border: 1px solid rgba(231, 76, 60, 0.3); padding: 12px; border-radius: 10px; margin-top: 12px; color: #fff; font-size: 13px; text-align: center; line-height: 1.5; width: fit-content; margin-inline: auto;}
         .vote-winner { font-size: 18px; font-weight: 900; color: #ff4757; text-align: center; margin: 8px 0; text-shadow: 0 0 8px rgba(255, 71, 87, 0.4); }
 
-        /* แผงควบคุม GM แบบใหม่: ลอยตัว, หดตัวพอดีคำ (Fit-content) ไม่กินจอ */
-        .gm-panel-container { position: fixed; bottom: 15px; left: 50%; transform: translateX(-50%); width: fit-content; max-width: 95%; background: rgba(15, 15, 20, 0.95); backdrop-filter: blur(15px); border: 1px solid #d4af37; padding: 12px 16px; border-radius: 20px; z-index: 10001; display: none; flex-direction: column; align-items: center; box-shadow: 0 10px 30px rgba(0,0,0,0.9); }
-        .gm-title { color: #ffd700; font-size: 11px; font-weight: bold; margin-bottom: 8px; letter-spacing: 0.5px; display: flex; align-items: center; justify-content: space-between; width: 100%; gap: 15px;}
-        .auto-toggle { display: flex; align-items: center; gap: 5px; background: rgba(255,255,255,0.08); padding: 3px 8px; border-radius: 12px; font-size: 10px; cursor: pointer; color: #fff; border: 1px solid rgba(255,255,255,0.1); }
-        
-        .gm-btn-group { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; width: 100%; }
-        .gm-btn { height: 32px; background: rgba(212,175,55,0.1); border: 1px solid rgba(212,175,55,0.3); color: #fff; border-radius: 8px; font-family: 'Prompt'; font-size: 11px; font-weight: 600; cursor: pointer; display: flex; align-items: center; justify-content: center; padding: 0 10px;}
-        .gm-btn-danger { background: rgba(231, 76, 60, 0.1); border-color: rgba(231, 76, 60, 0.4); color: #ff7675; grid-column: span 2; }
-        
-        .gm-toggle-btn { position: fixed; top: 15px; right: 15px; background: rgba(0,0,0,0.7); border: 1px solid #d4af37; color: #ffd700; width: 40px; height: 40px; border-radius: 50%; font-size: 16px; cursor: pointer; z-index: 10002; box-shadow: 0 0 10px rgba(212,175,55,0.3); display: flex; justify-content: center; align-items: center; }
-
-        /* Modal ทั่วไป และ Toast (Fit Content) */
         .modal { display: none; position: fixed; z-index: 10005; left: 0; top: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.85); backdrop-filter: blur(5px); justify-content: center; align-items: center; padding: 15px; }
-        .modal-content { background: rgba(20, 20, 25, 0.98); border: 1px solid #d4af37; padding: 20px; border-radius: 18px; width: min(100%, 400px); max-height: 80vh; overflow-y: auto; text-align: left; box-shadow: 0 15px 40px rgba(0,0,0,0.8); }
+        .modal-content { background: rgba(20, 20, 25, 0.98); border: 1px solid #d4af37; padding: 20px; border-radius: 18px; width: min(100%, 380px); max-height: 80vh; overflow-y: auto; text-align: left; box-shadow: 0 15px 40px rgba(0,0,0,0.8); }
         .close-btn { height: 42px; background: linear-gradient(135deg, #ffd700, #ff8c00); color: #111; border: none; width: 100%; border-radius: 12px; font-weight: 800; margin-top: 15px; cursor: pointer; font-family: 'Prompt'; font-size: 14px; }
         
         #toast-container { position: fixed; top: 15px; left: 50%; transform: translateX(-50%); z-index: 10006; display: flex; flex-direction: column; gap: 8px; width: fit-content; max-width: 90%; pointer-events: none; }
@@ -99,7 +89,28 @@
         @keyframes toastIn { from { opacity: 0; transform: translateY(-20px); } to { opacity: 1; transform: translateY(0); } }
         @keyframes toastOut { from { opacity: 1; transform: translateY(0); } to { opacity: 0; transform: translateY(-20px); } }
 
-        /* 🏆 Victory Pop-up (ป๊อปอัปประกาศชัยชนะ) */
+        /* แผงควบคุม GM แนวนอนติดขอบล่าง (Bottom Bar) */
+        .gm-panel-container { 
+            position: fixed; bottom: 0; left: 0; width: 100%; 
+            background: rgba(15, 15, 20, 0.98); backdrop-filter: blur(15px); 
+            border-top: 1px solid #d4af37; padding: 10px 15px; 
+            z-index: 10001; display: none; flex-direction: column; gap: 8px;
+            box-shadow: 0 -10px 30px rgba(0,0,0,0.9); 
+        }
+        .gm-header { display: flex; justify-content: space-between; align-items: center; width: 100%; }
+        .gm-title { color: #ffd700; font-size: 12px; font-weight: bold; letter-spacing: 0.5px; margin: 0; }
+        .auto-toggle { display: flex; align-items: center; gap: 5px; background: rgba(255,255,255,0.08); padding: 3px 10px; border-radius: 12px; font-size: 11px; cursor: pointer; color: #fff; border: 1px solid rgba(255,255,255,0.1); }
+        
+        .gm-btn-group { display: flex; flex-wrap: nowrap; overflow-x: auto; gap: 8px; width: 100%; padding-bottom: 5px; align-items: center; }
+        .gm-btn-group::-webkit-scrollbar { height: 4px; }
+        .gm-btn-group::-webkit-scrollbar-thumb { background: rgba(212, 175, 55, 0.5); border-radius: 4px; }
+        
+        .gm-btn { flex: 0 0 auto; min-width: 90px; height: 34px; background: rgba(212,175,55,0.1); border: 1px solid rgba(212,175,55,0.3); color: #fff; border-radius: 8px; font-family: 'Prompt'; font-size: 11px; font-weight: 600; cursor: pointer; display: flex; align-items: center; justify-content: center; padding: 0 12px; }
+        .gm-btn-danger { background: rgba(231, 76, 60, 0.1); border-color: rgba(231, 76, 60, 0.4); color: #ff7675; }
+        
+        .gm-toggle-btn { position: fixed; top: 15px; right: 15px; background: rgba(0,0,0,0.7); border: 1px solid #d4af37; color: #ffd700; width: 40px; height: 40px; border-radius: 50%; font-size: 16px; cursor: pointer; z-index: 10002; box-shadow: 0 0 10px rgba(212,175,55,0.3); display: flex; justify-content: center; align-items: center; }
+
+        /* ป๊อปอัปชัยชนะ */
         .victory-content { text-align: center; background: radial-gradient(circle, rgba(30,30,40,0.95) 0%, rgba(10,10,15,0.98) 100%); padding: 30px 20px; border-radius: 20px; border: 2px solid; }
         .vic-wolf { border-color: #ff4757; box-shadow: 0 0 50px rgba(255, 71, 87, 0.4), inset 0 0 20px rgba(255, 71, 87, 0.2); }
         .vic-villager { border-color: #2ed573; box-shadow: 0 0 50px rgba(46, 213, 115, 0.4), inset 0 0 20px rgba(46, 213, 115, 0.2); }
@@ -108,19 +119,18 @@
         .vic-villager .vic-title { color: #2ed573; text-shadow: 0 0 20px #00ff00; }
         .vic-subtitle { font-size: 14px; color: #dcdde1; line-height: 1.6; }
 
-        /* 💻 โหมด Desktop (ขยายสัดส่วนเมื่อเปิดในคอมพิวเตอร์) */
+        /* โหมด PC */
         @media (min-width: 768px) {
             .game-container { max-width: 550px; padding: 35px 30px; }
             h2 { font-size: 28px; }
             p { font-size: 15px; }
-            input[type="text"] { height: 50px; font-size: 16px; }
-            .btn { height: 50px; font-size: 16px; }
-            .role-portrait-container { width: 130px; height: 130px; }
+            input[type="text"], .btn { height: 50px; font-size: 16px; }
+            .role-portrait-container { width: 140px; height: 140px; }
             .role-name-epic { font-size: 28px; }
             .npc-dialogue { font-size: 15px; padding: 12px 16px; }
             .target-btn { padding: 14px 20px; font-size: 15px; }
-            .gm-panel-container { transform: scale(1.1) translateX(-45%); transform-origin: bottom center; }
             .custom-toast { font-size: 14px; padding: 12px 18px; }
+            .gm-btn { font-size: 13px; height: 40px; min-width: 120px; }
         }
     </style>
     <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
@@ -133,7 +143,7 @@
 
     <button class="gm-toggle-btn" onclick="toggleGMPanel()" title="เปิดแผงควบคุมสภา">👑</button>
 
-    <!-- ฉากอินโทรวิดีโอ -->
+    <!-- ฉากอินโทรวิดีโอ (ล็อค Z-index) -->
     <div id="intro-screen" style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 9999; background: #000; display: flex; flex-direction: column; justify-content: center; align-items: center; overflow: hidden;">
         <video autoplay muted loop playsinline id="intro-video" style="position: absolute; width: 100%; height: 100%; object-fit: cover; filter: brightness(0.65) contrast(1.1); pointer-events: none;">
             <source src="lycan-intro.mp4" type="video/mp4">
@@ -145,23 +155,23 @@
         </div>
     </div>
 
-    <!-- แผงควบคุม GM (ลอยตัวพอดีคำ) -->
+    <!-- แผงควบคุม GM แนวนอน (Bottom Bar) -->
     <div id="gm-panel" class="gm-panel-container">
-        <div class="gm-title">
-            <span>👑 แผงควบคุมสภา</span>
+        <div class="gm-header">
+            <span class="gm-title">👑 แผงควบคุมสภา</span>
             <label class="auto-toggle"><input type="checkbox" id="gm-auto-mode" checked> เปิด Auto</label>
         </div>
         <div class="gm-btn-group">
             <button class="gm-btn" onclick="gmStartGame()">▶️ เริ่มเกม</button>
             <button class="gm-btn" onclick="gmNextPhase(true)">⏭️ ข้ามเฟส</button>
             <button class="gm-btn" onclick="gmAddBot()">🤖 เพิ่มบอท</button>
-            <button class="gm-btn gm-btn-danger" onclick="gmResetGame()">🔄 ยุบห้องสมรภูมิ</button>
+            <button class="gm-btn gm-btn-danger" onclick="gmResetGame()">🔄 ยุบห้อง</button>
         </div>
     </div>
 
     <div class="game-container" id="main-container">
         
-        <!-- ป้ายห้อง (หดตัวตรงกลาง) -->
+        <!-- ป้ายห้อง -->
         <div class="room-badge" id="room-badge" style="display:none;">
             <div style="text-align: left;">
                 <div class="room-badge-title">ROOM CODE</div>
@@ -244,7 +254,7 @@
             <button class="close-btn" onclick="closeManual()">รับทราบข้อตกลง</button>
         </div>
     </div>
-    <!-- ================= ส่วนที่ 3: JavaScript และการปิดไฟล์ ================= -->
+   <!-- ================= ส่วนที่ 3: JavaScript และการปิดไฟล์ ================= -->
     <script>
         function showToast(message, type = 'normal') {
             const container = document.getElementById('toast-container');
@@ -277,6 +287,16 @@
 
         const bgmMusic = new Audio('wolf-music.mp3'); bgmMusic.loop = true; bgmMusic.volume = 0.4;
         let isMusicPlaying = false; let currentVol = 0.4; let currentNpcAudio = null;
+        
+        // ผูกไฟล์เสียงพากย์ตามฉาก
+        const npcVoices = { 
+            'role_reveal': new Audio('npc-role.mp3'), 
+            'night_phase': new Audio('npc-night.mp3'), 
+            'day_phase': new Audio('npc-day.mp3'), 
+            'voting_phase': new Audio('npc-vote.mp3'), 
+            'result_phase': new Audio('npc-result.mp3') 
+        };
+        
         const winWolfAudio = new Audio('https://actions.google.com/sounds/v1/horror/monster_snarl.ogg');
         const winVillagerAudio = new Audio('https://actions.google.com/sounds/v1/crowds/crowd_cheer.ogg');
         
@@ -291,6 +311,16 @@
         }
 
         function changeVolume(val) { currentVol = parseFloat(val); bgmMusic.volume = currentVol; }
+        
+        function playNpcVoice(phase) {
+            if (currentNpcAudio) { currentNpcAudio.pause(); currentNpcAudio.currentTime = 0; }
+            if(npcVoices[phase]) {
+                if(isMusicPlaying) bgmMusic.volume = 0.05;
+                currentNpcAudio = npcVoices[phase]; currentNpcAudio.play().catch(e => {});
+                currentNpcAudio.onended = () => { if(isMusicPlaying) bgmMusic.volume = currentVol; };
+            } else { if(isMusicPlaying) bgmMusic.volume = currentVol; }
+        }
+
         function toggleBGM() {
             const btn = document.getElementById("music-toggle-btn");
             if (!isMusicPlaying) { bgmMusic.play().catch(e=>{}); isMusicPlaying = true; btn.innerText = "🔇 ปิดเพลงบรรยากาศ"; btn.style.color = "#ff4757"; } 
@@ -339,7 +369,6 @@
             });
         }
 
-        // ================= POPUP WINNER =================
         function showVictoryModal(team) {
             const modal = document.getElementById("victory-modal");
             const box = document.getElementById("victory-content-box");
@@ -384,7 +413,20 @@
 
             db.ref(`werewolf_game/rooms/${myRoomCode}/system/gameState`).on("value", (snapshot) => {
                 const state = snapshot.val(); if (!hasJoined || !state) return;
-                lastState = state;
+                
+                // ระบบเปลี่ยนภาพฉากหลังอัตโนมัติ (กลางวัน/กลางคืน)
+                if (state !== lastState) { 
+                    playNpcVoice(state); 
+                    lastState = state; 
+                    
+                    if (state === "day_phase" || state === "voting_phase" || state === "result_phase" || state === "villager_win") {
+                        document.body.style.background = "linear-gradient(rgba(10, 10, 15, 0.7), rgba(5, 5, 10, 0.9)), url('bg-day.jpg') no-repeat center center fixed";
+                        document.body.style.backgroundSize = "cover";
+                    } else {
+                        document.body.style.background = "linear-gradient(rgba(10, 10, 15, 0.9), rgba(5, 5, 10, 0.98)), url('bg-night.jpg') no-repeat center center fixed";
+                        document.body.style.backgroundSize = "cover";
+                    }
+                }
                 
                 const phaseInd = document.getElementById("phase-indicator"); const roleImg = document.getElementById("role-image");
                 const roleEl = document.getElementById("my-role"); const npcText = document.getElementById("npc-text");
@@ -599,9 +641,7 @@
                 if(!players) { showToast("ยังไม่มีผู้เล่น!", "error"); isGmProcessing = false; return; }
                 
                 let pKeys = Object.keys(players);
-                for (let i = pKeys.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [pKeys[i], pKeys[j]] = [pKeys[j], pKeys[i]]; }
                 
-                // ลอจิกการกระจายบทบาท (ยุติธรรมและสเถียร)
                 let rolesToAssign = [];
                 let t = pKeys.length;
                 if(t >= 1) rolesToAssign.push("wolf");
@@ -610,6 +650,11 @@
                 if(t >= 5) rolesToAssign.push("alchemist");
                 while(rolesToAssign.length < t) { rolesToAssign.push("villager"); }
                 
+                for (let i = rolesToAssign.length - 1; i > 0; i--) { 
+                    const j = Math.floor(Math.random() * (i + 1)); 
+                    [rolesToAssign[i], rolesToAssign[j]] = [rolesToAssign[j], rolesToAssign[i]]; 
+                }
+                
                 let updates = {};
                 pKeys.forEach((key, idx) => {
                     updates[`werewolf_game/rooms/${myRoomCode}/players/${key}/role`] = rolesToAssign[idx];
@@ -617,6 +662,7 @@
                     updates[`werewolf_game/rooms/${myRoomCode}/players/${key}/trust`] = 0;
                     updates[`werewolf_game/rooms/${myRoomCode}/players/${key}/skillUsed`] = false;
                 });
+                
                 await db.ref().update(updates);
                 await db.ref(`werewolf_game/rooms/${myRoomCode}/system/gameState`).set("role_reveal");
                 await setTimerForPhase("role_reveal");
@@ -681,4 +727,4 @@
         }
     </script>
 </body>
-</html>
+</html> 
