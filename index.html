@@ -77,9 +77,6 @@
         .vote-result-box { background: rgba(231, 76, 60, 0.1); border: 1px solid rgba(231, 76, 60, 0.3); padding: 12px; border-radius: 10px; margin-top: 12px; color: #fff; font-size: 13px; text-align: center; line-height: 1.5; width: fit-content; margin-inline: auto;}
         .vote-winner { font-size: 18px; font-weight: 900; color: #ff4757; text-align: center; margin: 8px 0; text-shadow: 0 0 8px rgba(255, 71, 87, 0.4); }
 
-        .epic-win-wolf { background: radial-gradient(circle, #300 0%, #000 100%) !important; box-shadow: 0 0 80px rgba(255,0,0,0.4), inset 0 0 30px rgba(255,0,0,0.2) !important; border-color: #ff4757 !important; }
-        .epic-win-villager { background: radial-gradient(circle, #021 0%, #000 100%) !important; box-shadow: 0 0 80px rgba(46,213,115,0.4), inset 0 0 30px rgba(46,213,115,0.2) !important; border-color: #2ed573 !important; }
-
         .modal { display: none; position: fixed; z-index: 10005; left: 0; top: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.85); backdrop-filter: blur(5px); justify-content: center; align-items: center; padding: 15px; }
         .modal-content { background: rgba(20, 20, 25, 0.98); border: 1px solid #d4af37; padding: 20px; border-radius: 18px; width: min(100%, 400px); max-height: 85vh; overflow-y: auto; text-align: left; box-shadow: 0 15px 40px rgba(0,0,0,0.8); }
         .close-btn { height: 42px; background: linear-gradient(135deg, #ffd700, #ff8c00); color: #111; border: none; width: 100%; border-radius: 12px; font-weight: 800; margin-top: 15px; cursor: pointer; font-family: 'Prompt'; font-size: 14px; }
@@ -90,32 +87,31 @@
         @keyframes toastIn { from { opacity: 0; transform: translateY(-20px); } to { opacity: 1; transform: translateY(0); } }
         @keyframes toastOut { from { opacity: 1; transform: translateY(0); } to { opacity: 0; transform: translateY(-20px); } }
 
-        /* แผงควบคุม GM ปรับใหม่: ลอยตัว ขอบมน บีบเข้า และจัดปุ่มเป็นระเบียบ */
+        /* แผงควบคุม GM ปรับใหม่: ลอยตัว ขอบมน บีบเข้า และจัดปุ่มเป็นระเบียบสุดๆ */
         .gm-panel-container { 
             position: fixed; 
-            bottom: 25px; /* ขยับลอยขึ้นมาจากขอบล่างนิดหน่อย */
+            bottom: 35px; /* ขยับขึ้นมาจากขอบล่างนิดนึงตามสั่ง */
             left: 50%; 
             transform: translateX(-50%); 
-            width: 92%; 
-            max-width: 380px; /* บีบด้านข้างเข้ามาให้กะทัดรัด */
+            width: 90%; 
+            max-width: 340px; /* บีบด้านข้างเข้ามาอีกให้ดูกะทัดรัด */
             background: rgba(15, 15, 20, 0.95); 
             backdrop-filter: blur(15px); 
             border: 1px solid rgba(212, 175, 55, 0.6); 
-            padding: 16px 20px; 
-            border-radius: 20px; /* มุมมนสวยงาม */
+            padding: 14px 18px; 
+            border-radius: 22px; 
             z-index: 10001; 
             display: none; 
             flex-direction: column; 
-            gap: 12px;
+            gap: 10px;
             box-shadow: 0 15px 35px rgba(0,0,0,0.95), 0 0 15px rgba(212, 175, 55, 0.2); 
         }
         .gm-header { display: flex; justify-content: space-between; align-items: center; width: 100%; }
         .gm-title { color: #ffd700; font-size: 13px; font-weight: bold; letter-spacing: 0.5px; margin: 0; }
         .auto-toggle { display: flex; align-items: center; gap: 6px; background: rgba(255,255,255,0.1); padding: 4px 12px; border-radius: 12px; font-size: 11px; cursor: pointer; color: #fff; border: 1px solid rgba(255,255,255,0.2); transition: 0.3s;}
-        .auto-toggle:hover { background: rgba(255,255,255,0.2); }
         
-        .gm-btn-group { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; width: 100%; }
-        .gm-btn { height: 38px; background: rgba(212,175,55,0.15); border: 1px solid rgba(212,175,55,0.4); color: #fff; border-radius: 10px; font-family: 'Prompt'; font-size: 12px; font-weight: 600; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: 0.2s; }
+        .gm-btn-group { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; width: 100%; }
+        .gm-btn { height: 36px; background: rgba(212,175,55,0.15); border: 1px solid rgba(212,175,55,0.4); color: #fff; border-radius: 10px; font-family: 'Prompt'; font-size: 12px; font-weight: 600; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: 0.2s; }
         .gm-btn:hover { background: rgba(212,175,55,0.3); transform: translateY(-2px); }
         .gm-btn-danger { background: rgba(231, 76, 60, 0.15); border-color: rgba(231, 76, 60, 0.5); color: #ff7675; grid-column: span 2; }
         
@@ -165,7 +161,7 @@
         </div>
     </div>
 
-    <!-- แผงควบคุม GM แบบลอยตัวและกะทัดรัด -->
+    <!-- แผงควบคุม GM แบบลอยตัวและกะทัดรัด (จัดใหม่) -->
     <div id="gm-panel" class="gm-panel-container">
         <div class="gm-header">
             <span class="gm-title">👑 แผงควบคุมสภา</span>
@@ -241,47 +237,47 @@
         </div>
     </div>
 
-    <!-- Modal คัมภีร์คู่มือแบบละเอียดและสวยงาม -->
+    <!-- Modal คัมภีร์คู่มือแบบเจาะลึกสุดๆ -->
     <div id="manual-modal" class="modal">
-        <div class="modal-content">
-            <h3 style="color:#ffd700; text-align:center; font-size:20px; margin-bottom: 15px; border-bottom: 1px solid rgba(212,175,55,0.3); padding-bottom: 10px;">📖 คัมภีร์กฎการอยู่รอด</h3>
+        <div class="modal-content" style="max-height: 85vh; padding: 25px;">
+            <h3 style="color:#ffd700; text-align:center; font-size:20px; margin-bottom: 15px; border-bottom: 1px solid rgba(212,175,55,0.3); padding-bottom: 10px;">📖 คัมภีร์กฎสมรภูมิ (Official Guide)</h3>
             
             <div style="margin-bottom: 15px;">
-                <h4 style="color:#ffd700; font-size: 14px; margin-bottom: 8px;">🎭 บทบาทและสกิลแฝง</h4>
+                <h4 style="color:#ffd700; font-size: 14px; margin-bottom: 8px;">🎭 บทบาทและสกิลแฝง (Characters & Skills)</h4>
                 
-                <div style="margin-bottom: 8px; padding-left: 10px; border-left: 2px solid #2ed573;">
-                    <span style="color:#2ed573; font-weight:bold; font-size:13px;">🧑 ชาวบ้าน (Citizen)</span>
-                    <p style="font-size:12px; color:#dcdde1; line-height:1.4; margin-top:4px;">ไม่มีพลังพิเศษ พลังเพียงหนึ่งเดียวคือการเจรจาและโหวตหาตัวหมาป่าในตอนกลางวัน</p>
+                <div style="margin-bottom: 10px; padding-left: 12px; border-left: 3px solid #ff4757;">
+                    <span style="color:#ff4757; font-weight:900; font-size:14px;">🐺 หมาป่า (Crimson Lycan)</span>
+                    <p style="font-size:12.5px; color:#dcdde1; line-height:1.5; margin-top:4px;"><b>หน้าที่:</b> ตื่นกลางคืนเพื่อเลือกเหยื่อสังหาร ลดจำนวนฝ่ายดีให้เท่ากับหมาป่า<br><b>สกิลกลางวัน [กระหายเลือด]:</b> สาดโคลนใส่เป้าหมายเพื่อลดความน่าเชื่อถือ (Trust) 15% ทันที ใช้ปั่นหัวสภาไม่ให้สงสัยตนเอง (ใช้ได้ 1 ครั้ง/เกม)</p>
                 </div>
 
-                <div style="margin-bottom: 8px; padding-left: 10px; border-left: 2px solid #ff4757;">
-                    <span style="color:#ff4757; font-weight:bold; font-size:13px;">🐺 หมาป่า (Crimson Lycan)</span>
-                    <p style="font-size:12px; color:#dcdde1; line-height:1.4; margin-top:4px;">ตื่นกลางคืนเพื่อล่าเหยื่อ <b>[สกิลกลางวัน: กระหายเลือด]</b> สาดโคลนเป้าหมายเพื่อลด Trust ทันที 15% (ใช้ได้ 1 ครั้ง/เกม)</p>
-                </div>
-
-                <div style="margin-bottom: 8px; padding-left: 10px; border-left: 2px solid #9b59b6;">
-                    <span style="color:#9b59b6; font-weight:bold; font-size:13px;">🔮 นักพยากรณ์ (Cyber Oracle)</span>
-                    <p style="font-size:12px; color:#dcdde1; line-height:1.4; margin-bottom: 10px; margin-top:4px;">ตื่นกลางคืน <b>[เนตรที่สาม]</b> เปิดเผยบทบาทที่แท้จริงของเป้าหมาย ว่าเป็นฝ่ายดีหรือหมาป่า (ใช้ได้ทุกคืน)</p>
+                <div style="margin-bottom: 10px; padding-left: 12px; border-left: 3px solid #9b59b6;">
+                    <span style="color:#9b59b6; font-weight:900; font-size:14px;">🔮 นักพยากรณ์ (Cyber Oracle)</span>
+                    <p style="font-size:12.5px; color:#dcdde1; line-height:1.5; margin-top:4px;"><b>หน้าที่:</b> ตื่นกลางคืนเพื่อหาตัวหมาป่า<br><b>สกิล [เนตรที่สาม]:</b> เปิดเผยบทบาทที่แท้จริงของเป้าหมาย 1 คน ว่าเป็นฝ่ายดีหรือหมาป่า (ใช้ได้ทุกคืน)</p>
                 </div>
                 
-                <div style="margin-bottom: 8px; padding-left: 10px; border-left: 2px solid #3498db;">
-                    <span style="color:#3498db; font-weight:bold; font-size:13px;">🛡️ ผู้พิทักษ์ (Holy Guardian)</span>
-                    <p style="font-size:12px; color:#dcdde1; line-height:1.4; margin-top:4px;"><b>[สกิลกลางคืน: โล่ศักดิ์สิทธิ์]</b> เลือกกางบาเรียคุ้มกันตัวเองหรือเพื่อน 1 คนจากการถูกหมาป่ากัด <i>*กันยาพิษไม่ได้</i> (ใช้ได้ 1 ครั้ง/เกม)</p>
+                <div style="margin-bottom: 10px; padding-left: 12px; border-left: 3px solid #3498db;">
+                    <span style="color:#3498db; font-weight:900; font-size:14px;">🛡️ ผู้พิทักษ์ (Holy Guardian)</span>
+                    <p style="font-size:12.5px; color:#dcdde1; line-height:1.5; margin-top:4px;"><b>หน้าที่:</b> คอยปกป้องคนสำคัญในหมู่บ้าน<br><b>สกิลกลางคืน [โล่ศักดิ์สิทธิ์]:</b> เลือกกางบาเรียคุ้มกันตัวเองหรือเพื่อน 1 คนจากการถูกหมาป่ากัด <i>*ข้อควรระวัง: โล่นี้ไม่สามารถป้องกันยาพิษของนักเคมีได้</i> (ใช้ได้ 1 ครั้ง/เกม)</p>
                 </div>
 
-                <div style="margin-bottom: 8px; padding-left: 10px; border-left: 2px solid #e67e22;">
-                    <span style="color:#e67e22; font-weight:bold; font-size:13px;">🧪 นักเคมี (Mad Alchemist)</span>
-                    <p style="font-size:12px; color:#dcdde1; line-height:1.4; margin-top:4px;"><b>[สกิลกลางคืน: ยาพิษมรณะ]</b> สาดพิษใส่เป้าหมายให้ตายทันที <i>*ทะลุการกางโล่ใดๆ</i> (ใช้ได้ 1 ครั้ง/เกม)</p>
+                <div style="margin-bottom: 10px; padding-left: 12px; border-left: 3px solid #e67e22;">
+                    <span style="color:#e67e22; font-weight:900; font-size:14px;">🧪 นักเล่นแร่แปรธาตุ (Mad Alchemist)</span>
+                    <p style="font-size:12.5px; color:#dcdde1; line-height:1.5; margin-top:4px;"><b>หน้าที่:</b> สายลอบสังหารของฝ่ายดี<br><b>สกิลกลางคืน [ยาพิษมรณะ]:</b> สาดพิษมรณะใส่เป้าหมายให้ตายทันที พิษนี้รุนแรงจนทะลุการกางโล่ใดๆ ต้องมั่นใจก่อนใช้ว่าเป้าหมายคือหมาป่า (ใช้ได้ 1 ครั้ง/เกม)</p>
+                </div>
+
+                <div style="margin-bottom: 10px; padding-left: 12px; border-left: 3px solid #2ed573;">
+                    <span style="color:#2ed573; font-weight:900; font-size:14px;">🧑 ชาวบ้าน (Citizen)</span>
+                    <p style="font-size:12.5px; color:#dcdde1; line-height:1.5; margin-top:4px;"><b>หน้าที่:</b> ไม่มีพลังวิเศษ พลังเพียงหนึ่งเดียวคือการเจรจา จับผิด และรวมพลังกันโหวตแขวนคอหมาป่าในตอนกลางวัน</p>
                 </div>
             </div>
 
             <div style="margin-bottom: 10px;">
-                <h4 style="color:#ffd700; font-size: 14px; margin-bottom: 8px;">⚖️ กฎลอจิกและระบบสภา</h4>
-                <ul style="font-size:11.5px; color:#dcdde1; line-height:1.5; padding-left: 15px; margin-bottom:0;">
-                    <li style="margin-bottom: 4px;"><b>คะแนนโหวตเสมอ:</b> หากผลโหวตอันดับ 1 เท่ากัน จะถือเป็นโมฆะ ไม่มีใครถูกแขวนคอ</li>
-                    <li style="margin-bottom: 4px;"><b>ระบบ Trust:</b> ฝ่ายดีที่โหวตหมาป่าออกสำเร็จ จะได้ Trust +5% เป็นรางวัล</li>
-                    <li style="margin-bottom: 4px;"><b>เงื่อนไขชนะ:</b> หมาป่าชนะเมื่อมีจำนวนเท่ากับฝ่ายดี / ฝ่ายดีชนะเมื่อกำจัดหมาป่าหมด</li>
-                    <li><b>Auto-Phase:</b> Host (ผู้สร้างห้อง) สามารถเปิดโหมด Auto ผ่านปุ่ม 👑 ให้เกมเดินหน้าเองตามเวลาได้</li>
+                <h4 style="color:#ffd700; font-size: 14px; margin-bottom: 8px;">⚖️ ระบบลอจิกสภา (Game Rules & Logic)</h4>
+                <ul style="font-size:12.5px; color:#dcdde1; line-height:1.5; padding-left: 18px; margin-bottom:0;">
+                    <li style="margin-bottom: 5px;"><b>คะแนนโหวตเสมอ (Tie Vote):</b> หากผลโหวตอันดับ 1 เท่ากัน จะถือเป็นโมฆะ จะไม่มีใครถูกแขวนคอในวันนั้น</li>
+                    <li style="margin-bottom: 5px;"><b>รางวัลคนเก่ง (Trust System):</b> ฝ่ายดีที่ทายถูกและโหวตหมาป่าออกสำเร็จ ระบบจะบวกความน่าเชื่อถือให้ +5%</li>
+                    <li style="margin-bottom: 5px;"><b>เงื่อนไขชนะ:</b> 🐺 หมาป่าชนะเมื่อมีจำนวนคนเท่ากับฝ่ายดี / 🧑 ฝ่ายดีชนะเมื่อหมาป่าตายหมด</li>
+                    <li><b>ระบบ Auto-Phase:</b> Host สามารถกด 👑 เปิดระบบ Auto ให้เกมรันเวลาและเปลี่ยนเฟสอัตโนมัติ ช่วยลดภาระคนคุมเกมได้</li>
                 </ul>
             </div>
 
@@ -289,471 +285,3 @@
         </div>
     </div>
 
-<!-- ================= ส่วนที่ 3: JavaScript และการปิดไฟล์ ================= -->
-    <script>
-        function showToast(message, type = 'normal') {
-            const container = document.getElementById('toast-container');
-            if (container.children.length >= 3) { container.removeChild(container.firstChild); } 
-            const toast = document.createElement('div');
-            toast.className = `custom-toast ${type}`;
-            let icon = type === 'error' ? '❌' : type === 'warning' ? '🚨' : type === 'mystic' ? '🔮' : '🔔';
-            toast.innerHTML = `<span style="font-size:16px;">${icon}</span> <div>${message}</div>`;
-            container.appendChild(toast);
-            playSound('alert');
-            setTimeout(() => { if (container.contains(toast)) container.removeChild(toast); }, 3000);
-        }
-
-        const firebaseConfig = {
-            apiKey: "AIzaSyCwgLaNKEBORncza75PO4IrGxTrF8vKoQw",
-            authDomain: "werewolf-esp32-game.firebaseapp.com",
-            projectId: "werewolf-esp32-game",
-            storageBucket: "werewolf-esp32-game.firebasestorage.app",
-            messagingSenderId: "768089473466",
-            appId: "1:768089473466:web:b9196bc05fa83144c39d83",
-            databaseURL: "https://werewolf-esp32-game-default-rtdb.asia-southeast1.firebasedatabase.app"
-        };
-        firebase.initializeApp(firebaseConfig);
-        const db = firebase.database();
-
-        let myPlayerId = localStorage.getItem("werewolf_player_id") || "player_" + Date.now();
-        localStorage.setItem("werewolf_player_id", myPlayerId);
-        let myRoomCode = ""; let hasJoined = false; 
-        let myRole = "villager"; let myTrust = 0; let skillUsed = false;
-
-        const bgmMusic = new Audio('wolf-music.mp3'); bgmMusic.loop = true; bgmMusic.volume = 0.4;
-        let isMusicPlaying = false; let currentVol = 0.4; let currentNpcAudio = null;
-        
-        const npcVoices = { 
-            'role_reveal': new Audio('npc-role.mp3'), 
-            'night_phase': new Audio('npc-night.mp3'), 
-            'day_phase': new Audio('npc-day.mp3'), 
-            'voting_phase': new Audio('npc-vote.mp3'), 
-            'result_phase': new Audio('npc-result.mp3') 
-        };
-        
-        const winWolfAudio = new Audio('https://actions.google.com/sounds/v1/horror/monster_snarl.ogg');
-        const winVillagerAudio = new Audio('https://actions.google.com/sounds/v1/crowds/crowd_cheer.ogg');
-        
-        let audioCtx = null;
-        function initAudio() { if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)(); if (audioCtx.state === 'suspended') audioCtx.resume(); }
-        function playSound(type) {
-            initAudio(); if(!audioCtx) return;
-            const osc = audioCtx.createOscillator(); const gain = audioCtx.createGain();
-            osc.connect(gain); gain.connect(audioCtx.destination);
-            if (type === 'click') { osc.frequency.setValueAtTime(440, audioCtx.currentTime); osc.frequency.exponentialRampToValueAtTime(880, audioCtx.currentTime + 0.1); gain.gain.setValueAtTime(0.05, audioCtx.currentTime); gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.1); osc.start(); osc.stop(audioCtx.currentTime + 0.1); } 
-            else if (type === 'alert') { osc.frequency.setValueAtTime(261.63, audioCtx.currentTime); osc.frequency.setValueAtTime(392.00, audioCtx.currentTime + 0.15); gain.gain.setValueAtTime(0.1, audioCtx.currentTime); gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.35); osc.start(); osc.stop(audioCtx.currentTime + 0.35); }
-        }
-
-        function changeVolume(val) { currentVol = parseFloat(val); bgmMusic.volume = currentVol; }
-        
-        function playNpcVoice(phase) {
-            if (currentNpcAudio) { currentNpcAudio.pause(); currentNpcAudio.currentTime = 0; }
-            if(npcVoices[phase]) {
-                if(isMusicPlaying) bgmMusic.volume = 0.05;
-                currentNpcAudio = npcVoices[phase]; currentNpcAudio.play().catch(e => {});
-                currentNpcAudio.onended = () => { if(isMusicPlaying) bgmMusic.volume = currentVol; };
-            } else { if(isMusicPlaying) bgmMusic.volume = currentVol; }
-        }
-
-        function toggleBGM() {
-            const btn = document.getElementById("music-toggle-btn");
-            if (!isMusicPlaying) { bgmMusic.play().catch(e=>{}); isMusicPlaying = true; btn.innerText = "🔇 ปิดเพลงบรรยากาศ"; btn.style.color = "#ff4757"; } 
-            else { bgmMusic.pause(); isMusicPlaying = false; btn.innerText = "🎶 เปิดเพลงบรรยากาศ"; btn.style.color = "#2ed573"; }
-        }
-        
-        function enterGameWorld() {
-            playSound('click'); bgmMusic.play().then(() => { isMusicPlaying = true; const btn = document.getElementById("music-toggle-btn"); if(btn) { btn.innerText = "🔇 ปิดเพลงบรรยากาศ"; btn.style.color = "#ff4757"; } }).catch(e => {});
-            const intro = document.getElementById("intro-screen"); intro.style.transition = "opacity 0.6s ease"; intro.style.opacity = "0"; setTimeout(() => { intro.style.display = "none"; }, 600);
-        }
-        function openManual() { playSound('click'); document.getElementById("manual-modal").style.display = "flex"; }
-        function closeManual() { playSound('click'); document.getElementById("manual-modal").style.display = "none"; }
-
-        function generateRoomCode() { return Math.floor(1000 + Math.random() * 9000).toString(); }
-
-        function createRoom() {
-            playSound('click'); const nameInput = document.getElementById("player-name").value.trim();
-            if (nameInput === "") return showToast("โปรดระบุฉายานักรบก่อนตั้งห้อง!", "error");
-            myRoomCode = generateRoomCode();
-            db.ref(`werewolf_game/rooms/${myRoomCode}/system`).set({ gameState: "lobby", phaseEndTime: 0 }).then(() => {
-                enterRoom(nameInput, myRoomCode, true);
-            });
-        }
-
-        function joinRoom() {
-            playSound('click'); const nameInput = document.getElementById("player-name").value.trim();
-            const codeInput = document.getElementById("room-code-input").value.trim();
-            if (nameInput === "") return showToast("โปรดระบุฉายานักรบ!", "error");
-            if (codeInput.length !== 4) return showToast("รหัสห้องต้องมี 4 หลัก!", "error");
-            
-            db.ref(`werewolf_game/rooms/${codeInput}/system`).once("value", snap => {
-                if(!snap.exists()) return showToast("ไม่พบห้องนี้ในมิติ!", "error");
-                myRoomCode = codeInput; enterRoom(nameInput, codeInput, false);
-            });
-        }
-
-        function enterRoom(playerName, roomCode, isHost) {
-            db.ref(`werewolf_game/rooms/${roomCode}/players/${myPlayerId}`).set({ name: playerName, role: "waiting", isAlive: true, trust: 0, skillUsed: false }).then(() => {
-                hasJoined = true; document.getElementById("lobby-screen").style.display = "none";
-                document.getElementById("game-screen").style.display = "flex";
-                document.getElementById("room-badge").style.display = "flex";
-                document.getElementById("display-room-id").innerText = roomCode;
-                showToast(`เข้าสู่ห้อง [${roomCode}] สำเร็จ!`, "normal");
-                if(isHost) showToast("คุณคือ Host ของห้องนี้ 👑", "warning");
-                listenToGameState();
-            });
-        }
-
-        function showVictoryModal(team) {
-            const modal = document.getElementById("victory-modal");
-            const box = document.getElementById("victory-content-box");
-            const title = document.getElementById("victory-title");
-            const desc = document.getElementById("victory-desc");
-            
-            box.className = "modal-content victory-content"; 
-            if(team === "wolf") {
-                box.classList.add("vic-wolf");
-                title.innerText = "WOLVES WIN!";
-                desc.innerText = "ความมืดกลืนกิน... หมาป่าสังหารหมู่บ้านสำเร็จ!";
-                winWolfAudio.play().catch(e=>{});
-            } else {
-                box.classList.add("vic-villager");
-                title.innerText = "VILLAGERS WIN!";
-                desc.innerText = "แสงสว่างชนะ! หมาป่าถูกกำจัดออกไปหมดแล้ว!";
-                winVillagerAudio.play().catch(e=>{});
-            }
-            modal.style.display = "flex";
-        }
-
-        let lastState = ""; let playersData = {}; let timerInterval; let isGM = false;
-        
-        function listenToGameState() {
-            db.ref(`werewolf_game/rooms/${myRoomCode}/players/${myPlayerId}`).on("value", (snap) => {
-               if (!snap.exists() && hasJoined) { alert("สภาได้ยุบกระดานแล้ว... กลับสู่ล้อบบี้!"); window.location.reload(); }
-            });
-
-            db.ref(`werewolf_game/rooms/${myRoomCode}/system/phaseEndTime`).on("value", snap => {
-                let endTime = snap.val(); clearInterval(timerInterval);
-                const timerDisp = document.getElementById("timer-display");
-                if(endTime > 0) {
-                    timerInterval = setInterval(() => {
-                        let diff = Math.floor((endTime - Date.now())/1000);
-                        if(diff <= 0) { 
-                            diff = 0; clearInterval(timerInterval); timerDisp.innerText = `⏳ หมดเวลา!`;
-                            if(document.getElementById("gm-auto-mode").checked && isGM) { setTimeout(() => { gmNextPhase(false); }, 1500); }
-                        } else { timerDisp.innerText = `⏳ ${diff}s`; }
-                    }, 1000);
-                } else { timerDisp.innerText = `⏳ --`; }
-            });
-
-            db.ref(`werewolf_game/rooms/${myRoomCode}/system/gameState`).on("value", (snapshot) => {
-                const state = snapshot.val(); if (!hasJoined || !state) return;
-                
-                if (state !== lastState) { 
-                    playNpcVoice(state); 
-                    lastState = state; 
-                    
-                    if (state === "day_phase" || state === "voting_phase" || state === "result_phase" || state === "villager_win") {
-                        document.body.style.background = "linear-gradient(rgba(10, 10, 15, 0.7), rgba(5, 5, 10, 0.9)), url('bg-day.jpg') no-repeat center center fixed";
-                        document.body.style.backgroundSize = "cover";
-                    } else {
-                        document.body.style.background = "linear-gradient(rgba(10, 10, 15, 0.9), rgba(5, 5, 10, 0.98)), url('bg-night.jpg') no-repeat center center fixed";
-                        document.body.style.backgroundSize = "cover";
-                    }
-                }
-                
-                const phaseInd = document.getElementById("phase-indicator"); const roleImg = document.getElementById("role-image");
-                const roleEl = document.getElementById("my-role"); const npcText = document.getElementById("npc-text");
-                const actionArea = document.getElementById("action-area"); const voteArea = document.getElementById("vote-result-area");
-                const trustCont = document.getElementById("trust-container"); const trustBar = document.getElementById("trust-bar"); const trustVal = document.getElementById("trust-val");
-                actionArea.innerHTML = ""; voteArea.innerHTML = "";
-
-                db.ref(`werewolf_game/rooms/${myRoomCode}/players`).once("value", (playersSnap) => {
-                    playersData = playersSnap.val() || {}; const me = playersData[myPlayerId]; if (!me) return;
-                    myRole = me.role || "villager"; myTrust = me.trust || 0; skillUsed = me.skillUsed || false;
-                    
-                    if (!me.isAlive) {
-                        phaseInd.innerText = "สถานะ: สิ้นชีพในสงคราม"; roleImg.src = "img-ghost.jpg"; roleEl.innerHTML = "วิญญาณผู้ล่วงลับ"; roleEl.style.color = "#a4b0be"; trustCont.style.display = "none"; npcText.innerText = "ร่างของเจ้าสูญสลายไปแล้ว... ทำได้เพียงเฝ้ามองความล่มสลาย"; return; 
-                    }
-
-                    trustCont.style.display = "block"; trustBar.style.width = myTrust + "%"; trustVal.innerText = myTrust;
-                    if (myRole === "wolf") { roleImg.src = "img-wolf.jpg"; roleEl.innerHTML = "Crimson Lycan"; roleEl.style.color = "#ff4757"; } 
-                    else if (myRole === "seer") { roleImg.src = "img-seer.jpg"; roleEl.innerHTML = "Cyber Oracle"; roleEl.style.color = "#9b59b6"; } 
-                    else if (myRole === "guardian") { roleImg.src = "img-guardian.jpg"; roleEl.innerHTML = "Holy Guardian"; roleEl.style.color = "#3498db"; } 
-                    else if (myRole === "alchemist") { roleImg.src = "img-alchemist.jpg"; roleEl.innerHTML = "Mad Alchemist"; roleEl.style.color = "#e67e22"; } 
-                    else { roleImg.src = "img-villager.jpg"; roleEl.innerHTML = "Citizen"; roleEl.style.color = "#2ed573"; }
-
-                    if (state === "lobby") { phaseInd.innerText = "สถานะ: เตรียมพร้อม"; npcText.innerText = "รอคำสั่งเริ่มต้นเกมจาก Host..."; }
-                    else if (state === "role_reveal") { phaseInd.innerText = "คลาสประจำตัว"; npcText.innerText = myRole === "wolf" ? "ซ่อนความลับ เตรียมขย้ำในยามวิกาล..." : "ความอยู่รอดของหมู่บ้านขึ้นอยู่กับคุณ!"; } 
-                    else if (state === "night_phase") { 
-                        phaseInd.innerText = "🌙 ราตรีกาลแห่งเงามืด"; 
-                        if (myRole === "wolf") { npcText.innerText = "เลือกเหยื่อสังเวยของเจ้าในคืนนี้..."; loadTargets(actionArea, "kill", playersData); } 
-                        else if (myRole === "seer") { npcText.innerText = "เพ่งจิตมองทะลุหน้ากาก..."; loadTargets(actionArea, "seer", playersData); } 
-                        else { 
-                            npcText.innerText = "ความมืดมิดปกคลุม... (คุณอาจมีสกิลพิเศษ)"; 
-                            if(!skillUsed && (myRole === "guardian" || myRole === "alchemist")) loadHiddenSkill(actionArea, myRole, playersData);
-                        } 
-                    } 
-                    else if (state === "day_phase") { 
-                        phaseInd.innerText = "☀️ แสงอรุณรุ่งสว่าง"; npcText.innerText = "พูดคุย และโหวตผู้ต้องสงสัย"; 
-                        if(!skillUsed && myRole === "wolf") loadHiddenSkill(actionArea, "wolf", playersData);
-                        processWolfKills(voteArea, playersData); 
-                    } 
-                    else if (state === "voting_phase") { phaseInd.innerText = "⚖️ การพิพากษาแห่งสภา"; npcText.innerText = "ใครคือผู้ที่ต้องชดใช้ด้วยชีวิต!"; loadTargets(actionArea, "vote", playersData); } 
-                    else if (state === "result_phase") { phaseInd.innerText = "📜 ผลคำพิพากษา"; npcText.innerText = "สภาได้ตัดสินเจตจำนงแล้ว..."; calculateVotesAndTrust(voteArea, playersData); } 
-                    else if (state === "wolf_win") { 
-                        phaseInd.innerText = "🩸 อวสานแห่งแสงสว่าง"; npcText.innerText = "หมู่บ้านถูกย้อมด้วยสีเลือด หมาป่าชนะ!"; showVictoryModal("wolf");
-                    } 
-                    else if (state === "villager_win") { 
-                        phaseInd.innerText = "✨ ชัยชนะแห่งแสงสว่าง"; npcText.innerText = "แสงสว่างขับไล่ความมืดมิด!"; showVictoryModal("villager");
-                    }
-                });
-            });
-        }
-
-        function loadTargets(container, mode, playersObj) {
-            Object.keys(playersObj).forEach(pId => {
-                if (pId !== myPlayerId && playersObj[pId].isAlive) {
-                    const btn = document.createElement("button"); btn.className = "target-btn";
-                    btn.innerText = mode === "kill" ? "🎯 ล่าเหยื่อ: " + playersObj[pId].name : mode === "seer" ? "🔮 ส่องความจริง: " + playersObj[pId].name : "⚖️ โหวตประหาร: " + playersObj[pId].name;
-                    btn.onclick = () => {
-                        playSound('click');
-                        if (mode === "seer") { showToast(`ความจริง: <b>${playersObj[pId].name}</b> คือ [${playersObj[pId].role === 'wolf' ? 'หมาป่า 🐺' : 'ฝ่ายดี ✨'}]`, "mystic"); btn.style.opacity = 0.5; btn.disabled = true; }
-                        else if (mode === "kill") { db.ref(`werewolf_game/rooms/${myRoomCode}/wolf_kills/${pId}`).set(true); showToast(`หมายหัว <b>${playersObj[pId].name}</b> เรียบร้อย!`, "error"); container.innerHTML="<p style='color:#ff4757; text-align:center; font-size:12px;'>เป้าหมายถูกล็อคแล้ว รอเช้าวันใหม่...</p>"; }
-                        else if (mode === "vote") { db.ref(`werewolf_game/rooms/${myRoomCode}/votes/${myPlayerId}`).set(pId); showToast(`ส่งผลโหวตประหาร <b>${playersObj[pId].name}</b> ให้สภาแล้ว!`, "normal"); container.innerHTML="<p style='color:#2ed573; text-align:center; font-size:12px;'>ส่งผลโหวตแล้ว รอผลสภา...</p>"; }
-                    }; container.appendChild(btn);
-                }
-            });
-        }
-
-        function loadHiddenSkill(container, role, playersObj = null) {
-            if(skillUsed) return;
-            const skillBtn = document.createElement("button"); skillBtn.className = "target-btn btn-skill";
-            
-            if(role === "guardian") {
-                skillBtn.innerText = "🛡️ สกิล: โล่ผู้พิทักษ์ (กางบาเรียคุ้มกัน)";
-                skillBtn.onclick = () => {
-                    playSound('click'); container.innerHTML = `<p style="color:#3498db; font-size:11px; margin-bottom:8px; text-align:center;">เลือกคุ้มกันการโจมตีจากหมาป่า 1 คน</p>`;
-                    Object.keys(playersObj).forEach(pId => {
-                        if (playersObj[pId].isAlive) {
-                            const tBtn = document.createElement("button"); tBtn.className = "target-btn btn-skill";
-                            tBtn.innerText = "คุ้มกัน: " + (pId === myPlayerId ? "ตัวเอง" : playersObj[pId].name);
-                            tBtn.onclick = () => {
-                                playSound('alert');
-                                db.ref(`werewolf_game/rooms/${myRoomCode}/guards/${pId}`).set(true);
-                                showToast(`กางโล่คุ้มกัน <b>${playersObj[pId].name}</b> สำเร็จ!`, "mystic");
-                                db.ref(`werewolf_game/rooms/${myRoomCode}/players/${myPlayerId}/skillUsed`).set(true);
-                                container.innerHTML = "<p style='color:#3498db; text-align:center; font-size:12px;'>กางบาเรียเรียบร้อย คืนนี้ปลอดภัย...</p>";
-                            }; container.appendChild(tBtn);
-                        }
-                    });
-                }; container.appendChild(skillBtn);
-            } 
-            else if(role === "alchemist") {
-                skillBtn.innerText = "🧪 สกิล: ยาพิษมรณะ (สั่งหารเป้าหมายลับ)";
-                skillBtn.style.color = "#e67e22"; skillBtn.style.borderColor = "rgba(230,126,34,0.5)";
-                skillBtn.onclick = () => {
-                    playSound('click'); container.innerHTML = `<p style="color:#e67e22; font-size:11px; margin-bottom:8px; text-align:center;">สาดน้ำยาพิษ (ทะลุโล่ผู้พิทักษ์)</p>`;
-                    Object.keys(playersObj).forEach(pId => {
-                        if (pId !== myPlayerId && playersObj[pId].isAlive) {
-                            const tBtn = document.createElement("button"); tBtn.className = "target-btn btn-skill";
-                            tBtn.style.color = "#e67e22"; tBtn.style.borderColor = "rgba(230,126,34,0.5)";
-                            tBtn.innerText = "สาดน้ำยาใส่: " + playersObj[pId].name;
-                            tBtn.onclick = () => {
-                                playSound('alert');
-                                db.ref(`werewolf_game/rooms/${myRoomCode}/poisons/${pId}`).set(true);
-                                showToast(`สาดน้ำยาพิษใส่ <b>${playersObj[pId].name}</b> แล้ว!`, "error");
-                                db.ref(`werewolf_game/rooms/${myRoomCode}/players/${myPlayerId}/skillUsed`).set(true);
-                                container.innerHTML = "<p style='color:#e67e22; text-align:center; font-size:12px;'>ใช้งานยาพิษแล้ว รอเช้าวันใหม่...</p>";
-                            }; container.appendChild(tBtn);
-                        }
-                    });
-                }; container.appendChild(skillBtn);
-            }
-            else if(role === "wolf") {
-                skillBtn.innerText = "🩸 สกิล: กระหายเลือด (สาดโคลนลด Trust 15%)";
-                skillBtn.style.color = "#ff4757"; skillBtn.style.borderColor = "rgba(255,71,87,0.5)";
-                skillBtn.onclick = () => {
-                    playSound('click'); container.innerHTML = `<p style="color:#ff4757; font-size:11px; margin-bottom:8px; text-align:center;">เลือกเป้าหมายที่จะใส่ร้าย</p>`;
-                    Object.keys(playersObj).forEach(pId => {
-                        if (pId !== myPlayerId && playersObj[pId].isAlive) {
-                            const tBtn = document.createElement("button"); tBtn.className = "target-btn btn-skill";
-                            tBtn.style.color = "#ff4757"; tBtn.style.borderColor = "rgba(255,71,87,0.5)";
-                            tBtn.innerText = "ใส่ร้าย: " + playersObj[pId].name;
-                            tBtn.onclick = () => {
-                                playSound('alert');
-                                let newTrust = Math.max(0, playersObj[pId].trust - 15);
-                                db.ref(`werewolf_game/rooms/${myRoomCode}/players/${pId}/trust`).set(newTrust);
-                                showToast(`ใส่ร้าย <b>${playersObj[pId].name}</b> สำเร็จ! Trust ลด 15%`, "error");
-                                db.ref(`werewolf_game/rooms/${myRoomCode}/players/${myPlayerId}/skillUsed`).set(true);
-                                container.innerHTML = "";
-                            }; container.appendChild(tBtn);
-                        }
-                    });
-                }; container.appendChild(skillBtn);
-            }
-        }
-
-        function processWolfKills(container, playersObj) {
-            db.ref(`werewolf_game/rooms/${myRoomCode}`).once("value", (snap) => {
-                const roomData = snap.val(); 
-                const kills = roomData.wolf_kills || {}; 
-                const guards = roomData.guards || {};
-                const poisons = roomData.poisons || {};
-                
-                let deadList = [];
-                Object.keys(poisons).forEach(id => {
-                    if(!deadList.includes(playersObj[id].name)) { deadList.push(playersObj[id].name); db.ref(`werewolf_game/rooms/${myRoomCode}/players/${id}/isAlive`).set(false); }
-                });
-                Object.keys(kills).forEach(id => {
-                    if(!guards[id] && !deadList.includes(playersObj[id].name)) { 
-                        deadList.push(playersObj[id].name); db.ref(`werewolf_game/rooms/${myRoomCode}/players/${id}/isAlive`).set(false); 
-                    }
-                });
-
-                if(deadList.length > 0) { container.innerHTML = `<div class='vote-result-box' style='border-color:#ff4757;'>รุ่งเช้านี้ พบร่างผู้เสียชีวิต: <div class="vote-winner">${deadList.join(", ")}</div></div>`; } 
-                else { container.innerHTML = `<div class='vote-result-box' style='border-color:#2ed573; color:#2ed573;'>รุ่งเช้านี้... หมู่บ้านปลอดภัย!</div>`; }
-            });
-        }
-
-        function calculateVotesAndTrust(container, playersObj) {
-            db.ref(`werewolf_game/rooms/${myRoomCode}/votes`).once("value", (snap) => {
-                const votes = snap.val();
-                if (!votes) { container.innerHTML = "<div class='vote-result-box' style='border-color:#2ed573; color:#2ed573;'>ไม่มีผู้ใดถูกโหวตในสภา... ทุกคนปลอดภัย!</div>"; return; }
-                
-                let tally = {}; 
-                Object.values(votes).forEach(tId => { tally[tId] = (tally[tId] || 0) + 1; });
-                
-                let maxVotes = 0; let votedOutId = null; let isTied = false;
-                for (const [id, count] of Object.entries(tally)) { 
-                    if (count > maxVotes) { maxVotes = count; votedOutId = id; isTied = false; }
-                    else if (count === maxVotes) { isTied = true; } 
-                }
-                
-                if (isTied) {
-                    container.innerHTML = `<div class='vote-result-box' style='border-color:#ffd700; color:#ffd700;'>มติสภา <b>เสมอกัน</b> ถือเป็นโมฆะ จะไม่มีใครถูกแขวนคอ!</div>`;
-                } else if (votedOutId && playersObj[votedOutId]) {
-                    const p = playersObj[votedOutId]; 
-                    container.innerHTML = `<div class='vote-result-box'>มติสภา (${maxVotes} เสียง) ขับไล่... <div class='vote-winner'>${p.name}</div><hr style='border:1px solid rgba(255,255,255,0.1); margin:10px 0;'>ความจริงคือ: <b>${p.name} เป็น ${p.role === 'wolf' ? '<span style="color:#ff4757">หมาป่า! 🐺</span>' : '<span style="color:#2ed573">ผู้บริสุทธิ์... 🧑</span>'}</b></div>`;
-                    db.ref(`werewolf_game/rooms/${myRoomCode}/players/${votedOutId}/isAlive`).set(false);
-                    
-                    if (playersObj[votedOutId].role === 'wolf' && votes[myPlayerId] === votedOutId && myRole !== 'wolf') {
-                        myTrust += 5; db.ref(`werewolf_game/rooms/${myRoomCode}/players/${myPlayerId}/trust`).set(myTrust);
-                        setTimeout(() => showToast("✨ โหวตถูกต้อง! ความน่าเชื่อถือ +5%", "mystic"), 1000);
-                    }
-                }
-            });
-        }
-
-        function toggleGMPanel() { playSound('click'); const p = document.getElementById('gm-panel'); p.style.display = p.style.display === 'flex' ? 'none' : 'flex'; }
-
-        let isGmProcessing = false;
-        async function setTimerForPhase(phase) {
-            let duration = 0;
-            if(phase === "role_reveal") duration = 12;
-            else if(phase === "night_phase") duration = 30;
-            else if(phase === "day_phase") duration = 45;
-            else if(phase === "voting_phase") duration = 25;
-            else if(phase === "result_phase") duration = 15;
-            let endTime = duration > 0 ? Date.now() + (duration * 1000) : 0;
-            await db.ref(`werewolf_game/rooms/${myRoomCode}/system/phaseEndTime`).set(endTime);
-        }
-
-        async function gmStartGame() {
-            if(!myRoomCode) return showToast("คุณยังไม่ได้อยู่ในห้อง!", "error");
-            if(isGmProcessing) return; isGmProcessing = true; isGM = true; playSound('click');
-            try {
-                await db.ref(`werewolf_game/rooms/${myRoomCode}/votes`).remove(); 
-                await db.ref(`werewolf_game/rooms/${myRoomCode}/wolf_kills`).remove(); 
-                await db.ref(`werewolf_game/rooms/${myRoomCode}/poisons`).remove(); 
-                await db.ref(`werewolf_game/rooms/${myRoomCode}/guards`).remove();
-                
-                const snap = await db.ref(`werewolf_game/rooms/${myRoomCode}/players`).once("value"); const players = snap.val();
-                if(!players) { showToast("ยังไม่มีผู้เล่น!", "error"); isGmProcessing = false; return; }
-                
-                let pKeys = Object.keys(players);
-                let rolesToAssign = [];
-                let t = pKeys.length;
-                if(t >= 1) rolesToAssign.push("wolf");
-                if(t >= 2) rolesToAssign.push("seer");
-                if(t >= 4) rolesToAssign.push("guardian");
-                if(t >= 5) rolesToAssign.push("alchemist");
-                while(rolesToAssign.length < t) { rolesToAssign.push("villager"); }
-                
-                for (let i = rolesToAssign.length - 1; i > 0; i--) { 
-                    const j = Math.floor(Math.random() * (i + 1)); 
-                    [rolesToAssign[i], rolesToAssign[j]] = [rolesToAssign[j], rolesToAssign[i]]; 
-                }
-                
-                let updates = {};
-                pKeys.forEach((key, idx) => {
-                    updates[`werewolf_game/rooms/${myRoomCode}/players/${key}/role`] = rolesToAssign[idx];
-                    updates[`werewolf_game/rooms/${myRoomCode}/players/${key}/isAlive`] = true;
-                    updates[`werewolf_game/rooms/${myRoomCode}/players/${key}/trust`] = 0;
-                    updates[`werewolf_game/rooms/${myRoomCode}/players/${key}/skillUsed`] = false;
-                });
-                
-                await db.ref().update(updates);
-                await db.ref(`werewolf_game/rooms/${myRoomCode}/system/gameState`).set("role_reveal");
-                await setTimerForPhase("role_reveal");
-                showToast("เริ่มเกม!", "normal");
-            } catch(e) { console.error(e); }
-            setTimeout(() => { isGmProcessing = false; }, 1000);
-        }
-
-        async function gmNextPhase(manualClick = false) {
-            if(!myRoomCode || isGmProcessing) return; 
-            isGmProcessing = true; isGM = true; if(manualClick) playSound('click');
-            try {
-                const snap = await db.ref(`werewolf_game/rooms/${myRoomCode}/system/gameState`).once("value"); 
-                let current = snap.val() || "lobby"; let next = "lobby";
-                
-                if (current === "lobby") next = "role_reveal";
-                else if (current === "role_reveal") { await cleanUpNight(); next = "night_phase"; }
-                else if (current === "night_phase") next = "day_phase";
-                else if (current === "day_phase") next = "voting_phase";
-                else if (current === "voting_phase") next = "result_phase";
-                else if (current === "result_phase") { next = await checkWinCondition(); }
-                else if (current === "wolf_win" || current === "villager_win") { next = "lobby"; document.getElementById('victory-modal').style.display='none'; }
-                else { await cleanUpNight(); next = "night_phase"; }
-                
-                await db.ref(`werewolf_game/rooms/${myRoomCode}/system/gameState`).set(next); 
-                if(next !== "lobby" && next !== "wolf_win" && next !== "villager_win") {
-                    await setTimerForPhase(next);
-                } else { await db.ref(`werewolf_game/rooms/${myRoomCode}/system/phaseEndTime`).set(0); }
-                
-            } catch(e) { console.error(e); }
-            setTimeout(() => { isGmProcessing = false; }, 1000);
-        }
-
-        async function cleanUpNight() { 
-            await db.ref(`werewolf_game/rooms/${myRoomCode}/votes`).remove(); 
-            await db.ref(`werewolf_game/rooms/${myRoomCode}/wolf_kills`).remove(); 
-            await db.ref(`werewolf_game/rooms/${myRoomCode}/poisons`).remove(); 
-            await db.ref(`werewolf_game/rooms/${myRoomCode}/guards`).remove(); 
-        }
-
-        async function checkWinCondition() {
-            const snap = await db.ref(`werewolf_game/rooms/${myRoomCode}/players`).once("value"); const players = snap.val() || {};
-            let w = 0, v = 0;
-            for(let key in players) { if(players[key].isAlive) { if(players[key].role === 'wolf') w++; else v++; } }
-            if(w === 0 && v > 0) return "villager_win"; if(w >= v && w > 0) return "wolf_win";
-            await cleanUpNight(); return "night_phase";
-        }
-
-        async function gmResetGame() {
-            if(!myRoomCode) return;
-            if(!confirm("ต้องการยุบห้องนี้ทิ้ง ใช่หรือไม่?")) return;
-            playSound('alert');
-            await db.ref(`werewolf_game/rooms/${myRoomCode}`).remove();
-            showToast("ยุบห้องเรียบร้อย", "error"); setTimeout(() => window.location.reload(), 1000);
-        }
-
-        function gmAddBot() {
-            if(!myRoomCode) return showToast("ตั้งห้องก่อน!", "error");
-            playSound('click'); let botId = "bot_" + Date.now(); let botName = "Bot_" + Math.floor(Math.random()*90+10);
-            db.ref(`werewolf_game/rooms/${myRoomCode}/players/${botId}`).set({ name: botName, role: "waiting", isAlive: true, trust: 0, skillUsed: false });
-            showToast(`บอทลงบอร์ดแล้ว!`, "normal");
-        }
-    </script>
-</body>
-</html>
