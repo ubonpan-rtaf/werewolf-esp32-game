@@ -14,7 +14,7 @@
             background: linear-gradient(rgba(10, 10, 15, 0.9), rgba(5, 5, 10, 0.98)), url('bg-night.jpg') no-repeat center center fixed; 
             background-size: cover; color: #f1f2f6; min-height: 100vh; display: flex; 
             align-items: flex-start; justify-content: center;
-            padding: 30px 15px 120px 15px; /* ลด padding ด้านล่างลง เพราะแผง GM เล็กลงแล้ว */
+            padding: 30px 15px 120px 15px; 
             transition: background 1.5s ease-in-out; 
             overflow-x: hidden; 
         }
@@ -55,7 +55,8 @@
         .role-badge-title { font-size: 11px; color: #ffd700; font-weight: 700; letter-spacing: 1px; margin-bottom: 15px; display: inline-block; padding: 4px 12px; background: rgba(212, 175, 55, 0.1); border-radius: 12px; border: 1px solid rgba(212, 175, 55, 0.2); text-transform: uppercase; width: fit-content; }
         
         .role-portrait-container { width: 120px; height: 120px; margin: 0 auto 12px auto; border-radius: 16px; padding: 4px; background: linear-gradient(135deg, #ffd700, #ff8c00); box-shadow: 0 0 15px rgba(212, 175, 55, 0.2); transition: background 0.5s ease; }
-        .role-portrait { width: 100%; height: 100%; border-radius: 12px; object-fit: cover; border: 3px solid #1a1a2e; background-color: #111; }
+        /* รองรับการแสดงผลวิดีโอ */
+        .role-portrait { width: 100%; height: 100%; border-radius: 12px; object-fit: cover; border: 3px solid #1a1a2e; background-color: #111; pointer-events: none; }
         
         .role-name-epic { font-size: 22px; font-weight: 900; margin-bottom: 8px; text-transform: uppercase; letter-spacing: 1px; text-shadow: 0 0 10px rgba(255,255,255,0.1); text-align: center;}
         
@@ -87,14 +88,14 @@
         @keyframes toastIn { from { opacity: 0; transform: translateY(-20px); } to { opacity: 1; transform: translateY(0); } }
         @keyframes toastOut { from { opacity: 1; transform: translateY(0); } to { opacity: 0; transform: translateY(-20px); } }
 
-        /* แผงควบคุม GM ปรับใหม่: แนวนอน เล็ก เรียบหรู ห่างขอบ 3mm (12px) และปุ่มเรียงบรรทัดเดียว */
+        /* แผงควบคุม GM แนวนอนติดขอบล่าง */
         .gm-panel-container { 
             position: fixed; 
-            bottom: 12px; /* สูงจากขอบล่าง 3mm (12px) */
+            bottom: 12px;
             left: 50%; 
             transform: translateX(-50%); 
-            width: calc(100% - 24px); /* ห่างขอบซ้ายและขวาข้างละ 12px */
-            max-width: 420px; /* ไม่ให้กว้างเกินไปบนจอคอม */
+            width: calc(100% - 24px); 
+            max-width: 420px; 
             background: rgba(15, 15, 20, 0.98); 
             backdrop-filter: blur(15px); 
             border: 1px solid rgba(212, 175, 55, 0.6); 
@@ -110,7 +111,6 @@
         .gm-title { color: #ffd700; font-size: 11px; font-weight: bold; letter-spacing: 0.5px; margin: 0; }
         .auto-toggle { display: flex; align-items: center; gap: 4px; background: rgba(255,255,255,0.08); padding: 2px 8px; border-radius: 10px; font-size: 10px; cursor: pointer; color: #fff; border: 1px solid rgba(255,255,255,0.1); transition: 0.3s;}
         
-        /* จัดกลุ่มปุ่มให้อยู่ในบรรทัดเดียว (Row) */
         .gm-btn-group { display: flex; flex-direction: row; gap: 6px; width: 100%; justify-content: space-between; }
         .gm-btn { flex: 1; height: 32px; background: rgba(212,175,55,0.15); border: 1px solid rgba(212,175,55,0.4); color: #fff; border-radius: 8px; font-family: 'Prompt'; font-size: 11px; font-weight: 600; cursor: pointer; display: flex; align-items: center; justify-content: center; padding: 0; white-space: nowrap; transition: 0.2s; }
         .gm-btn:hover { background: rgba(212,175,55,0.3); transform: translateY(-2px); }
@@ -143,8 +143,7 @@
     <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
 </head>
-
-<!-- ================= ส่วนที่ 2: โครงสร้าง HTML (UI ภายใน Body) ================= -->
+  <!-- ================= ส่วนที่ 2: โครงสร้าง HTML (UI ภายใน Body) ================= -->
 <body>
     <div id="toast-container"></div>
 
@@ -162,7 +161,7 @@
         </div>
     </div>
 
-    <!-- แผงควบคุม GM ปรับใหม่: แนวนอนชิดล่าง ห่าง 3mm พร้อมคำย่อปุ่ม -->
+    <!-- แผงควบคุม GM แนวนอน (Bottom Bar) -->
     <div id="gm-panel" class="gm-panel-container">
         <div class="gm-header">
             <span class="gm-title">👑 สภา GM</span>
@@ -212,9 +211,14 @@
         <div id="game-screen" style="display:none; width: 100%;">
             <div class="role-card-epic" id="role-card-bg">
                 <div class="role-badge-title" id="phase-indicator">สถานะ: เตรียมพร้อม</div>
+                
+                <!-- อัปเกรดเป็นรูปโปรไฟล์วิดีโอ (Video Portrait) -->
                 <div class="role-portrait-container" id="portrait-border">
-                    <img src="" id="role-image" class="role-portrait" onerror="this.src='data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' viewBox=\'0 0 100 100\'><rect width=\'100\' height=\'100\' fill=\'%23111\'/><text x=\'50\' y=\'55\' font-size=\'40\' text-anchor=\'middle\' fill=\'white\'>🛡️</text></svg>'">
+                    <video autoplay muted loop playsinline id="role-video" class="role-portrait">
+                        <source src="" type="video/mp4">
+                    </video>
                 </div>
+                
                 <div class="role-name-epic" id="my-role">กำลังโหลด...</div>
                 
                 <div class="trust-bar-container" id="trust-container" style="display:none;">
@@ -238,7 +242,7 @@
         </div>
     </div>
 
-    <!-- Modal คัมภีร์คู่มือแบบเจาะลึกสุดๆ -->
+    <!-- Modal คัมภีร์คู่มือแบบเจาะลึก -->
     <div id="manual-modal" class="modal">
         <div class="modal-content" style="max-height: 85vh; padding: 25px;">
             <h3 style="color:#ffd700; text-align:center; font-size:20px; margin-bottom: 15px; border-bottom: 1px solid rgba(212,175,55,0.3); padding-bottom: 10px;">📖 คัมภีร์กฎสมรภูมิ (Official Guide)</h3>
@@ -285,7 +289,7 @@
             <button class="close-btn" onclick="closeManual()">รับทราบข้อตกลง</button>
         </div>
     </div>
-
+    
 <!-- ================= ส่วนที่ 3: JavaScript และการปิดไฟล์ ================= -->
     <script>
         function showToast(message, type = 'normal') {
@@ -458,26 +462,34 @@
                     }
                 }
                 
-                const phaseInd = document.getElementById("phase-indicator"); const roleImg = document.getElementById("role-image");
-                const roleEl = document.getElementById("my-role"); const npcText = document.getElementById("npc-text");
-                const actionArea = document.getElementById("action-area"); const voteArea = document.getElementById("vote-result-area");
-                const trustCont = document.getElementById("trust-container"); const trustBar = document.getElementById("trust-bar"); const trustVal = document.getElementById("trust-val");
+                const phaseInd = document.getElementById("phase-indicator"); 
+                const roleVid = document.getElementById("role-video"); // อัปเดตรับแท็ก Video
+                const roleEl = document.getElementById("my-role"); 
+                const npcText = document.getElementById("npc-text");
+                const actionArea = document.getElementById("action-area"); 
+                const voteArea = document.getElementById("vote-result-area");
+                const trustCont = document.getElementById("trust-container"); 
+                const trustBar = document.getElementById("trust-bar"); 
+                const trustVal = document.getElementById("trust-val");
+                const pBorder = document.getElementById("portrait-border");
+                const cardBg = document.getElementById("role-card-bg");
                 actionArea.innerHTML = ""; voteArea.innerHTML = "";
 
                 db.ref(`werewolf_game/rooms/${myRoomCode}/players`).once("value", (playersSnap) => {
                     playersData = playersSnap.val() || {}; const me = playersData[myPlayerId]; if (!me) return;
                     myRole = me.role || "villager"; myTrust = me.trust || 0; skillUsed = me.skillUsed || false;
                     
+                    // อัปเดตวิดีโอตัวละครตามบทบาท
                     if (!me.isAlive) {
-                        phaseInd.innerText = "สถานะ: สิ้นชีพในสงคราม"; roleImg.src = "img-ghost.jpg"; roleEl.innerHTML = "วิญญาณผู้ล่วงลับ"; roleEl.style.color = "#a4b0be"; trustCont.style.display = "none"; npcText.innerText = "ร่างของเจ้าสูญสลายไปแล้ว... ทำได้เพียงเฝ้ามองความล่มสลาย"; return; 
+                        phaseInd.innerText = "สถานะ: สิ้นชีพในสงคราม"; roleVid.src = "vid-ghost.mp4"; roleEl.innerHTML = "วิญญาณผู้ล่วงลับ"; roleEl.style.color = "#a4b0be"; trustCont.style.display = "none"; pBorder.style.background = "#333"; cardBg.style.borderColor = "rgba(164, 176, 190, 0.3)"; npcText.innerText = "ร่างของเจ้าสูญสลายไปแล้ว... ทำได้เพียงเฝ้ามองความล่มสลาย"; return; 
                     }
 
                     trustCont.style.display = "block"; trustBar.style.width = myTrust + "%"; trustVal.innerText = myTrust;
-                    if (myRole === "wolf") { roleImg.src = "img-wolf.jpg"; roleEl.innerHTML = "Crimson Lycan"; roleEl.style.color = "#ff4757"; } 
-                    else if (myRole === "seer") { roleImg.src = "img-seer.jpg"; roleEl.innerHTML = "Cyber Oracle"; roleEl.style.color = "#9b59b6"; } 
-                    else if (myRole === "guardian") { roleImg.src = "img-guardian.jpg"; roleEl.innerHTML = "Holy Guardian"; roleEl.style.color = "#3498db"; } 
-                    else if (myRole === "alchemist") { roleImg.src = "img-alchemist.jpg"; roleEl.innerHTML = "Mad Alchemist"; roleEl.style.color = "#e67e22"; } 
-                    else { roleImg.src = "img-villager.jpg"; roleEl.innerHTML = "Citizen"; roleEl.style.color = "#2ed573"; }
+                    if (myRole === "wolf") { roleVid.src = "vid-wolf.mp4"; roleEl.innerHTML = "Crimson Lycan"; roleEl.style.color = "#ff4757"; pBorder.style.background = "linear-gradient(135deg, #ff4757, #8e0000)"; cardBg.style.borderColor = "rgba(255, 71, 87, 0.5)"; } 
+                    else if (myRole === "seer") { roleVid.src = "vid-seer.mp4"; roleEl.innerHTML = "Cyber Oracle"; roleEl.style.color = "#9b59b6"; pBorder.style.background = "linear-gradient(135deg, #9b59b6, #4b0082)"; cardBg.style.borderColor = "rgba(155, 89, 182, 0.5)"; } 
+                    else if (myRole === "guardian") { roleVid.src = "vid-guardian.mp4"; roleEl.innerHTML = "Holy Guardian"; roleEl.style.color = "#3498db"; pBorder.style.background = "linear-gradient(135deg, #3498db, #2980b9)"; cardBg.style.borderColor = "rgba(52, 152, 219, 0.5)"; } 
+                    else if (myRole === "alchemist") { roleVid.src = "vid-alchemist.mp4"; roleEl.innerHTML = "Mad Alchemist"; roleEl.style.color = "#e67e22"; pBorder.style.background = "linear-gradient(135deg, #e67e22, #d35400)"; cardBg.style.borderColor = "rgba(230, 126, 34, 0.5)"; } 
+                    else { roleVid.src = "vid-villager.mp4"; roleEl.innerHTML = "Citizen"; roleEl.style.color = "#2ed573"; pBorder.style.background = "linear-gradient(135deg, #2ed573, #006400)"; cardBg.style.borderColor = "rgba(46, 213, 115, 0.5)"; }
 
                     if (state === "lobby") { phaseInd.innerText = "สถานะ: เตรียมพร้อม"; npcText.innerText = "รอคำสั่งเริ่มต้นเกมจาก Host..."; }
                     else if (state === "role_reveal") { phaseInd.innerText = "คลาสประจำตัว"; npcText.innerText = myRole === "wolf" ? "ซ่อนความลับ เตรียมขย้ำในยามวิกาล..." : "ความอยู่รอดของหมู่บ้านขึ้นอยู่กับคุณ!"; } 
@@ -668,6 +680,15 @@
                 if(!players) { showToast("ยังไม่มีผู้เล่น!", "error"); isGmProcessing = false; return; }
                 
                 let pKeys = Object.keys(players);
+                
+                // --- ระบบ Double Shuffle (สุ่มสลับรายชื่อคน และสุ่มสลับบทบาท) ---
+                // 1. สับเปลี่ยนรายชื่อผู้เล่นเพื่อป้องกันการผูกขาด Host
+                for (let i = pKeys.length - 1; i > 0; i--) { 
+                    const j = Math.floor(Math.random() * (i + 1)); 
+                    [pKeys[i], pKeys[j]] = [pKeys[j], pKeys[i]]; 
+                }
+
+                // 2. จัดเตรียมบทบาทตามจำนวนคน
                 let rolesToAssign = [];
                 let t = pKeys.length;
                 if(t >= 1) rolesToAssign.push("wolf");
@@ -676,11 +697,13 @@
                 if(t >= 5) rolesToAssign.push("alchemist");
                 while(rolesToAssign.length < t) { rolesToAssign.push("villager"); }
                 
+                // 3. สับเปลี่ยนบทบาทให้มั่วอีกรอบ
                 for (let i = rolesToAssign.length - 1; i > 0; i--) { 
                     const j = Math.floor(Math.random() * (i + 1)); 
                     [rolesToAssign[i], rolesToAssign[j]] = [rolesToAssign[j], rolesToAssign[i]]; 
                 }
                 
+                // 4. แจกบทบาทแบบไร้รูปแบบ
                 let updates = {};
                 pKeys.forEach((key, idx) => {
                     updates[`werewolf_game/rooms/${myRoomCode}/players/${key}/role`] = rolesToAssign[idx];
