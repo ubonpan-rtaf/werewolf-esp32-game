@@ -14,14 +14,14 @@
             background: linear-gradient(rgba(10, 10, 15, 0.9), rgba(5, 5, 10, 0.98)), url('bg-night.jpg') no-repeat center center fixed; 
             background-size: cover; color: #f1f2f6; min-height: 100vh; display: flex; 
             align-items: flex-start; justify-content: center;
-            /* เพิ่มระยะล่างให้มากขึ้นเพื่อหลบแผง GM ที่ใหญ่ขึ้น */
-            padding: 12px 0 130px 0; 
+            /* ปรับ padding ซ้ายขวาเป็น 0 เพื่อให้กรอบชิดขอบจอ */
+            padding: 15px 0 130px 0; 
             transition: background 1.5s ease-in-out; 
             overflow-x: hidden; 
         }
         
         /* ----------------------------------------------------------- */
-        /* 🏰 คอนเทนเนอร์หลัก (อัปเดต: ใช้ ui-frame-main.png & ห่างขอบ 12px) */
+        /* 🏰 คอนเทนเนอร์หลัก (ขยาย 100% ชิดขอบซ้ายขวา) */
         /* ----------------------------------------------------------- */
         .game-container { 
             background-color: rgba(10, 10, 15, 0.85);
@@ -29,10 +29,10 @@
             background-repeat: no-repeat; background-position: center center; background-size: 100% 100%;
             backdrop-filter: blur(15px); -webkit-backdrop-filter: blur(15px); 
             border: none; border-radius: 0; 
-            width: calc(100% - 24px); /* ห่างขอบซ้ายขวาด้านละ 12px */
-            max-width: 440px; 
+            width: 100%; /* ชิดขอบซ้ายขวา */
+            max-width: 500px; /* ขยาย max-width ให้กว้างขึ้นเวลาเปิดในจอใหญ่ */
             margin: 0 auto; 
-            padding: 55px 30px; /* ดันเนื้อหาเข้าด้านในหลบขอบกรอบ */
+            padding: 50px 25px; /* ปรับ padding ให้พอดีกับกรอบ main */
             box-shadow: 0 20px 50px rgba(0, 0, 0, 0.9); 
             text-align: center; position: relative; animation: fadeIn 0.6s cubic-bezier(0.16, 1, 0.3, 1); 
             display: flex; flex-direction: column; align-items: center;
@@ -40,13 +40,13 @@
         @keyframes fadeIn { from { opacity: 0; transform: translateY(15px); } to { opacity: 1; transform: translateY(0); } }
         
         /* ----------------------------------------------------------- */
-        /* 🏮 กรอบหน้าหลัก (Lobby) ใช้ ui-frame-lantern.png */
+        /* 🪟 กรอบหน้าหลัก (Lobby) เปลี่ยนใช้ ui-person.png */
         /* ----------------------------------------------------------- */
         #lobby-screen {
-            background: url('ui-frame-lantern.png') no-repeat center center;
+            background: url('ui-person.png') no-repeat center center;
             background-size: 100% 100%;
             width: 100%;
-            padding: 85px 45px 75px 45px; /* ดันเนื้อหาหลบตะเกียง */
+            padding: 65px 35px 55px 35px; /* ปรับลดขอบซ้ายขวาให้ช่องกรอกกว้างขึ้น */
             display: flex; flex-direction: column; align-items: center;
         }
 
@@ -60,31 +60,24 @@
         .input-code { font-weight: 700; font-size: 16px; letter-spacing: 2px; text-transform: uppercase; margin-bottom: 0 !important; }
         
         /* ----------------------------------------------------------- */
-        /* 💎 ปุ่มและป้ายต่างๆ (ขยายใหญ่ขึ้น 5px) */
+        /* 💎 ปุ่มและป้ายต่างๆ */
         /* ----------------------------------------------------------- */
         .btn, .target-btn, .close-btn { 
-            width: 100%; 
-            height: 53px; /* เดิม 48px -> เพิ่ม 5px */
-            display: flex; align-items: center; justify-content: center; 
-            background: url('ui-btn-large.png') no-repeat center center; 
-            background-size: 100% 100%; 
+            width: 100%; height: 53px; display: flex; align-items: center; justify-content: center; 
+            background: url('ui-btn-large.png') no-repeat center center; background-size: 100% 100%; 
             color: #ffd700; border: none; font-size: 14px; font-weight: 800; font-family: 'Prompt', sans-serif; 
             cursor: pointer; transition: all 0.2s; margin-bottom: 10px; text-transform: uppercase; 
             text-shadow: 0 2px 4px #000; box-shadow: none; border-radius: 0;
         }
-        .btn:hover, .target-btn:hover, .close-btn:hover { 
-            transform: translateY(-2px); filter: brightness(1.2) drop-shadow(0 0 10px rgba(212,175,55,0.4)); 
-        }
+        .btn:hover, .target-btn:hover, .close-btn:hover { transform: translateY(-2px); filter: brightness(1.2) drop-shadow(0 0 10px rgba(212,175,55,0.4)); }
         
         .target-btn { padding: 0 35px; justify-content: flex-start; height: 49px; margin: 6px 0; font-size: 13px; font-weight: 600; color: #fff;}
         .btn-secondary { color: #dfe4ea; }
         .btn-create { color: #fff; text-shadow: 0 0 5px #9b59b6; }
         
-        /* กรอบ Room Code ใหญ่ขึ้น 5px */
         .room-badge { 
             background: url('ui-btn-large.png') no-repeat center center; background-size: 100% 100%; 
-            padding: 13px 40px; /* เพิ่ม padding ขยายกรอบ 5px */
-            margin-bottom: 15px; display: flex; gap: 15px; align-items: center; width: fit-content; 
+            padding: 13px 40px; margin-bottom: 15px; display: flex; gap: 15px; align-items: center; width: fit-content; 
         }
         .room-badge-title { font-size: 10px; color: #dcdde1; text-transform: uppercase; }
         .room-badge-id { color: #fff; font-size: 16px; font-weight: 900; letter-spacing: 1.5px; text-shadow: 0 0 5px #ffd700; }
@@ -94,13 +87,13 @@
         .btn-music { background: rgba(46, 213, 115, 0.1); border: 1px solid rgba(46, 213, 115, 0.2); color: #2ed573; font-size: 12px; height: 34px; border-radius: 8px; font-weight: 700; cursor: pointer; font-family: 'Prompt'; }
         
         /* ----------------------------------------------------------- */
-        /* 🖼️ กรอบการ์ดตัวละคร (อัปเดต: ใช้ ui-person.png) */
+        /* 🖼️ กรอบการ์ดตัวละคร (ใช้ ui-person.png) */
         /* ----------------------------------------------------------- */
         .role-card-epic { 
             background: url('ui-person.png') no-repeat center center; 
             background-size: 100% 100%;
             width: 100%; min-height: 520px; 
-            padding: 70px 45px 60px 45px; 
+            padding: 65px 35px 55px 35px; /* ปรับ padding ให้เข้ากับ ui-person */
             display: flex; flex-direction: column; align-items: center; position: relative;
             border: none; border-radius: 0; box-shadow: none;
         }
@@ -113,42 +106,36 @@
         /* ----------------------------------------------------------- */
         .role-portrait-container { 
             width: 130px; height: 130px; margin: 0 auto 10px auto; 
-            background: url('ui-portrait.png') no-repeat center center; 
-            background-size: contain; 
-            display: flex; justify-content: center; align-items: center;
-            border-radius: 0; padding: 0; box-shadow: none; border: none;
+            background: url('ui-portrait.png') no-repeat center center; background-size: contain; 
+            display: flex; justify-content: center; align-items: center; border-radius: 0; padding: 0; box-shadow: none; border: none;
         }
         .role-portrait { 
-            width: 65%; height: 65%; border-radius: 50%; object-fit: cover; 
-            background-color: #111; pointer-events: none;
-            border: 2px solid rgba(212, 175, 55, 0.4);
+            width: 65%; height: 65%; border-radius: 50%; object-fit: cover; background-color: #111; pointer-events: none; border: 2px solid rgba(212, 175, 55, 0.4);
         }
         
         .role-name-epic { font-size: 20px; font-weight: 900; margin-bottom: 8px; color: #fff; text-transform: uppercase; letter-spacing: 1px; text-shadow: 0 0 10px rgba(0,0,0,0.8); text-align: center;}
         
         .trust-bar-container { 
             background: url('ui-btn-large.png') no-repeat center center; background-size: 100% 100%;
-            width: 90%; margin: 4px auto; height: 20px; position: relative; padding: 4px 20px;
-            border-radius: 0; border: none; box-shadow: none;
+            width: 90%; margin: 4px auto; height: 20px; position: relative; padding: 4px 20px; border-radius: 0; border: none; box-shadow: none;
         }
         .trust-bar-fill { background: linear-gradient(90deg, #2ed573, #1abc9c); height: 100%; width: 0%; border-radius: 4px; transition: width 1s cubic-bezier(0.4, 0, 0.2, 1); }
         .trust-text { position: absolute; width: 100%; text-align: center; top: 0; left: 0; font-size: 9px; font-weight: bold; color: white; line-height: 20px; text-shadow: 0 0 2px black; }
 
         /* ----------------------------------------------------------- */
-        /* 📜 สาส์นจากสภา (อัปเดต: ใช้ ui-frame-lantern.png) */
+        /* 📜 สาส์นจากสภา เปลี่ยนมาใช้ ui-person.png */
         /* ----------------------------------------------------------- */
         .npc-dialogue { 
-            background: url('ui-frame-lantern.png') no-repeat center center; 
+            background: url('ui-person.png') no-repeat center center; 
             background-size: 100% 100%;
-            padding: 70px 50px; /* ดันเนื้อหาหลบตะเกียงและยอดแหลม */
+            padding: 40px 35px; /* ปรับลด padding เพราะกรอบมันเรียวกว่า lantern */
             margin: 10px auto; 
             font-size: 12px; color: #dfe4ea; text-align: center; line-height: 1.4; 
             width: 100%; max-width: 100%; border: none; border-radius: 0;
-            min-height: 170px; display: flex; flex-direction: column; justify-content: center; align-items: center;
+            min-height: 140px; display: flex; flex-direction: column; justify-content: center; align-items: center;
         }
         .npc-dialogue::before { content: '📜 สาส์นจากสภา:'; display: block; font-style: normal; font-weight: 700; color: #ffd700; font-size: 11px; margin-bottom: 4px; }
         
-        /* กล่องโหวต */
         .vote-result-box { 
             background: url('ui-btn-large.png') no-repeat center center; background-size: 100% 100%;
             padding: 20px 35px; margin: 10px auto; font-size: 12px; color: #dfe4ea; text-align: center; line-height: 1.4; width: 100%; max-width: 100%; border: none; border-radius: 0;
@@ -170,13 +157,13 @@
         @keyframes toastOut { from { opacity: 1; transform: translateY(0); } to { opacity: 0; transform: translateY(-20px); } }
 
         /* ----------------------------------------------------------- */
-        /* 🕹️ แผงควบคุม GM & ปุ่มมงกุฎ (อัปเดต: ขยายใหญ่ขึ้น 5px) */
+        /* 🕹️ แผงควบคุม GM */
         /* ----------------------------------------------------------- */
         .gm-panel-container { 
             position: fixed; bottom: 12px; left: 50%; transform: translateX(-50%); 
-            width: calc(100% - 10px); max-width: 445px; /* กว้างขึ้น 5px */
+            width: calc(100% - 10px); max-width: 445px; 
             background: url('ui-panel-wide.png') no-repeat center center; background-size: 100% 100%;
-            padding: 30px 48px 23px 48px; /* เพิ่ม Padding บนล่างขยายกรอบ 5px */
+            padding: 30px 48px 23px 48px; 
             z-index: 10001; display: none; flex-direction: column; gap: 8px;
             filter: drop-shadow(0 10px 25px rgba(0,0,0,0.9)); border: none; border-radius: 0;
         }
@@ -189,10 +176,8 @@
         .gm-btn:hover { background: rgba(212,175,55,0.3); color: #fff;}
         .gm-btn-danger { color: #ff7675; border-color: #ff7675; }
         
-        /* ปุ่มมงกุฎใหญ่ขึ้น 5px */
         .gm-toggle-btn { 
-            position: fixed; top: 15px; right: 15px; 
-            width: 50px; height: 50px; /* เดิม 45px -> เพิ่ม 5px */
+            position: fixed; top: 15px; right: 15px; width: 50px; height: 50px; 
             display: flex; justify-content: center; align-items: center; background: url('ui-btn-large.png') no-repeat center center; background-size: 100% 100%; border: none; font-size: 16px; cursor: pointer; z-index: 10002; filter: drop-shadow(0 0 10px rgba(212,175,55,0.3)); border-radius: 0;
         }
 
@@ -206,7 +191,7 @@
         .vic-subtitle { font-size: 14px; color: #dcdde1; line-height: 1.6; font-weight: bold; text-shadow: 0 2px 4px #000;}
 
         @media (min-width: 768px) {
-            .game-container { max-width: 550px; padding: 65px 40px; }
+            .game-container { max-width: 600px; padding: 65px 40px; }
             h2 { font-size: 28px; }
             input[type="text"] { height: 50px; font-size: 16px; }
             .btn { height: 60px; }
@@ -216,7 +201,7 @@
     </style>
     <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
-</head>
+</head>  
 
 <!-- ================= ส่วนที่ 2: โครงสร้าง HTML (UI ภายใน Body) ================= -->
 <body>
