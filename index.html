@@ -55,11 +55,11 @@
         .btn-secondary { color: #dfe4ea; }
         .btn-create { color: #fff; text-shadow: 0 0 5px #9b59b6; }
         
-        /* Room Code ให้อยู่มุมซ้ายบน */
+        /* Room Code: ขยายขอบบนและล่างเพิ่มอีก 3px (จากเดิม 6px เป็น 9px) และอยู่มุมซ้ายบน */
         .room-badge { 
             position: absolute; top: 12px; left: 12px;
             background: url('ui-btn-large.png') no-repeat center center; background-size: 100% 100%; 
-            padding: 6px 15px; display: flex; gap: 10px; align-items: center; width: fit-content; 
+            padding: 9px 15px; display: flex; gap: 10px; align-items: center; width: fit-content; 
             z-index: 10; transform: scale(0.85); transform-origin: top left;
         }
         .room-badge-title { font-size: 9px; color: #dcdde1; text-transform: uppercase; }
@@ -69,12 +69,15 @@
         .music-panel { background: rgba(10, 10, 15, 0.85); border: 1px solid rgba(255, 255, 255, 0.08); border-radius: 12px; padding: 10px; margin-top: 15px; display: flex; flex-direction: column; gap: 6px; width: 100%; }
         .btn-music { background: rgba(46, 213, 115, 0.1); border: 1px solid rgba(46, 213, 115, 0.2); color: #2ed573; font-size: 12px; height: 34px; border-radius: 8px; font-weight: 700; cursor: pointer; font-family: 'Prompt'; }
         
-        /* 🖼️ กรอบการ์ดตัวละครด้านใน (ui-frame-main.png) ชิดขอบกรอบทองนอกสุด */
+        /* 🖼️ กรอบการ์ดตัวละครด้านใน (ui-frame-main.png): ขยายด้านข้างให้ชิดขอบกรอบทองนอกสุด */
         .role-card-epic { 
             background: url('ui-frame-main.png') no-repeat center center; 
             background-size: 100% 100%;
-            width: 100%; min-height: 540px; 
-            padding: 70px 15px 40px 15px; /* ลด padding ซ้ายขวาให้ชิดกรอบทอง */
+            width: calc(100% + 30px); /* ขยายด้านข้างชดเชย padding ของคอนเทนเนอร์หลัก */
+            margin-left: -15px; 
+            margin-right: -15px;
+            min-height: 540px; 
+            padding: 70px 15px 40px 15px; 
             display: flex; flex-direction: column; align-items: center; position: relative;
             border: none; border-radius: 0; box-shadow: none;
         }
@@ -82,7 +85,7 @@
 
         .role-badge-title { font-size: 11px; color: #ffd700; font-weight: 700; letter-spacing: 1px; margin-bottom: 8px; display: inline-block; padding: 4px 12px; background: rgba(0,0,0,0.8); border: 1px solid rgba(212, 175, 55, 0.5); border-radius: 12px; text-transform: uppercase; width: fit-content; }
         
-        /* ⭕ กรอบรูปโปรไฟล์ตัวละคร (ui-portrait.png) */
+        /* ⭕ กรอบรูปโปรไฟล์วิดีโอ (ui-portrait.png) */
         .role-portrait-container { 
             width: 120px; height: 120px; margin: 0 auto 8px auto; 
             background: url('ui-portrait.png') no-repeat center center; 
@@ -107,10 +110,10 @@
         .trust-bar-fill { background: linear-gradient(90deg, #2ed573, #1abc9c); height: 100%; width: 0%; border-radius: 4px; transition: width 1s cubic-bezier(0.4, 0, 0.2, 1); }
         .trust-text { position: absolute; width: 100%; text-align: center; top: 0; left: 0; font-size: 9px; font-weight: bold; color: white; line-height: 20px; text-shadow: 0 0 2px black; }
 
-        /* สาส์นจากสภาและกล่องโหวต */
+        /* สาส์นจากสภาและกล่องโหวต: ขยายขอบบนและล่างเพิ่มอีก 3px (จากเดิม 15px เป็น 18px) */
         .npc-dialogue, .vote-result-box { 
             background: url('ui-btn-large.png') no-repeat center center; background-size: 100% 100%;
-            padding: 15px 25px; margin: 8px auto; font-size: 12px; color: #dfe4ea; text-align: center; line-height: 1.4; width: 95%; max-width: 100%; border: none; border-radius: 0;
+            padding: 18px 25px; margin: 8px auto; font-size: 12px; color: #dfe4ea; text-align: center; line-height: 1.4; width: 95%; max-width: 100%; border: none; border-radius: 0;
         }
         .npc-dialogue::before { content: '📜 สาส์นจากสภา:'; display: block; font-style: normal; font-weight: 700; color: #ffd700; font-size: 11px; margin-bottom: 4px; }
         .vote-winner { font-size: 16px; font-weight: 900; color: #ff4757; text-align: center; margin: 4px 0; text-shadow: 0 0 8px rgba(0,0,0,0.8); }
@@ -130,12 +133,12 @@
         @keyframes toastIn { from { opacity: 0; transform: translateY(-20px); } to { opacity: 1; transform: translateY(0); } }
         @keyframes toastOut { from { opacity: 1; transform: translateY(0); } to { opacity: 0; transform: translateY(-20px); } }
 
-        /* 🕹️ แผงควบคุม GM ขยายกว้างเกือบชิดขอบจอ */
+        /* 🕹️ แผงควบคุม GM: ขยายกว้างขึ้นเกือบชิดขอบจอ */
         .gm-panel-container { 
             position: fixed; bottom: 8px; left: 50%; transform: translateX(-50%); 
-            width: calc(100% - 16px); max-width: 480px; 
+            width: calc(100% - 8px); max-width: 500px; 
             background: url('ui-btn-large.png') no-repeat center center; background-size: 100% 100%;
-            padding: 12px 20px; 
+            padding: 12px 18px; 
             z-index: 10001; display: none; flex-direction: column; gap: 6px;
             filter: drop-shadow(0 10px 25px rgba(0,0,0,0.9)); 
             border: none; border-radius: 0;
@@ -172,7 +175,7 @@
     <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
 </head>
 
-   <body>
+<body>
     <div id="toast-container"></div>
 
     <button class="gm-toggle-btn" onclick="toggleGMPanel()" title="เปิดแผงควบคุมสภา">👑</button>
@@ -205,7 +208,7 @@
 
     <div class="game-container" id="main-container">
         
-        <!-- ป้ายห้อง (ขยับมามุมซ้ายบน) -->
+        <!-- ป้ายห้อง (มุมซ้ายบน) -->
         <div class="room-badge" id="room-badge" style="display:none;">
             <div style="text-align: left;">
                 <div class="room-badge-title">ROOM CODE</div>
@@ -318,7 +321,7 @@
         </div>
     </div>
 
-          <script>
+    <script>
         function showToast(message, type = 'normal') {
             const container = document.getElementById('toast-container');
             if (container.children.length >= 3) { container.removeChild(container.firstChild); } 
@@ -595,6 +598,8 @@
                             tBtn.innerText = "สาดน้ำยาใส่: " + playersObj[pId].name;
                             tBtn.onclick = () => {
                                 playSound('alert');
+                                db.ref(`werewolf_game/rooms/${myRoomCode}/poisons/${pId}`).set(true);
+                                showToast(`สาดน้ำยาพิษใส่ <b>${playersObj[pId].name}</b> แล้ว!`, "error");
                                 db.ref(`werewolf_game/rooms/${myRoomCode}/poisons/${pId}`).set(true);
                                 showToast(`สาดน้ำยาพิษใส่ <b>${playersObj[pId].name}</b> แล้ว!`, "error");
                                 db.ref(`werewolf_game/rooms/${myRoomCode}/players/${myPlayerId}/skillUsed`).set(true);
