@@ -14,25 +14,44 @@
             background: linear-gradient(rgba(10, 10, 15, 0.9), rgba(5, 5, 10, 0.98)), url('bg-night.jpg') no-repeat center center fixed; 
             background-size: cover; color: #f1f2f6; min-height: 100vh; display: flex; 
             align-items: flex-start; justify-content: center;
-            padding: 30px 15px 120px 15px; 
+            /* เพิ่มระยะล่างให้มากขึ้นเพื่อหลบแผง GM ที่ใหญ่ขึ้น */
+            padding: 12px 0 130px 0; 
             transition: background 1.5s ease-in-out; 
             overflow-x: hidden; 
         }
         
-        /* คอนเทนเนอร์หลัก */
+        /* ----------------------------------------------------------- */
+        /* 🏰 คอนเทนเนอร์หลัก (อัปเดต: ใช้ ui-frame-main.png & ห่างขอบ 12px) */
+        /* ----------------------------------------------------------- */
         .game-container { 
-            background: rgba(10, 10, 15, 0.85); backdrop-filter: blur(15px); -webkit-backdrop-filter: blur(15px); 
-            border: 2px solid #b38728; 
-            padding: 25px 20px; border-radius: 20px; 
-            width: 100%; max-width: 440px; 
+            background-color: rgba(10, 10, 15, 0.85);
+            background-image: url('ui-frame-main.png');
+            background-repeat: no-repeat; background-position: center center; background-size: 100% 100%;
+            backdrop-filter: blur(15px); -webkit-backdrop-filter: blur(15px); 
+            border: none; border-radius: 0; 
+            width: calc(100% - 24px); /* ห่างขอบซ้ายขวาด้านละ 12px */
+            max-width: 440px; 
+            margin: 0 auto; 
+            padding: 55px 30px; /* ดันเนื้อหาเข้าด้านในหลบขอบกรอบ */
             box-shadow: 0 20px 50px rgba(0, 0, 0, 0.9); 
             text-align: center; position: relative; animation: fadeIn 0.6s cubic-bezier(0.16, 1, 0.3, 1); 
-            margin: auto; display: flex; flex-direction: column; align-items: center;
+            display: flex; flex-direction: column; align-items: center;
         }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(15px); } to { opacity: 1; transform: translateY(0); } }
         
-        h2 { font-size: 22px; font-weight: 900; margin-bottom: 6px; color: #ffd700; text-transform: uppercase; letter-spacing: 1px; text-shadow: 0 2px 4px rgba(0,0,0,0.8); }
-        p { font-size: 13px; color: #dcdde1; margin-bottom: 18px; line-height: 1.5; }
+        /* ----------------------------------------------------------- */
+        /* 🏮 กรอบหน้าหลัก (Lobby) ใช้ ui-frame-lantern.png */
+        /* ----------------------------------------------------------- */
+        #lobby-screen {
+            background: url('ui-frame-lantern.png') no-repeat center center;
+            background-size: 100% 100%;
+            width: 100%;
+            padding: 85px 45px 75px 45px; /* ดันเนื้อหาหลบตะเกียง */
+            display: flex; flex-direction: column; align-items: center;
+        }
+
+        h2 { font-size: 22px; font-weight: 900; margin-bottom: 6px; color: #ffd700; text-transform: uppercase; letter-spacing: 1px; text-shadow: 0 2px 4px rgba(0,0,0,0.8); text-align: center; width: 100%;}
+        p { font-size: 13px; color: #dcdde1; margin-bottom: 18px; line-height: 1.5; text-align: center;}
         
         .input-group { display: grid; grid-template-columns: 1.2fr 1fr; gap: 8px; margin-bottom: 12px; width: 100%; }
         
@@ -41,10 +60,12 @@
         .input-code { font-weight: 700; font-size: 16px; letter-spacing: 2px; text-transform: uppercase; margin-bottom: 0 !important; }
         
         /* ----------------------------------------------------------- */
-        /* 💎 ปุ่มและป้ายต่างๆ (ใช้ ui-btn-large.png) */
+        /* 💎 ปุ่มและป้ายต่างๆ (ขยายใหญ่ขึ้น 5px) */
         /* ----------------------------------------------------------- */
-        .btn, .target-btn, .close-btn, .gm-toggle-btn { 
-            width: 100%; height: 48px; display: flex; align-items: center; justify-content: center; 
+        .btn, .target-btn, .close-btn { 
+            width: 100%; 
+            height: 53px; /* เดิม 48px -> เพิ่ม 5px */
+            display: flex; align-items: center; justify-content: center; 
             background: url('ui-btn-large.png') no-repeat center center; 
             background-size: 100% 100%; 
             color: #ffd700; border: none; font-size: 14px; font-weight: 800; font-family: 'Prompt', sans-serif; 
@@ -54,13 +75,16 @@
         .btn:hover, .target-btn:hover, .close-btn:hover { 
             transform: translateY(-2px); filter: brightness(1.2) drop-shadow(0 0 10px rgba(212,175,55,0.4)); 
         }
-        .target-btn { padding: 0 35px; justify-content: flex-start; height: 44px; margin: 6px 0; font-size: 13px; font-weight: 600; color: #fff;}
+        
+        .target-btn { padding: 0 35px; justify-content: flex-start; height: 49px; margin: 6px 0; font-size: 13px; font-weight: 600; color: #fff;}
         .btn-secondary { color: #dfe4ea; }
         .btn-create { color: #fff; text-shadow: 0 0 5px #9b59b6; }
         
+        /* กรอบ Room Code ใหญ่ขึ้น 5px */
         .room-badge { 
             background: url('ui-btn-large.png') no-repeat center center; background-size: 100% 100%; 
-            padding: 10px 35px; margin-bottom: 15px; display: flex; gap: 15px; align-items: center; width: fit-content; 
+            padding: 13px 40px; /* เพิ่ม padding ขยายกรอบ 5px */
+            margin-bottom: 15px; display: flex; gap: 15px; align-items: center; width: fit-content; 
         }
         .room-badge-title { font-size: 10px; color: #dcdde1; text-transform: uppercase; }
         .room-badge-id { color: #fff; font-size: 16px; font-weight: 900; letter-spacing: 1.5px; text-shadow: 0 0 5px #ffd700; }
@@ -70,14 +94,13 @@
         .btn-music { background: rgba(46, 213, 115, 0.1); border: 1px solid rgba(46, 213, 115, 0.2); color: #2ed573; font-size: 12px; height: 34px; border-radius: 8px; font-weight: 700; cursor: pointer; font-family: 'Prompt'; }
         
         /* ----------------------------------------------------------- */
-        /* 🖼️ กรอบการ์ดตัวละครด้านใน (ใช้อัปเดตเป็น ui-frame-lantern.png) */
+        /* 🖼️ กรอบการ์ดตัวละคร (อัปเดต: ใช้ ui-person.png) */
         /* ----------------------------------------------------------- */
         .role-card-epic { 
-            background: url('ui-frame-lantern.png') no-repeat center center; 
+            background: url('ui-person.png') no-repeat center center; 
             background-size: 100% 100%;
             width: 100%; min-height: 520px; 
-            /* ดันเนื้อหาเข้าตรงกลาง ให้หนีจากตะเกียงซ้าย/ขวา และยอดแหลมบน/ล่าง */
-            padding: 85px 55px 75px 55px; 
+            padding: 70px 45px 60px 45px; 
             display: flex; flex-direction: column; align-items: center; position: relative;
             border: none; border-radius: 0; box-shadow: none;
         }
@@ -89,7 +112,7 @@
         /* ⭕ กรอบรูปโปรไฟล์ตัวละคร (ใช้ ui-portrait.png) */
         /* ----------------------------------------------------------- */
         .role-portrait-container { 
-            width: 120px; height: 120px; margin: 0 auto 10px auto; 
+            width: 130px; height: 130px; margin: 0 auto 10px auto; 
             background: url('ui-portrait.png') no-repeat center center; 
             background-size: contain; 
             display: flex; justify-content: center; align-items: center;
@@ -111,11 +134,25 @@
         .trust-bar-fill { background: linear-gradient(90deg, #2ed573, #1abc9c); height: 100%; width: 0%; border-radius: 4px; transition: width 1s cubic-bezier(0.4, 0, 0.2, 1); }
         .trust-text { position: absolute; width: 100%; text-align: center; top: 0; left: 0; font-size: 9px; font-weight: bold; color: white; line-height: 20px; text-shadow: 0 0 2px black; }
 
-        .npc-dialogue, .vote-result-box { 
+        /* ----------------------------------------------------------- */
+        /* 📜 สาส์นจากสภา (อัปเดต: ใช้ ui-frame-lantern.png) */
+        /* ----------------------------------------------------------- */
+        .npc-dialogue { 
+            background: url('ui-frame-lantern.png') no-repeat center center; 
+            background-size: 100% 100%;
+            padding: 70px 50px; /* ดันเนื้อหาหลบตะเกียงและยอดแหลม */
+            margin: 10px auto; 
+            font-size: 12px; color: #dfe4ea; text-align: center; line-height: 1.4; 
+            width: 100%; max-width: 100%; border: none; border-radius: 0;
+            min-height: 170px; display: flex; flex-direction: column; justify-content: center; align-items: center;
+        }
+        .npc-dialogue::before { content: '📜 สาส์นจากสภา:'; display: block; font-style: normal; font-weight: 700; color: #ffd700; font-size: 11px; margin-bottom: 4px; }
+        
+        /* กล่องโหวต */
+        .vote-result-box { 
             background: url('ui-btn-large.png') no-repeat center center; background-size: 100% 100%;
             padding: 20px 35px; margin: 10px auto; font-size: 12px; color: #dfe4ea; text-align: center; line-height: 1.4; width: 100%; max-width: 100%; border: none; border-radius: 0;
         }
-        .npc-dialogue::before { content: '📜 สาส์นจากสภา:'; display: block; font-style: normal; font-weight: 700; color: #ffd700; font-size: 11px; margin-bottom: 4px; }
         .vote-winner { font-size: 18px; font-weight: 900; color: #ff4757; text-align: center; margin: 6px 0; text-shadow: 0 0 8px rgba(0,0,0,0.8); }
         
         .action-scroll-area { max-height: 22vh; overflow-y: auto; padding-right: 5px; margin-top: 10px; width: 100%; }
@@ -126,7 +163,6 @@
 
         .modal { display: none; position: fixed; z-index: 10005; left: 0; top: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.85); backdrop-filter: blur(5px); justify-content: center; align-items: center; padding: 15px; }
         .modal-content { background: rgba(20, 20, 25, 0.98); border: 2px solid #b38728; padding: 20px; border-radius: 18px; width: min(100%, 400px); max-height: 85vh; overflow-y: auto; text-align: left; box-shadow: 0 15px 40px rgba(0,0,0,0.8); }
-        .close-btn { height: 42px; background: url('ui-btn-large.png') no-repeat center center; background-size: 100% 100%; color: #ffd700; border: none; width: 100%; font-weight: 800; margin-top: 15px; cursor: pointer; font-family: 'Prompt'; font-size: 14px; }
         
         #toast-container { position: fixed; top: 15px; left: 50%; transform: translateX(-50%); z-index: 10006; display: flex; flex-direction: column; gap: 8px; width: fit-content; max-width: 90%; pointer-events: none; }
         .custom-toast { background: url('ui-btn-large.png') no-repeat center center; background-size: 100% 100%; color: white; padding: 15px 30px; font-family: 'Prompt'; font-size: 12px; display: flex; align-items: center; gap: 8px; animation: toastIn 0.3s forwards, toastOut 0.4s ease 3s forwards; opacity: 0; width: fit-content; border: none; border-radius: 0; text-shadow: 0 1px 2px #000; font-weight: bold;}
@@ -134,18 +170,15 @@
         @keyframes toastOut { from { opacity: 1; transform: translateY(0); } to { opacity: 0; transform: translateY(-20px); } }
 
         /* ----------------------------------------------------------- */
-        /* 🕹️ แผงควบคุม GM (ใช้อัปเดตเป็น ui-panel-wide.png) */
+        /* 🕹️ แผงควบคุม GM & ปุ่มมงกุฎ (อัปเดต: ขยายใหญ่ขึ้น 5px) */
         /* ----------------------------------------------------------- */
         .gm-panel-container { 
             position: fixed; bottom: 12px; left: 50%; transform: translateX(-50%); 
-            width: calc(100% - 10px); max-width: 440px; 
-            background: url('ui-panel-wide.png') no-repeat center center; 
-            background-size: 100% 100%;
-            /* ดันเนื้อหาแผงคุมให้หนีขอบแหลมๆ ของ ui-panel-wide ทั้ง 4 ด้าน */
-            padding: 25px 45px 20px 45px; 
+            width: calc(100% - 10px); max-width: 445px; /* กว้างขึ้น 5px */
+            background: url('ui-panel-wide.png') no-repeat center center; background-size: 100% 100%;
+            padding: 30px 48px 23px 48px; /* เพิ่ม Padding บนล่างขยายกรอบ 5px */
             z-index: 10001; display: none; flex-direction: column; gap: 8px;
-            filter: drop-shadow(0 10px 25px rgba(0,0,0,0.9)); 
-            border: none; border-radius: 0;
+            filter: drop-shadow(0 10px 25px rgba(0,0,0,0.9)); border: none; border-radius: 0;
         }
         .gm-header { display: flex; justify-content: space-between; align-items: center; width: 100%; }
         .gm-title { color: #ffd700; font-size: 11px; font-weight: bold; letter-spacing: 0.5px; margin: 0; text-shadow: 0 2px 2px #000;}
@@ -156,15 +189,16 @@
         .gm-btn:hover { background: rgba(212,175,55,0.3); color: #fff;}
         .gm-btn-danger { color: #ff7675; border-color: #ff7675; }
         
-        .gm-toggle-btn { position: fixed; top: 15px; right: 15px; width: 45px; height: 45px; display: flex; justify-content: center; align-items: center; background: url('ui-btn-large.png') no-repeat center center; background-size: 100% 100%; border: none; font-size: 16px; cursor: pointer; z-index: 10002; filter: drop-shadow(0 0 10px rgba(212,175,55,0.3)); border-radius: 0;}
+        /* ปุ่มมงกุฎใหญ่ขึ้น 5px */
+        .gm-toggle-btn { 
+            position: fixed; top: 15px; right: 15px; 
+            width: 50px; height: 50px; /* เดิม 45px -> เพิ่ม 5px */
+            display: flex; justify-content: center; align-items: center; background: url('ui-btn-large.png') no-repeat center center; background-size: 100% 100%; border: none; font-size: 16px; cursor: pointer; z-index: 10002; filter: drop-shadow(0 0 10px rgba(212,175,55,0.3)); border-radius: 0;
+        }
 
-        /* ป๊อปอัปชัยชนะ (อัปเดตเป็น ui-panel-wide.png) */
         .victory-content { 
-            text-align: center; 
-            background: url('ui-panel-wide.png') no-repeat center center; 
-            background-size: 100% 100%; 
-            padding: 55px 45px; /* ดันเนื้อหาหลบมุมแหลม */
-            border: none; border-radius: 0; box-shadow: none;
+            text-align: center; background: url('ui-panel-wide.png') no-repeat center center; background-size: 100% 100%; 
+            padding: 55px 45px; border: none; border-radius: 0; box-shadow: none;
         }
         .vic-title { font-size: 32px; font-weight: 900; margin-bottom: 10px; text-transform: uppercase; letter-spacing: 2px; }
         .vic-wolf .vic-title { color: #ff4757; text-shadow: 0 0 20px #000; }
@@ -172,10 +206,10 @@
         .vic-subtitle { font-size: 14px; color: #dcdde1; line-height: 1.6; font-weight: bold; text-shadow: 0 2px 4px #000;}
 
         @media (min-width: 768px) {
-            .game-container { max-width: 550px; padding: 35px 30px; }
+            .game-container { max-width: 550px; padding: 65px 40px; }
             h2 { font-size: 28px; }
             input[type="text"] { height: 50px; font-size: 16px; }
-            .btn { height: 55px; }
+            .btn { height: 60px; }
             .role-portrait-container { width: 170px; height: 170px; }
             .role-name-epic { font-size: 28px; }
         }
@@ -183,25 +217,26 @@
     <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
 </head>
-  <!-- ================= ส่วนที่ 2: โครงสร้าง HTML (UI ภายใน Body) ================= -->
+
+<!-- ================= ส่วนที่ 2: โครงสร้าง HTML (UI ภายใน Body) ================= -->
 <body>
     <div id="toast-container"></div>
 
     <button class="gm-toggle-btn" onclick="toggleGMPanel()" title="เปิดแผงควบคุมสภา">👑</button>
 
-    <!-- ฉากอินโทรวิดีโอ -->
+    <!-- ฉากอินโทรวิดีโอ (อัปเดต: ใช้ ui-panel-wide.png เป็นกรอบกลางจอ) -->
     <div id="intro-screen" style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 9999; background: #000; display: flex; flex-direction: column; justify-content: center; align-items: center; overflow: hidden;">
         <video autoplay muted loop playsinline id="intro-video" style="position: absolute; width: 100%; height: 100%; object-fit: cover; filter: brightness(0.65) contrast(1.1); pointer-events: none;">
             <source src="lycan-intro.mp4" type="video/mp4">
         </video>
-        <div style="position: relative; z-index: 2; text-align: center; background: rgba(15, 15, 20, 0.85); backdrop-filter: blur(10px); padding: 30px 20px; border-radius: 20px; border: 1px solid rgba(212, 175, 55, 0.4); box-shadow: 0 0 40px rgba(0,0,0,0.8); width: min(85%, 340px);">
+        <div style="position: relative; z-index: 2; text-align: center; background: url('ui-panel-wide.png') no-repeat center center; background-size: 100% 100%; padding: 55px 45px; width: min(90%, 420px); filter: drop-shadow(0 0 20px rgba(0,0,0,0.9));">
             <h1 style="font-size: 20px; font-weight: 900; background: linear-gradient(135deg, #ffd700, #ff4757); -webkit-background-clip: text; -webkit-text-fill-color: transparent; text-transform: uppercase; margin-bottom: 8px; letter-spacing: 1px;">Werewolf Legends</h1>
             <p style="font-size: 12px; color: #dcdde1; margin-bottom: 18px;">มหากาพย์แห่งความมืดและคำสาปโลหิต...</p>
-            <button class="btn" onclick="enterGameWorld()" style="background: linear-gradient(135deg, #ff4757, #ff6b81); color: white; margin-bottom: 0;">🔥 เปิดผนึกประตูมิติ</button>
+            <button class="btn" onclick="enterGameWorld()" style="color: #ff4757; margin-bottom: 0;">🔥 เปิดผนึกประตูมิติ</button>
         </div>
     </div>
 
-    <!-- แผงควบคุม GM แนวนอน (Bottom Bar) -->
+    <!-- แผงควบคุม GM -->
     <div id="gm-panel" class="gm-panel-container">
         <div class="gm-header">
             <span class="gm-title">👑 สภา GM</span>
@@ -252,7 +287,6 @@
             <div class="role-card-epic" id="role-card-bg">
                 <div class="role-badge-title" id="phase-indicator">สถานะ: เตรียมพร้อม</div>
                 
-                <!-- อัปเกรดเป็นรูปโปรไฟล์วิดีโอ (Video Portrait) -->
                 <div class="role-portrait-container" id="portrait-border">
                     <video autoplay muted loop playsinline id="role-video" class="role-portrait">
                         <source src="" type="video/mp4">
@@ -329,7 +363,8 @@
             <button class="close-btn" onclick="closeManual()">รับทราบข้อตกลง</button>
         </div>
     </div>
-    <!-- ================= ส่วนที่ 3: JavaScript และการปิดไฟล์ ================= -->
+
+   <!-- ================= ส่วนที่ 3: JavaScript และการปิดไฟล์ ================= -->
     <script>
         function showToast(message, type = 'normal') {
             const container = document.getElementById('toast-container');
