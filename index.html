@@ -24,7 +24,7 @@
             background: rgba(10, 10, 15, 0.85); backdrop-filter: blur(15px); -webkit-backdrop-filter: blur(15px); 
             border: 2px solid #b38728; 
             padding: 25px 20px; border-radius: 20px; 
-            width: 100%; max-width: 420px; 
+            width: 100%; max-width: 440px; 
             box-shadow: 0 20px 50px rgba(0, 0, 0, 0.9); 
             text-align: center; position: relative; animation: fadeIn 0.6s cubic-bezier(0.16, 1, 0.3, 1); 
             margin: auto; display: flex; flex-direction: column; align-items: center;
@@ -54,7 +54,6 @@
         .btn:hover, .target-btn:hover, .close-btn:hover { 
             transform: translateY(-2px); filter: brightness(1.2) drop-shadow(0 0 10px rgba(212,175,55,0.4)); 
         }
-        /* ปรับ padding ซ้ายขวาให้ข้อความเป้าหมายไม่ทับขอบอัญมณี */
         .target-btn { padding: 0 35px; justify-content: flex-start; height: 44px; margin: 6px 0; font-size: 13px; font-weight: 600; color: #fff;}
         .btn-secondary { color: #dfe4ea; }
         .btn-create { color: #fff; text-shadow: 0 0 5px #9b59b6; }
@@ -71,14 +70,14 @@
         .btn-music { background: rgba(46, 213, 115, 0.1); border: 1px solid rgba(46, 213, 115, 0.2); color: #2ed573; font-size: 12px; height: 34px; border-radius: 8px; font-weight: 700; cursor: pointer; font-family: 'Prompt'; }
         
         /* ----------------------------------------------------------- */
-        /* 🖼️ กรอบการ์ดตัวละครด้านใน (ใช้ ui-frame-main.png) */
+        /* 🖼️ กรอบการ์ดตัวละครด้านใน (ใช้อัปเดตเป็น ui-frame-lantern.png) */
         /* ----------------------------------------------------------- */
         .role-card-epic { 
-            background: url('ui-frame-main.png') no-repeat center center; 
+            background: url('ui-frame-lantern.png') no-repeat center center; 
             background-size: 100% 100%;
             width: 100%; min-height: 520px; 
-            /* ดันเนื้อหาเข้าตรงกลาง ให้หนีจากตะเกียงและยอดแหลม */
-            padding: 75px 40px 50px 40px; 
+            /* ดันเนื้อหาเข้าตรงกลาง ให้หนีจากตะเกียงซ้าย/ขวา และยอดแหลมบน/ล่าง */
+            padding: 85px 55px 75px 55px; 
             display: flex; flex-direction: column; align-items: center; position: relative;
             border: none; border-radius: 0; box-shadow: none;
         }
@@ -90,13 +89,12 @@
         /* ⭕ กรอบรูปโปรไฟล์ตัวละคร (ใช้ ui-portrait.png) */
         /* ----------------------------------------------------------- */
         .role-portrait-container { 
-            width: 130px; height: 130px; margin: 0 auto 10px auto; 
+            width: 120px; height: 120px; margin: 0 auto 10px auto; 
             background: url('ui-portrait.png') no-repeat center center; 
             background-size: contain; 
             display: flex; justify-content: center; align-items: center;
             border-radius: 0; padding: 0; box-shadow: none; border: none;
         }
-        /* บีบวิดีโอให้อยู่ตรงกลางวงกลม */
         .role-portrait { 
             width: 65%; height: 65%; border-radius: 50%; object-fit: cover; 
             background-color: #111; pointer-events: none;
@@ -105,7 +103,6 @@
         
         .role-name-epic { font-size: 20px; font-weight: 900; margin-bottom: 8px; color: #fff; text-transform: uppercase; letter-spacing: 1px; text-shadow: 0 0 10px rgba(0,0,0,0.8); text-align: center;}
         
-        /* แถบ Trust */
         .trust-bar-container { 
             background: url('ui-btn-large.png') no-repeat center center; background-size: 100% 100%;
             width: 90%; margin: 4px auto; height: 20px; position: relative; padding: 4px 20px;
@@ -114,7 +111,6 @@
         .trust-bar-fill { background: linear-gradient(90deg, #2ed573, #1abc9c); height: 100%; width: 0%; border-radius: 4px; transition: width 1s cubic-bezier(0.4, 0, 0.2, 1); }
         .trust-text { position: absolute; width: 100%; text-align: center; top: 0; left: 0; font-size: 9px; font-weight: bold; color: white; line-height: 20px; text-shadow: 0 0 2px black; }
 
-        /* สาส์นจากสภาและกล่องโหวต */
         .npc-dialogue, .vote-result-box { 
             background: url('ui-btn-large.png') no-repeat center center; background-size: 100% 100%;
             padding: 20px 35px; margin: 10px auto; font-size: 12px; color: #dfe4ea; text-align: center; line-height: 1.4; width: 100%; max-width: 100%; border: none; border-radius: 0;
@@ -138,12 +134,15 @@
         @keyframes toastOut { from { opacity: 1; transform: translateY(0); } to { opacity: 0; transform: translateY(-20px); } }
 
         /* ----------------------------------------------------------- */
-        /* 🕹️ แผงควบคุม GM (ใช้ ui-btn-large.png) */
+        /* 🕹️ แผงควบคุม GM (ใช้อัปเดตเป็น ui-panel-wide.png) */
         /* ----------------------------------------------------------- */
         .gm-panel-container { 
-            position: fixed; bottom: 12px; left: 50%; transform: translateX(-50%); width: calc(100% - 24px); max-width: 420px; 
-            background: url('ui-btn-large.png') no-repeat center center; background-size: 100% 100%;
-            padding: 15px 35px; /* ดันปุ่มให้เข้าตรงกลาง */
+            position: fixed; bottom: 12px; left: 50%; transform: translateX(-50%); 
+            width: calc(100% - 10px); max-width: 440px; 
+            background: url('ui-panel-wide.png') no-repeat center center; 
+            background-size: 100% 100%;
+            /* ดันเนื้อหาแผงคุมให้หนีขอบแหลมๆ ของ ui-panel-wide ทั้ง 4 ด้าน */
+            padding: 25px 45px 20px 45px; 
             z-index: 10001; display: none; flex-direction: column; gap: 8px;
             filter: drop-shadow(0 10px 25px rgba(0,0,0,0.9)); 
             border: none; border-radius: 0;
@@ -159,8 +158,14 @@
         
         .gm-toggle-btn { position: fixed; top: 15px; right: 15px; width: 45px; height: 45px; display: flex; justify-content: center; align-items: center; background: url('ui-btn-large.png') no-repeat center center; background-size: 100% 100%; border: none; font-size: 16px; cursor: pointer; z-index: 10002; filter: drop-shadow(0 0 10px rgba(212,175,55,0.3)); border-radius: 0;}
 
-        /* ป๊อปอัปชัยชนะ (ใช้ ui-frame-main.png) */
-        .victory-content { text-align: center; background: url('ui-frame-main.png') no-repeat center center; background-size: 100% 100%; padding: 75px 40px; border: none; border-radius: 0; box-shadow: none;}
+        /* ป๊อปอัปชัยชนะ (อัปเดตเป็น ui-panel-wide.png) */
+        .victory-content { 
+            text-align: center; 
+            background: url('ui-panel-wide.png') no-repeat center center; 
+            background-size: 100% 100%; 
+            padding: 55px 45px; /* ดันเนื้อหาหลบมุมแหลม */
+            border: none; border-radius: 0; box-shadow: none;
+        }
         .vic-title { font-size: 32px; font-weight: 900; margin-bottom: 10px; text-transform: uppercase; letter-spacing: 2px; }
         .vic-wolf .vic-title { color: #ff4757; text-shadow: 0 0 20px #000; }
         .vic-villager .vic-title { color: #2ed573; text-shadow: 0 0 20px #000; }
@@ -178,8 +183,6 @@
     <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
 </head>
-    
-
   <!-- ================= ส่วนที่ 2: โครงสร้าง HTML (UI ภายใน Body) ================= -->
 <body>
     <div id="toast-container"></div>
@@ -326,8 +329,7 @@
             <button class="close-btn" onclick="closeManual()">รับทราบข้อตกลง</button>
         </div>
     </div>
-    
-<!-- ================= ส่วนที่ 3: JavaScript และการปิดไฟล์ ================= -->
+    <!-- ================= ส่วนที่ 3: JavaScript และการปิดไฟล์ ================= -->
     <script>
         function showToast(message, type = 'normal') {
             const container = document.getElementById('toast-container');
@@ -500,7 +502,7 @@
                 }
                 
                 const phaseInd = document.getElementById("phase-indicator"); 
-                const roleVid = document.getElementById("role-video"); // อัปเดตรับแท็ก Video
+                const roleVid = document.getElementById("role-video"); 
                 const roleEl = document.getElementById("my-role"); 
                 const npcText = document.getElementById("npc-text");
                 const actionArea = document.getElementById("action-area"); 
@@ -516,7 +518,6 @@
                     playersData = playersSnap.val() || {}; const me = playersData[myPlayerId]; if (!me) return;
                     myRole = me.role || "villager"; myTrust = me.trust || 0; skillUsed = me.skillUsed || false;
                     
-                    // อัปเดตวิดีโอตัวละครตามบทบาท
                     if (!me.isAlive) {
                         phaseInd.innerText = "สถานะ: สิ้นชีพในสงคราม"; roleVid.src = "vid-ghost.mp4"; roleEl.innerHTML = "วิญญาณผู้ล่วงลับ"; roleEl.style.color = "#a4b0be"; trustCont.style.display = "none"; pBorder.style.background = "#333"; cardBg.style.borderColor = "rgba(164, 176, 190, 0.3)"; npcText.innerText = "ร่างของเจ้าสูญสลายไปแล้ว... ทำได้เพียงเฝ้ามองความล่มสลาย"; return; 
                     }
@@ -718,8 +719,7 @@
                 
                 let pKeys = Object.keys(players);
                 
-                // --- ระบบ Double Shuffle (สุ่มสลับรายชื่อคน และสุ่มสลับบทบาท) ---
-                // 1. สับเปลี่ยนรายชื่อผู้เล่นเพื่อป้องกันการผูกขาด Host
+                // 1. สับเปลี่ยนรายชื่อผู้เล่นเพื่อสุ่มลำดับ
                 for (let i = pKeys.length - 1; i > 0; i--) { 
                     const j = Math.floor(Math.random() * (i + 1)); 
                     [pKeys[i], pKeys[j]] = [pKeys[j], pKeys[i]]; 
@@ -734,13 +734,13 @@
                 if(t >= 5) rolesToAssign.push("alchemist");
                 while(rolesToAssign.length < t) { rolesToAssign.push("villager"); }
                 
-                // 3. สับเปลี่ยนบทบาทให้มั่วอีกรอบ
+                // 3. สับเปลี่ยนบทบาทให้สุ่ม 100%
                 for (let i = rolesToAssign.length - 1; i > 0; i--) { 
                     const j = Math.floor(Math.random() * (i + 1)); 
                     [rolesToAssign[i], rolesToAssign[j]] = [rolesToAssign[j], rolesToAssign[i]]; 
                 }
                 
-                // 4. แจกบทบาทแบบไร้รูปแบบ
+                // 4. บันทึกข้อมูลลงฐานข้อมูล
                 let updates = {};
                 pKeys.forEach((key, idx) => {
                     updates[`werewolf_game/rooms/${myRoomCode}/players/${key}/role`] = rolesToAssign[idx];
