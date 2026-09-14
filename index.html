@@ -18,11 +18,12 @@
             overflow-x: hidden; 
         }
         
-        /* คอนเทนเนอร์หลัก: ปรับ padding ซ้ายขวาเป็น 0 เพื่อเปิดทางให้กรอบการ์ดขยายชนขอบทอง */
+        /* 1. คอนเทนเนอร์หลัก: ถอด padding ซ้าย-ขวาออกเป็น 0px เพื่อเปิดทางให้กรอบการ์ดข้างในขยายชนขอบทอง */
         .game-container { 
             background: rgba(10, 10, 15, 0.85); backdrop-filter: blur(15px); -webkit-backdrop-filter: blur(15px); 
             border: 2px solid #b38728; 
-            padding: 25px 0px; border-radius: 20px; 
+            padding: 25px 0px !important; 
+            border-radius: 20px; 
             width: 100%; max-width: 420px; 
             box-shadow: 0 20px 50px rgba(0, 0, 0, 0.9); 
             text-align: center; position: relative; animation: fadeIn 0.6s cubic-bezier(0.16, 1, 0.3, 1); 
@@ -33,7 +34,7 @@
         h2 { font-size: 22px; font-weight: 900; margin-bottom: 6px; color: #ffd700; text-transform: uppercase; letter-spacing: 1px; text-shadow: 0 2px 4px rgba(0,0,0,0.8); }
         p { font-size: 13px; color: #dcdde1; margin-bottom: 18px; line-height: 1.5; }
         
-        .input-group { display: grid; grid-template-columns: 1.2fr 1fr; gap: 8px; margin-bottom: 12px; width: 100%; padding: 0 15px; }
+        .input-group { display: grid; grid-template-columns: 1.2fr 1fr; gap: 8px; margin-bottom: 12px; width: 100%; }
         
         input[type="text"] { width: 100%; height: 42px; padding: 0 15px; background: rgba(0, 0, 0, 0.8); border: 1px solid #b38728; border-radius: 8px; color: #fff; font-size: 14px; font-family: 'Prompt', sans-serif; outline: none; margin-bottom: 12px; transition: 0.3s; text-align: center;}
         input[type="text"]:focus { box-shadow: 0 0 15px rgba(212, 175, 55, 0.5); border-color: #ffd700; }
@@ -55,11 +56,12 @@
         .btn-secondary { color: #dfe4ea; }
         .btn-create { color: #fff; text-shadow: 0 0 5px #9b59b6; }
         
-        /* Room Code: มุมซ้ายบน + ขยายขอบบนและล่างเพิ่มขึ้น 3px */
+        /* 2. Room Code: บังคับซ้ายบน และขยายบน-ล่างเพิ่ม 3px (จากเดิม 10px เป็น 13px) */
         .room-badge { 
-            position: absolute; top: 12px; left: 12px;
+            position: absolute !important; top: 12px !important; left: 12px !important;
             background: url('ui-btn-large.png') no-repeat center center; background-size: 100% 100%; 
-            padding: 9px 15px; display: flex; gap: 10px; align-items: center; width: fit-content; 
+            padding: 13px 35px !important; 
+            display: flex; gap: 10px; align-items: center; width: fit-content; 
             z-index: 10; transform: scale(0.85); transform-origin: top left;
         }
         .room-badge-title { font-size: 9px; color: #dcdde1; text-transform: uppercase; }
@@ -69,55 +71,56 @@
         .music-panel { background: rgba(10, 10, 15, 0.85); border: 1px solid rgba(255, 255, 255, 0.08); border-radius: 12px; padding: 10px; margin-top: 15px; display: flex; flex-direction: column; gap: 6px; width: 100%; }
         .btn-music { background: rgba(46, 213, 115, 0.1); border: 1px solid rgba(46, 213, 115, 0.2); color: #2ed573; font-size: 12px; height: 34px; border-radius: 8px; font-weight: 700; cursor: pointer; font-family: 'Prompt'; }
         
-        /* 🖼️ กรอบการ์ดตัวละครด้านใน (ui-frame-main.png): ขยายกว้างเต็ม 100% ชิดขอบทองพอดี */
+        /* 3. กรอบการ์ดตัวละครด้านใน (ui-frame-main.png): บังคับกว้าง 100% เพื่อชนกรอบทองนอกสุด */
         .role-card-epic { 
             background: url('ui-frame-main.png') no-repeat center center; 
             background-size: 100% 100%;
-            width: 100%; 
-            margin: 0;
-            min-height: 540px; 
-            padding: 70px 25px 40px 25px; /* จัด padding ภายในไม่ให้ข้อความชิดขอบจนเกินไป */
+            width: 100% !important; 
+            margin: 0 !important;
+            min-height: 520px; 
+            padding: 75px 30px 40px 30px !important; /* จัดขอบเขตด้านในไม่ให้ข้อความทะลุกรอบ */
             display: flex; flex-direction: column; align-items: center; position: relative;
             border: none; border-radius: 0; box-shadow: none;
         }
         .role-card-epic::before, .role-card-epic::after { display: none !important; }
 
-        .role-badge-title { font-size: 11px; color: #ffd700; font-weight: 700; letter-spacing: 1px; margin-bottom: 8px; display: inline-block; padding: 4px 12px; background: rgba(0,0,0,0.8); border: 1px solid rgba(212, 175, 55, 0.5); border-radius: 12px; text-transform: uppercase; width: fit-content; }
+        .role-badge-title { font-size: 11px; color: #ffd700; font-weight: 700; letter-spacing: 1px; margin-bottom: 10px; display: inline-block; padding: 4px 12px; background: rgba(0,0,0,0.8); border: 1px solid rgba(212, 175, 55, 0.5); border-radius: 12px; text-transform: uppercase; width: fit-content; }
         
-        /* ⭕ กรอบรูปโปรไฟล์วิดีโอ (ui-portrait.png) */
+        /* 4. กรอบรูปโปรไฟล์วิดีโอ (ใช้ ui-portrait.png สมบูรณ์) */
         .role-portrait-container { 
-            width: 120px; height: 120px; margin: 0 auto 8px auto; 
+            width: 130px; height: 130px; margin: 0 auto 10px auto; 
             background: url('ui-portrait.png') no-repeat center center; 
-            background-size: 100% 100%; 
+            background-size: contain; 
             display: flex; justify-content: center; align-items: center;
-            border-radius: 0; padding: 15px; box-shadow: none; border: none;
+            border-radius: 0; padding: 0; box-shadow: none; border: none;
         }
         .role-portrait { 
-            width: 75px; height: 75px; border-radius: 50%; object-fit: cover; 
+            width: 65%; height: 65%; border-radius: 50%; object-fit: cover; 
             background-color: #111; pointer-events: none;
-            border: 2px solid rgba(212, 175, 55, 0.6);
+            border: 2px solid rgba(212, 175, 55, 0.4);
         }
         
-        .role-name-epic { font-size: 20px; font-weight: 900; margin-bottom: 6px; color: #fff; text-transform: uppercase; letter-spacing: 1px; text-shadow: 0 0 10px rgba(0,0,0,0.8); text-align: center;}
+        .role-name-epic { font-size: 20px; font-weight: 900; margin-bottom: 8px; color: #fff; text-transform: uppercase; letter-spacing: 1px; text-shadow: 0 0 10px rgba(0,0,0,0.8); text-align: center;}
         
         /* แถบ Trust */
         .trust-bar-container { 
             background: url('ui-btn-large.png') no-repeat center center; background-size: 100% 100%;
-            width: 85%; margin: 4px auto; height: 20px; position: relative; padding: 4px 20px;
+            width: 90%; margin: 4px auto; height: 20px; position: relative; padding: 4px 20px;
             border-radius: 0; border: none; box-shadow: none;
         }
         .trust-bar-fill { background: linear-gradient(90deg, #2ed573, #1abc9c); height: 100%; width: 0%; border-radius: 4px; transition: width 1s cubic-bezier(0.4, 0, 0.2, 1); }
         .trust-text { position: absolute; width: 100%; text-align: center; top: 0; left: 0; font-size: 9px; font-weight: bold; color: white; line-height: 20px; text-shadow: 0 0 2px black; }
 
-        /* สาส์นจากสภาและกล่องโหวต: ขยายขอบบนและล่างเพิ่มอีก 3px */
+        /* 5. สาส์นจากสภาและกล่องโหวต: ขยายขอบบนและล่างเพิ่ม 3px (จากเดิม 20px เป็น 23px) */
         .npc-dialogue, .vote-result-box { 
             background: url('ui-btn-large.png') no-repeat center center; background-size: 100% 100%;
-            padding: 18px 25px; margin: 8px auto; font-size: 12px; color: #dfe4ea; text-align: center; line-height: 1.4; width: 95%; max-width: 100%; border: none; border-radius: 0;
+            padding: 23px 35px !important; 
+            margin: 10px auto; font-size: 12px; color: #dfe4ea; text-align: center; line-height: 1.4; width: 100%; max-width: 100%; border: none; border-radius: 0;
         }
         .npc-dialogue::before { content: '📜 สาส์นจากสภา:'; display: block; font-style: normal; font-weight: 700; color: #ffd700; font-size: 11px; margin-bottom: 4px; }
-        .vote-winner { font-size: 16px; font-weight: 900; color: #ff4757; text-align: center; margin: 4px 0; text-shadow: 0 0 8px rgba(0,0,0,0.8); }
+        .vote-winner { font-size: 18px; font-weight: 900; color: #ff4757; text-align: center; margin: 6px 0; text-shadow: 0 0 8px rgba(0,0,0,0.8); }
         
-        .action-scroll-area { max-height: 20vh; overflow-y: auto; padding-right: 5px; margin-top: 5px; width: 100%; }
+        .action-scroll-area { max-height: 22vh; overflow-y: auto; padding-right: 5px; margin-top: 10px; width: 100%; }
         .action-scroll-area::-webkit-scrollbar { width: 4px; }
         .action-scroll-area::-webkit-scrollbar-thumb { background: #b38728; border-radius: 4px; }
         
@@ -128,17 +131,18 @@
         .close-btn { height: 42px; background: url('ui-btn-large.png') no-repeat center center; background-size: 100% 100%; color: #ffd700; border: none; width: 100%; font-weight: 800; margin-top: 15px; cursor: pointer; font-family: 'Prompt'; font-size: 14px; }
         
         #toast-container { position: fixed; top: 15px; left: 50%; transform: translateX(-50%); z-index: 10006; display: flex; flex-direction: column; gap: 8px; width: fit-content; max-width: 90%; pointer-events: none; }
-        .custom-toast { background: url('ui-btn-large.png') no-repeat center center; background-size: 100% 100%; color: white; padding: 12px 25px; font-family: 'Prompt'; font-size: 12px; display: flex; align-items: center; gap: 8px; animation: toastIn 0.3s forwards, toastOut 0.4s ease 3s forwards; opacity: 0; width: fit-content; border: none; border-radius: 0; text-shadow: 0 1px 2px #000; font-weight: bold;}
+        .custom-toast { background: url('ui-btn-large.png') no-repeat center center; background-size: 100% 100%; color: white; padding: 15px 30px; font-family: 'Prompt'; font-size: 12px; display: flex; align-items: center; gap: 8px; animation: toastIn 0.3s forwards, toastOut 0.4s ease 3s forwards; opacity: 0; width: fit-content; border: none; border-radius: 0; text-shadow: 0 1px 2px #000; font-weight: bold;}
         @keyframes toastIn { from { opacity: 0; transform: translateY(-20px); } to { opacity: 1; transform: translateY(0); } }
         @keyframes toastOut { from { opacity: 1; transform: translateY(0); } to { opacity: 0; transform: translateY(-20px); } }
 
-        /* 🕹️ แผงควบคุม GM: ขยายความกว้างเกือบชิดขอบจอสุดๆ (width: calc(100% - 8px)) */
+        /* 6. แผงควบคุม GM: บังคับกว้างสุด ขอบซ้าย/ขวาเหลือข้างละ 8px (รวมกัน 16px) */
         .gm-panel-container { 
-            position: fixed; bottom: 8px; left: 50%; transform: translateX(-50%); 
-            width: calc(100% - 8px); max-width: 500px; 
+            position: fixed !important; bottom: 8px !important; left: 50% !important; transform: translateX(-50%) !important; 
+            width: calc(100% - 16px) !important; /* กว้าง 100% ลบขอบข้างละ 8px */
+            max-width: none !important; /* ปลดล็อกขีดจำกัดความกว้างเดิม */
             background: url('ui-btn-large.png') no-repeat center center; background-size: 100% 100%;
-            padding: 12px 18px; 
-            z-index: 10001; display: none; flex-direction: column; gap: 6px;
+            padding: 15px 20px; 
+            z-index: 10001; display: none; flex-direction: column; gap: 8px;
             filter: drop-shadow(0 10px 25px rgba(0,0,0,0.9)); 
             border: none; border-radius: 0;
         }
@@ -147,26 +151,25 @@
         .auto-toggle { display: flex; align-items: center; gap: 4px; background: rgba(0,0,0,0.5); padding: 2px 8px; border-radius: 10px; font-size: 10px; cursor: pointer; color: #fff; border: 1px solid #b38728; }
         
         .gm-btn-group { display: flex; flex-direction: row; gap: 6px; width: 100%; justify-content: space-between; }
-        .gm-btn { flex: 1; height: 32px; background: rgba(0,0,0,0.6); border: 1px solid #b38728; color: #ffd700; border-radius: 4px; font-family: 'Prompt'; font-size: 11px; font-weight: 600; cursor: pointer; display: flex; align-items: center; justify-content: center; padding: 0; white-space: nowrap; transition: 0.2s; }
+        .gm-btn { flex: 1; height: 30px; background: rgba(0,0,0,0.6); border: 1px solid #b38728; color: #ffd700; border-radius: 4px; font-family: 'Prompt'; font-size: 11px; font-weight: 600; cursor: pointer; display: flex; align-items: center; justify-content: center; padding: 0; white-space: nowrap; transition: 0.2s; }
         .gm-btn:hover { background: rgba(212,175,55,0.3); color: #fff;}
         .gm-btn-danger { color: #ff7675; border-color: #ff7675; }
         
         .gm-toggle-btn { position: fixed; top: 15px; right: 15px; width: 45px; height: 45px; display: flex; justify-content: center; align-items: center; background: url('ui-btn-large.png') no-repeat center center; background-size: 100% 100%; border: none; font-size: 16px; cursor: pointer; z-index: 10002; filter: drop-shadow(0 0 10px rgba(212,175,55,0.3)); border-radius: 0;}
 
         /* ป๊อปอัปชัยชนะ */
-        .victory-content { text-align: center; background: url('ui-frame-main.png') no-repeat center center; background-size: 100% 100%; padding: 75px 30px; border: none; border-radius: 0; box-shadow: none;}
+        .victory-content { text-align: center; background: url('ui-frame-main.png') no-repeat center center; background-size: 100% 100%; padding: 75px 40px; border: none; border-radius: 0; box-shadow: none;}
         .vic-title { font-size: 32px; font-weight: 900; margin-bottom: 10px; text-transform: uppercase; letter-spacing: 2px; }
         .vic-wolf .vic-title { color: #ff4757; text-shadow: 0 0 20px #000; }
         .vic-villager .vic-title { color: #2ed573; text-shadow: 0 0 20px #000; }
         .vic-subtitle { font-size: 14px; color: #dcdde1; line-height: 1.6; font-weight: bold; text-shadow: 0 2px 4px #000;}
 
         @media (min-width: 768px) {
-            .game-container { max-width: 550px; padding: 35px 0px; }
+            .game-container { max-width: 550px; padding: 35px 0px !important; }
             h2 { font-size: 28px; }
             input[type="text"] { height: 50px; font-size: 16px; }
             .btn { height: 55px; }
-            .role-portrait-container { width: 150px; height: 150px; }
-            .role-portrait { width: 90px; height: 90px; }
+            .role-portrait-container { width: 170px; height: 170px; }
             .role-name-epic { font-size: 28px; }
         }
     </style>
@@ -174,7 +177,7 @@
     <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
 </head>
 
-  <body>
+    <body>
     <div id="toast-container"></div>
 
     <button class="gm-toggle-btn" onclick="toggleGMPanel()" title="เปิดแผงควบคุมสภา">👑</button>
@@ -207,7 +210,7 @@
 
     <div class="game-container" id="main-container">
         
-        <!-- ป้ายห้อง (มุมซ้ายบน) -->
+        <!-- ป้ายห้อง (ย้ายมามุมซ้ายบน) -->
         <div class="room-badge" id="room-badge" style="display:none;">
             <div style="text-align: left;">
                 <div class="room-badge-title">ROOM CODE</div>
@@ -216,7 +219,7 @@
             <div class="timer-text" id="timer-display">⏳ 0s</div>
         </div>
 
-        <!-- หน้า Lobby -->
+        <!-- หน้า Lobby: เพิ่ม padding ในส่วนนี้แทนที่ดึงออกไปจาก container แม่ -->
         <div id="lobby-screen" style="width: 100%; padding: 0 20px;">
             <h2>Werewolf Legends</h2>
             <p>ระบุชื่อและสร้าง หรือเข้าร่วมห้องสมรภูมิ</p>
@@ -320,7 +323,8 @@
         </div>
     </div>
 
-          <script>
+        
+    <script>
         function showToast(message, type = 'normal') {
             const container = document.getElementById('toast-container');
             if (container.children.length >= 3) { container.removeChild(container.firstChild); } 
