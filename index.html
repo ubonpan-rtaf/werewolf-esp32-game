@@ -13,7 +13,7 @@
             background: linear-gradient(rgba(10, 10, 15, 0.9), rgba(5, 5, 10, 0.98)), url('bg-night.jpg') no-repeat center center fixed; 
             background-size: cover; color: #f1f2f6; min-height: 100vh; display: flex; 
             align-items: flex-start; justify-content: center;
-            padding: 30px 15px 140px 15px; /* เพิ่ม padding ล่างสุด เผื่อแผง GM ที่ใหญ่ขึ้น */
+            padding: 30px 15px 120px 15px; 
             transition: background 1.5s ease-in-out; 
             overflow-x: hidden; 
         }
@@ -105,17 +105,17 @@
         /* แถบ Trust */
         .trust-bar-container { 
             background: url('ui-btn-large.png') no-repeat center center; background-size: 100% 100%;
-            width: 85%; margin: 4px auto; height: 20px; position: relative; padding: 4px 20px;
+            width: 90%; margin: 4px auto; height: 20px; position: relative; padding: 4px 20px;
             border-radius: 0; border: none; box-shadow: none;
         }
         .trust-bar-fill { background: linear-gradient(90deg, #2ed573, #1abc9c); height: 100%; width: 0%; border-radius: 4px; transition: width 1s cubic-bezier(0.4, 0, 0.2, 1); }
         .trust-text { position: absolute; width: 100%; text-align: center; top: 0; left: 0; font-size: 9px; font-weight: bold; color: white; line-height: 20px; text-shadow: 0 0 2px black; }
 
-        /* 🔥 สาส์นจากสภาและกล่องโหวต: ปรับให้แคบลง (82%) และสูงขึ้น (Padding 40px) */
+        /* สาส์นจากสภาและกล่องโหวต */
         .npc-dialogue, .vote-result-box { 
             background: url('ui-btn-large.png') no-repeat center center; background-size: 100% 100%;
-            width: 82% !important; /* ปรับให้แคบลง ไม่ให้ทับเสาด้านข้าง */
-            padding: 40px 25px !important; /* เพิ่มความสูง โดยเพิ่มขอบบน-ล่างให้กว้างขึ้น */
+            width: 82% !important; 
+            padding: 40px 25px !important; 
             margin: 10px auto; font-size: 13px; color: #dfe4ea; text-align: center; line-height: 1.4; border: none; border-radius: 0;
         }
         .npc-dialogue::before { content: '📜 สาส์นจากสภา:'; display: block; font-style: normal; font-weight: 700; color: #ffd700; font-size: 12px; margin-bottom: 6px; }
@@ -136,28 +136,35 @@
         @keyframes toastIn { from { opacity: 0; transform: translateY(-20px); } to { opacity: 1; transform: translateY(0); } }
         @keyframes toastOut { from { opacity: 1; transform: translateY(0); } to { opacity: 0; transform: translateY(-20px); } }
 
-        /* 🔥 แผงควบคุม GM: ใหญ่ขึ้นทั้งแนวตั้งและแนวนอน */
+        /* 🔥 แผงควบคุม GM: ปรับกะทัดรัด แถวเดียว บีบชิด ความกว้างเท่ากรอบ */
         .gm-panel-container { 
-            position: fixed !important; bottom: 4px !important; left: 50% !important; transform: translateX(-50%) !important; 
-            width: calc(100% - 4px) !important; /* ขยายกว้างสุดๆ เหลือขอบแค่ข้างละ 2px */
-            max-width: 500px !important; 
+            position: fixed !important; bottom: 12px !important; left: 50% !important; transform: translateX(-50%) !important; 
+            width: calc(100% - 30px) !important; /* ห่างจากขอบจอข้างละ 15px ให้ล้อกับกรอบเมน */
+            max-width: 400px !important; /* ขนาดเท่าๆ กับความกว้างกรอบภาพ */
             background: url('ui-btn-large.png') no-repeat center center; background-size: 100% 100%;
-            padding: 22px 18px !important; /* ขยายความสูงรวมด้วยการเพิ่ม Padding */
-            z-index: 10001; display: none; flex-direction: column; gap: 10px;
+            padding: 12px 25px 15px 25px !important; /* ลด padding เพื่อให้แผงดูเรียวยาวกะทัดรัด */
+            z-index: 10001; display: none; flex-direction: column; gap: 5px !important;
             filter: drop-shadow(0 10px 25px rgba(0,0,0,0.9)); 
             border: none; border-radius: 0;
         }
-        .gm-header { display: flex; justify-content: space-between; align-items: center; width: 100%; margin-bottom: 2px;}
-        .gm-title { color: #ffd700; font-size: 13px !important; font-weight: bold; letter-spacing: 0.5px; margin: 0; text-shadow: 0 2px 2px #000;}
-        .auto-toggle { display: flex; align-items: center; gap: 4px; background: rgba(0,0,0,0.5); padding: 4px 10px; border-radius: 10px; font-size: 12px; cursor: pointer; color: #fff; border: 1px solid #b38728; }
+        .gm-header { display: flex; justify-content: space-between; align-items: center; width: 100%; margin-bottom: 0px;}
+        .gm-title { color: #ffd700; font-size: 11px !important; font-weight: bold; letter-spacing: 0.5px; margin: 0; text-shadow: 0 2px 2px #000;}
+        .auto-toggle { display: flex; align-items: center; gap: 4px; background: rgba(0,0,0,0.5); padding: 2px 8px; border-radius: 6px; font-size: 10px; cursor: pointer; color: #fff; border: 1px solid #b38728; }
         
-        .gm-btn-group { display: flex; flex-direction: row; gap: 8px; width: 100%; justify-content: space-between; }
+        .gm-btn-group { 
+            display: flex; 
+            flex-direction: row; 
+            flex-wrap: nowrap !important; /* บังคับแถวเดียวเด็ดขาด */
+            gap: 4px !important; /* บีบปุ่มให้ชิดกันมากๆ */
+            width: 100%; 
+            justify-content: space-between; 
+        }
         .gm-btn { 
             flex: 1; 
-            height: 44px !important; /* ขยายปุ่มให้สูงขึ้นจาก 30px เป็น 44px */
+            height: 32px !important; /* ลดความสูงปุ่มให้กะทัดรัด เข้ากับข้อความ */
             background: rgba(0,0,0,0.6); border: 1px solid #b38728; color: #ffd700; border-radius: 4px; 
-            font-family: 'Prompt'; font-size: 12px !important; font-weight: 600; /* ขยายฟอนต์ปุ่มให้ใหญ่ขึ้น */
-            cursor: pointer; display: flex; align-items: center; justify-content: center; padding: 0; white-space: nowrap; transition: 0.2s; 
+            font-family: 'Prompt'; font-size: 11px !important; font-weight: 600; 
+            cursor: pointer; display: flex; align-items: center; justify-content: center; padding: 0 2px; white-space: nowrap; transition: 0.2s; 
         }
         .gm-btn:hover { background: rgba(212,175,55,0.3); color: #fff;}
         .gm-btn-danger { color: #ff7675; border-color: #ff7675; }
@@ -184,7 +191,7 @@
     <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
 </head>
 
-    <body>
+  <body>
     <div id="toast-container"></div>
 
     <button class="gm-toggle-btn" onclick="toggleGMPanel()" title="เปิดแผงควบคุมสภา">👑</button>
@@ -330,7 +337,7 @@
         </div>
     </div>
 
-        <script>
+         <script>
         function showToast(message, type = 'normal') {
             const container = document.getElementById('toast-container');
             if (container.children.length >= 3) { container.removeChild(container.firstChild); } 
